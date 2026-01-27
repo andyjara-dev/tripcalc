@@ -14,7 +14,7 @@ export default async function CitiesPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations();
+  const t = await getTranslations({ locale });
   const cities = getAllCities();
 
   return (

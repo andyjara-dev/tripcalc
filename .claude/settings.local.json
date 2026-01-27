@@ -11,7 +11,8 @@
       "Bash(find:*)",
       "Bash(tree:*)",
       "WebFetch(domain:www.desarrollador.cl)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(grep:*)"
     ]
   }
 }

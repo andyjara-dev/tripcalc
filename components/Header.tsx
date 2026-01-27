@@ -19,9 +19,9 @@ export default function Header({ locale, activeSection = 'home', translations }:
           <Image
             src="/logo.png"
             alt="TripCalc"
-            width={400}
-            height={133}
-            className="h-20 w-auto"
+            width={800}
+            height={267}
+            className="h-40 w-auto"
             priority
           />
         </Link>

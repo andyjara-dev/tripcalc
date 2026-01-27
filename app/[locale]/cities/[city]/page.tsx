@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: CityPageProps) {
 
 export default async function CityPage({ params }: CityPageProps) {
   const { city: cityId, locale } = await params;
-  const t = await getTranslations();
+  const t = await getTranslations({ locale });
   const city = getCityById(cityId);
 
   if (!city) {
