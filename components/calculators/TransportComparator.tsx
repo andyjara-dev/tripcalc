@@ -91,20 +91,20 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
 
   return (
     <div className="bg-white border rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-bold mb-6">{t('transportComparison')}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('transportComparison')}</h2>
 
       {/* Trip Counter */}
       <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">{t('numberOfTrips')}</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{t('numberOfTrips')}</label>
         <input
           type="range"
           min="1"
           max="20"
           value={trips}
           onChange={(e) => setTrips(Number(e.target.value))}
-          className="w-full"
+          className="w-full accent-gray-900"
         />
-        <div className="text-center text-lg font-semibold mt-2">{trips} {t('trips')}</div>
+        <div className="text-center text-lg font-semibold text-gray-900 mt-2">{trips} {t('trips')}</div>
       </div>
 
       {/* Options */}
@@ -119,8 +119,8 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
             }`}
           >
             <div className="flex justify-between items-center mb-1">
-              <span className="font-semibold">{option.name}</span>
-              <span className="text-xl font-bold">
+              <span className="font-semibold text-gray-900">{option.name}</span>
+              <span className="text-xl font-bold text-gray-900">
                 {city.currencySymbol}{option.price.toFixed(2)}
               </span>
             </div>

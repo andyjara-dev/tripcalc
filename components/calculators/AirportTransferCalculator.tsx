@@ -106,16 +106,16 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
 
   return (
     <div className="bg-white border rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-bold mb-6">{t('airportTransferCalc')}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('airportTransferCalc')}</h2>
 
       {/* Inputs */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="block text-sm font-medium mb-2">{t('numberOfPeople')}</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t('numberOfPeople')}</label>
           <select
             value={people}
             onChange={(e) => setPeople(Number(e.target.value))}
-            className="w-full border rounded-lg p-2"
+            className="w-full border border-gray-300 rounded-lg p-2 text-gray-900"
           >
             {[1, 2, 3, 4, 5, 6].map(n => (
               <option key={n} value={n}>{n} {n === 1 ? t('person') : t('people')}</option>
@@ -123,11 +123,11 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">{t('piecesOfLuggage')}</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t('piecesOfLuggage')}</label>
           <select
             value={luggage}
             onChange={(e) => setLuggage(Number(e.target.value))}
-            className="w-full border rounded-lg p-2"
+            className="w-full border border-gray-300 rounded-lg p-2 text-gray-900"
           >
             {[0, 1, 2, 3, 4].map(n => (
               <option key={n} value={n}>{n} {n === 1 ? t('bag') : t('bags')}</option>
@@ -149,11 +149,11 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
           >
             <div className="flex justify-between items-start mb-3">
               <div>
-                <div className="font-bold text-lg">{option.name}</div>
+                <div className="font-bold text-lg text-gray-900">{option.name}</div>
                 <div className="text-sm text-gray-600">{option.duration}</div>
               </div>
               <div className="text-right">
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold text-gray-900">
                   {city.currencySymbol}{option.price.toFixed(2)}
                 </div>
                 <div className="text-sm text-gray-600">
