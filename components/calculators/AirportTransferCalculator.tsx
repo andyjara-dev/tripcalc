@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import type { CityData } from '@/data/cities';
 
 interface AirportTransferCalculatorProps {
@@ -17,6 +18,7 @@ interface TransferOption {
 }
 
 export default function AirportTransferCalculator({ city }: AirportTransferCalculatorProps) {
+  const t = useTranslations('calculator');
   const [people, setPeople] = useState(1);
   const [luggage, setLuggage] = useState(1);
 
@@ -25,21 +27,21 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
   // Train/Metro
   if (city.transport.train?.airportToCity) {
     options.push({
-      name: 'Train/Metro',
+      name: t('trainMetro'),
       price: city.transport.train.airportToCity * people,
       duration: '30-45 min',
       comfort: 3,
       convenience: 4,
-      notes: 'Fast, frequent, good with light luggage',
+      notes: t('fastFrequent'),
     });
   } else if (city.transport.metro) {
     options.push({
-      name: 'Metro',
+      name: t('metro'),
       price: city.transport.metro.singleTicket * people,
       duration: '45-60 min',
       comfort: 2,
       convenience: 3,
-      notes: 'Cheapest option, may require transfers',
+      notes: t('cheapestMayTransfer'),
     });
   }
 
@@ -47,12 +49,12 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
   if (city.transport.bus) {
     const busCost = city.transport.bus.singleTicket * 1.5; // Airport bus usually more expensive
     options.push({
-      name: 'Airport Bus',
+      name: t('airportBus'),
       price: busCost * people,
       duration: '45-60 min',
       comfort: 3,
       convenience: 4,
-      notes: 'Comfortable, direct route, luggage space',
+      notes: t('comfortableDirect'),
     });
   }
 
@@ -68,12 +70,12 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     const taxiTotal = people <= 4 ? taxiCost : taxiCost * Math.ceil(people / 4);
 
     options.push({
-      name: 'Taxi',
+      name: t('taxi'),
       price: taxiTotal,
       duration: '25-40 min',
       comfort: 4,
       convenience: 5,
-      notes: 'Door to door, good for 1-4 people',
+      notes: t('doorToDoor'),
     });
   }
 
@@ -84,12 +86,12 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
       : city.transport.uber.averageAirportToCity * Math.ceil(people / 4);
 
     options.push({
-      name: 'Uber/Rideshare',
+      name: t('uberRideshare'),
       price: uberCost,
       duration: '25-40 min',
       comfort: 4,
       convenience: 5,
-      notes: 'Book in app, usually cheaper than taxi',
+      notes: t('bookInApp'),
     });
   }
 
@@ -104,31 +106,31 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
 
   return (
     <div className="bg-white border rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-bold mb-6">Airport Transfer Calculator</h2>
+      <h2 className="text-2xl font-bold mb-6">{t('airportTransferCalc')}</h2>
 
       {/* Inputs */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         <div>
-          <label className="block text-sm font-medium mb-2">Number of People</label>
+          <label className="block text-sm font-medium mb-2">{t('numberOfPeople')}</label>
           <select
             value={people}
             onChange={(e) => setPeople(Number(e.target.value))}
             className="w-full border rounded-lg p-2"
           >
             {[1, 2, 3, 4, 5, 6].map(n => (
-              <option key={n} value={n}>{n} {n === 1 ? 'person' : 'people'}</option>
+              <option key={n} value={n}>{n} {n === 1 ? t('person') : t('people')}</option>
             ))}
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Pieces of Luggage</label>
+          <label className="block text-sm font-medium mb-2">{t('piecesOfLuggage')}</label>
           <select
             value={luggage}
             onChange={(e) => setLuggage(Number(e.target.value))}
             className="w-full border rounded-lg p-2"
           >
             {[0, 1, 2, 3, 4].map(n => (
-              <option key={n} value={n}>{n} {n === 1 ? 'bag' : 'bags'}</option>
+              <option key={n} value={n}>{n} {n === 1 ? t('bag') : t('bags')}</option>
             ))}
           </select>
         </div>
@@ -155,7 +157,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
                   {city.currencySymbol}{option.price.toFixed(2)}
                 </div>
                 <div className="text-sm text-gray-600">
-                  {city.currencySymbol}{(option.price / people).toFixed(2)}/person
+                  {city.currencySymbol}{(option.price / people).toFixed(2)}{t('perPerson')}
                 </div>
               </div>
             </div>
@@ -163,7 +165,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
             {/* Ratings */}
             <div className="grid grid-cols-2 gap-2 mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Comfort:</span>
+                <span className="text-sm text-gray-600">{t('comfort')}:</span>
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < option.comfort ? 'text-yellow-400' : 'text-gray-300'}>
@@ -173,7 +175,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">Convenience:</span>
+                <span className="text-sm text-gray-600">{t('convenience')}:</span>
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < option.convenience ? 'text-yellow-400' : 'text-gray-300'}>
@@ -188,13 +190,13 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
 
             {index === 0 && (
               <div className="text-sm font-semibold text-green-700 mt-2">
-                ✓ Cheapest Option
+                ✓ {t('cheapestOption')}
               </div>
             )}
 
-            {luggage > 2 && option.name.includes('Metro') && (
+            {luggage > 2 && (option.name.includes('Metro') || option.name.includes('metro')) && (
               <div className="text-sm text-orange-600 mt-2">
-                ⚠ May be difficult with {luggage} bags
+                ⚠ {t('mayBeDifficult', { count: luggage })}
               </div>
             )}
           </div>
@@ -203,22 +205,22 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
 
       {/* Recommendation */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="font-semibold mb-2">💡 Recommendation:</div>
+        <div className="font-semibold mb-2">💡 {t('recommendation')}</div>
         {people === 1 && luggage <= 1 ? (
           <p className="text-sm">
-            For solo travelers with light luggage, public transport is the most economical choice.
+            {t('soloTraveler')}
           </p>
         ) : people >= 3 ? (
           <p className="text-sm">
-            For groups of 3+, a taxi or Uber becomes competitive when splitting the cost.
+            {t('groupTraveler')}
           </p>
         ) : luggage > 2 ? (
           <p className="text-sm">
-            With multiple bags, consider taxi/Uber for comfort and convenience.
+            {t('heavyLuggage')}
           </p>
         ) : (
           <p className="text-sm">
-            Public transport offers the best value. Taxi/Uber if you prioritize comfort.
+            {t('generalRecommendation')}
           </p>
         )}
       </div>
