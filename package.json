@@ -19,10 +19,10 @@
   "license": "MIT",
   "description": "TripCalc - Real Travel Costs Calculator",
   "dependencies": {
-    "next": "^16.1.5",
+    "next": "^15.1.0",
     "next-intl": "^4.7.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
