@@ -4,7 +4,8 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 const nextConfig: NextConfig = {
-  // No standalone output - full build for better next-intl compatibility
+  // Do NOT use standalone output with next-intl
+  // It causes issues with runtime file access
 };
 
 export default withNextIntl(nextConfig);

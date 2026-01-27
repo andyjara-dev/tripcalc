@@ -1,5 +1,5 @@
-# Multi-stage Dockerfile for TripCalc
-# Full build mode (better compatibility with next-intl)
+# Alternative Dockerfile without standalone mode
+# Better compatibility with next-intl
 
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
@@ -18,7 +18,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
-# Stage 3: Runner
+# Stage 3: Runner (Full Build)
 FROM node:20-alpine AS runner
 WORKDIR /app
 
@@ -29,7 +29,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copy all necessary files for full build
+# Copy all necessary files
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
@@ -45,6 +45,5 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Use npm start instead of standalone server
-# This ensures proper handling of dynamic routes with next-intl
+# Start with next start instead of standalone server
 CMD ["npm", "start"]
