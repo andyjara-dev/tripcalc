@@ -25,12 +25,6 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale as any)) {
-    notFound();
-  }
-
   const messages = await getMessages();
 
   return (
