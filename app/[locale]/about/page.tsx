@@ -13,7 +13,15 @@ export default async function AboutPage({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <Header locale={locale} activeSection="about" />
+      <Header
+        locale={locale}
+        activeSection="about"
+        translations={{
+          home: t('nav.home'),
+          cities: t('nav.cities'),
+          about: t('nav.about')
+        }}
+      />
 
       {/* Content */}
       <main className="pt-32 pb-20 px-6 bg-white">

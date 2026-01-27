@@ -49,7 +49,15 @@ export default async function CityPage({ params }: CityPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <Header locale={locale} activeSection="cities" />
+      <Header
+        locale={locale}
+        activeSection="cities"
+        translations={{
+          home: t('nav.home'),
+          cities: t('nav.cities'),
+          about: t('nav.about')
+        }}
+      />
 
       {/* City Header */}
       <section className="pt-32 pb-16 px-6 bg-white">

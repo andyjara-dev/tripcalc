@@ -13,7 +13,15 @@ export default async function HomePage({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <Header locale={locale} activeSection="home" />
+      <Header
+        locale={locale}
+        activeSection="home"
+        translations={{
+          home: t('nav.home'),
+          cities: t('nav.cities'),
+          about: t('nav.about')
+        }}
+      />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">

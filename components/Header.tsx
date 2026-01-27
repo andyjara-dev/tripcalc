@@ -1,17 +1,17 @@
-'use client';
-
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
 
 interface HeaderProps {
   locale: string;
   activeSection?: 'home' | 'cities' | 'about';
+  translations: {
+    home: string;
+    cities: string;
+    about: string;
+  };
 }
 
-export default function Header({ locale, activeSection = 'home' }: HeaderProps) {
-  const t = useTranslations();
-
+export default function Header({ locale, activeSection = 'home', translations }: HeaderProps) {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -19,9 +19,9 @@ export default function Header({ locale, activeSection = 'home' }: HeaderProps) 
           <Image
             src="/logo.png"
             alt="TripCalc"
-            width={120}
-            height={40}
-            className="h-8 w-auto"
+            width={180}
+            height={60}
+            className="h-12 w-auto"
             priority
           />
         </Link>
@@ -34,7 +34,7 @@ export default function Header({ locale, activeSection = 'home' }: HeaderProps) 
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            {t('nav.home')}
+            {translations.home}
           </Link>
           <Link
             href={`/${locale}/cities`}
@@ -44,7 +44,7 @@ export default function Header({ locale, activeSection = 'home' }: HeaderProps) 
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            {t('nav.cities')}
+            {translations.cities}
           </Link>
           <Link
             href={`/${locale}/about`}
@@ -54,7 +54,7 @@ export default function Header({ locale, activeSection = 'home' }: HeaderProps) 
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
-            {t('nav.about')}
+            {translations.about}
           </Link>
         </div>
       </nav>
