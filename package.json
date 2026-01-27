@@ -1,0 +1,36 @@
+{
+  "name": "tripcalc",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "docker:build": "docker build -t tripcalc:latest .",
+    "docker:run": "docker run -p 3000:3000 --name tripcalc tripcalc:latest",
+    "docker:stop": "docker stop tripcalc && docker rm tripcalc",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:dev": "docker-compose --profile dev up tripcalc-dev",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "TripCalc - Real Travel Costs Calculator",
+  "dependencies": {
+    "next": "^16.1.5",
+    "next-intl": "^4.7.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/node": "^25.0.10",
+    "@types/react": "^19.2.9",
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  }
+}

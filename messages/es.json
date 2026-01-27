@@ -1,0 +1,71 @@
+{
+  "site": {
+    "name": "TripCalc",
+    "tagline": "Costos Reales de Viaje",
+    "description": "Sin sorpresas. Solo mejores decisiones de viaje."
+  },
+  "nav": {
+    "home": "Inicio",
+    "cities": "Ciudades",
+    "calculators": "Calculadoras",
+    "about": "Acerca de"
+  },
+  "home": {
+    "hero": {
+      "title": "¿Cuánto cuesta realmente un viaje?",
+      "subtitle": "Números del mundo real, decisiones de viajeros reales y costos reales — basados en experiencia, no en promedios genéricos.",
+      "cta": "Explorar Ciudades"
+    },
+    "features": {
+      "dailyCost": {
+        "title": "Costos Diarios Reales",
+        "description": "Estima gastos reales por día basados en experiencia de viajeros"
+      },
+      "transport": {
+        "title": "Comparación de Transporte",
+        "description": "Compara precios reales de metro, taxi, Uber y más"
+      },
+      "airport": {
+        "title": "Traslados Aeropuerto",
+        "description": "Calcula la mejor forma de ir del aeropuerto a la ciudad"
+      },
+      "tips": {
+        "title": "Costos Ocultos",
+        "description": "Entiende propinas, tarifas y costos que la mayoría de sitios no mencionan"
+      },
+      "cash": {
+        "title": "Planificación de Efectivo",
+        "description": "Sabe exactamente cuánto efectivo llevar y dónde usar tarjetas"
+      },
+      "budget": {
+        "title": "Presupuesto Inteligente",
+        "description": "Toma decisiones informadas antes y durante tu viaje"
+      }
+    }
+  },
+  "calculator": {
+    "dailyCost": "Estimador de Costo Diario",
+    "accommodation": "Alojamiento",
+    "food": "Comida y Bebidas",
+    "transport": "Transporte",
+    "activities": "Actividades y Atracciones",
+    "other": "Otros",
+    "calculate": "Calcular",
+    "total": "Total por día",
+    "budget": "Económico",
+    "midRange": "Medio",
+    "luxury": "Lujo"
+  },
+  "about": {
+    "title": "Acerca de TripCalc",
+    "mission": "TripCalc fue creado para responder una pregunta simple que la mayoría de sitios de viajes no pueden: ¿Cuánto cuesta realmente un viaje?",
+    "difference": {
+      "title": "¿Por qué TripCalc?",
+      "description": "La mayoría de sitios de viajes se enfocan en inspiración, hoteles y atracciones. TripCalc se enfoca en algo más práctico: números del mundo real, decisiones de viajeros reales y costos reales — basados en experiencia, no en promedios genéricos."
+    }
+  },
+  "footer": {
+    "tagline": "Porque los viajeros merecen herramientas, no solo inspiración.",
+    "rights": "Todos los derechos reservados."
+  }
+}

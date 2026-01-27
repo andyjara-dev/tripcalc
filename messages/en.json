@@ -1,0 +1,71 @@
+{
+  "site": {
+    "name": "TripCalc",
+    "tagline": "Real Travel Costs",
+    "description": "No surprises. Just better travel decisions."
+  },
+  "nav": {
+    "home": "Home",
+    "cities": "Cities",
+    "calculators": "Calculators",
+    "about": "About"
+  },
+  "home": {
+    "hero": {
+      "title": "How much does a trip really cost?",
+      "subtitle": "Real-world numbers, real traveler decisions, and real costs — based on experience, not generic averages.",
+      "cta": "Explore Cities"
+    },
+    "features": {
+      "dailyCost": {
+        "title": "Real Daily Costs",
+        "description": "Estimate actual expenses per day based on real traveler experience"
+      },
+      "transport": {
+        "title": "Transport Comparison",
+        "description": "Compare real prices for metro, taxi, Uber, and more"
+      },
+      "airport": {
+        "title": "Airport Transfers",
+        "description": "Calculate the best way to get from airport to city"
+      },
+      "tips": {
+        "title": "Hidden Costs",
+        "description": "Understand tips, fees, and costs most sites won't tell you"
+      },
+      "cash": {
+        "title": "Cash Planning",
+        "description": "Know exactly how much cash to carry and where to use cards"
+      },
+      "budget": {
+        "title": "Smart Budgeting",
+        "description": "Make informed decisions before and during your trip"
+      }
+    }
+  },
+  "calculator": {
+    "dailyCost": "Daily Cost Estimator",
+    "accommodation": "Accommodation",
+    "food": "Food & Drinks",
+    "transport": "Transport",
+    "activities": "Activities & Attractions",
+    "other": "Other",
+    "calculate": "Calculate",
+    "total": "Total per day",
+    "budget": "Budget",
+    "midRange": "Mid-range",
+    "luxury": "Luxury"
+  },
+  "about": {
+    "title": "About TripCalc",
+    "mission": "TripCalc was created to answer a simple question most travel websites can't: How much does a trip really cost?",
+    "difference": {
+      "title": "Why TripCalc?",
+      "description": "Most travel sites focus on inspiration, hotels, and attractions. TripCalc focuses on something more practical: real-world numbers, real traveler decisions, and real costs — based on experience, not generic averages."
+    }
+  },
+  "footer": {
+    "tagline": "Because travelers deserve tools, not just inspiration.",
+    "rights": "All rights reserved."
+  }
+}
