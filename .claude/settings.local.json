@@ -8,7 +8,8 @@
       "Bash(npm run build:*)",
       "Bash(docker:*)",
       "Bash(chmod:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(tree:*)"
     ]
   }
 }
