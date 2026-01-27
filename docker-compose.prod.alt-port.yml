@@ -1,3 +1,7 @@
+# Alternative Docker Compose for Production
+# Use this if port 3000 is already in use by another project
+# Usage: docker-compose -f docker-compose.prod.alt-port.yml up -d
+
 services:
   tripcalc:
     build:
@@ -5,12 +9,7 @@ services:
       dockerfile: Dockerfile
     container_name: tripcalc-prod
     ports:
-      - "3000:3000"  # Use nginx as reverse proxy for port 80/443
-    environment:
-      - NODE_ENV=production
-      - NEXT_PUBLIC_SITE_URL=https://tripcalc.site
-      - NEXT_TELEMETRY_DISABLED=1
-    restart: unless-stopped
+      - "3010:3000"  # External:Internal - Using 3010 to avoid conflicts
     env_file:
       - .env.production
 
@@ -20,6 +19,8 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
+
+    restart: unless-stopped
 
     # Resource limits (optional but recommended)
     deploy:
@@ -38,3 +39,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+# NOTE: If you use this file, update your nginx configuration:
+# proxy_pass http://localhost:3010;

@@ -385,14 +385,34 @@ When ready for community data:
 - Or: Submission form → manual review → merge
 - Or: User accounts + moderation system (much later)
 
+## Quick Commands
+
+```bash
+# Development
+npm run dev
+npm run build
+
+# Docker
+./scripts/deploy.sh              # Deploy to production
+./scripts/check-health.sh        # Health check
+./scripts/backup.sh              # Backup
+./scripts/fix-port-conflict.sh   # Fix port issues
+
+# Monitoring
+docker logs -f tripcalc-prod
+docker stats tripcalc-prod
+```
+
 ## Links
 
 - **Production**: https://tripcalc.site
-- **Repository**: (TBD)
-- **Documentation**: This file (claude.md)
+- **Documentation**:
+  - claude.md (this file) - Complete project docs
+  - DEPLOYMENT_VPS.md - VPS deployment guide
+  - scripts/README.md - Scripts documentation
 
 ---
 
 **Last Updated**: 2026-01-27
-**Project Status**: Initial setup complete
-**Next Steps**: Build core calculators, add 3-5 more cities
+**Project Status**: Production ready
+**Current**: 5 cities, 3 calculators, Docker deployment configured

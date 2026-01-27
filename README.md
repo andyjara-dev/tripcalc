@@ -88,36 +88,27 @@ tripcalc/
 ### Vercel (Easiest, Free Tier)
 
 ```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
 vercel
 ```
 
-Or connect your GitHub repo to Vercel for automatic deployments.
-
-### Docker (Any Platform)
+### VPS with Docker
 
 ```bash
-# Build Docker image
-npm run docker:build
+# On your server
+git clone [repo] tripcalc && cd tripcalc
+cp .env.production.example .env.production
+nano .env.production  # Configure your domain
 
-# Run container
-npm run docker:run
+# Deploy
+./scripts/deploy.sh
+
+# Configure nginx (see nginx/tripcalc.site.conf)
+# Setup SSL with certbot
 ```
 
-Deploy to:
-- **Cloud Platforms**: AWS ECS, Google Cloud Run, Azure Container Instances
-- **Container Registries**: Docker Hub, AWS ECR, Google Container Registry
-- **VPS**: DigitalOcean, Linode, Vultr (with Docker installed)
+**Port conflict?** Run `./scripts/fix-port-conflict.sh`
 
-**Quick Deploy to VPS:** See [DEPLOY_NOW.md](DEPLOY_NOW.md) for 10-minute setup guide.
-
-**Complete Guides:**
-- [DEPLOYMENT_VPS.md](DEPLOYMENT_VPS.md) - Complete VPS deployment guide
-- [DOCKER.md](DOCKER.md) - Docker deployment to any platform
-- [QUICK_REFERENCE.md](QUICK_REFERENCE.md) - Quick command reference
+See [DEPLOYMENT_VPS.md](DEPLOYMENT_VPS.md) for complete VPS setup guide.
 
 ## Contributing
 

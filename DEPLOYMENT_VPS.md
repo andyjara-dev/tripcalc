@@ -2,6 +2,25 @@
 
 Guía completa para deployar TripCalc en tu VPS existente con Docker.
 
+## ⚠️ Puerto 3000 en uso?
+
+Si el puerto 3000 ya está ocupado por otro proyecto:
+
+```bash
+# Opción 1: Usar script automático
+./scripts/fix-port-conflict.sh
+
+# Opción 2: Manual - Editar docker-compose.prod.yml
+nano docker-compose.prod.yml
+# Cambiar: - "3000:3000"
+# A:       - "3010:3000"  (o el puerto que prefieras)
+
+# Luego actualizar nginx:
+sudo nano /etc/nginx/sites-available/tripcalc.site
+# Cambiar: proxy_pass http://localhost:3000;
+# A:       proxy_pass http://localhost:3010;
+```
+
 ## Pre-requisitos en el VPS
 
 - ✅ Docker instalado
