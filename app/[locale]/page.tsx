@@ -10,41 +10,39 @@ export default async function HomePage({
   const t = await getTranslations();
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link href={`/${locale}`} className="text-xl font-bold">
-              {t('site.name')}
+    <div className="min-h-screen bg-gray-50">
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
+        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
+            {t('site.name')}
+          </Link>
+          <div className="flex gap-8">
+            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
+              {t('nav.home')}
             </Link>
-            <div className="hidden md:flex gap-6">
-              <Link href={`/${locale}`} className="hover:text-gray-600">
-                {t('nav.home')}
-              </Link>
-              <Link href={`/${locale}/cities`} className="hover:text-gray-600">
-                {t('nav.cities')}
-              </Link>
-              <Link href={`/${locale}/about`} className="hover:text-gray-600">
-                {t('nav.about')}
-              </Link>
-            </div>
+            <Link href={`/${locale}/cities`} className="text-gray-600 hover:text-gray-900 transition">
+              {t('nav.cities')}
+            </Link>
+            <Link href={`/${locale}/about`} className="text-gray-600 hover:text-gray-900 transition">
+              {t('nav.about')}
+            </Link>
           </div>
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center max-w-3xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="pt-32 pb-20 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             {t('home.hero.title')}
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
             {t('home.hero.subtitle')}
           </p>
           <Link
             href={`/${locale}/cities`}
-            className="inline-block bg-black text-white px-8 py-3 rounded-lg hover:bg-gray-800 transition"
+            className="inline-block bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
           >
             {t('home.hero.cta')}
           </Link>
@@ -52,30 +50,33 @@ export default async function HomePage({
       </section>
 
       {/* Features Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {['dailyCost', 'transport', 'airport', 'tips', 'cash', 'budget'].map((feature) => (
-            <div key={feature} className="p-6 border rounded-lg hover:shadow-lg transition">
-              <h3 className="text-xl font-semibold mb-3">
-                {t(`home.features.${feature}.title`)}
-              </h3>
-              <p className="text-gray-600">
-                {t(`home.features.${feature}.description`)}
-              </p>
-            </div>
-          ))}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {['dailyCost', 'transport', 'airport', 'tips', 'cash', 'budget'].map((feature) => (
+              <div
+                key={feature}
+                className="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-all border border-gray-100"
+              >
+                <h3 className="text-xl font-semibold mb-4 text-gray-900">
+                  {t(`home.features.${feature}.title`)}
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  {t(`home.features.${feature}.description`)}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <p className="text-gray-600 mb-2">{t('footer.tagline')}</p>
-            <p className="text-sm text-gray-500">
-              © 2026 {t('site.name')}. {t('footer.rights')}
-            </p>
-          </div>
+      <footer className="bg-gray-900 text-white py-12 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-gray-400 mb-2">{t('footer.tagline')}</p>
+          <p className="text-sm text-gray-500">
+            © 2026 {t('site.name')}. {t('footer.rights')}
+          </p>
         </div>
       </footer>
     </div>

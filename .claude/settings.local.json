@@ -9,7 +9,9 @@
       "Bash(docker:*)",
       "Bash(chmod:*)",
       "Bash(find:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "WebFetch(domain:www.desarrollador.cl)",
+      "Bash(wc:*)"
     ]
   }
 }

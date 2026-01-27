@@ -10,103 +10,151 @@ export default async function AboutPage({
   const t = await getTranslations();
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="border-b">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link href={`/${locale}`} className="text-xl font-bold">
-              {t('site.name')}
+    <div className="min-h-screen bg-gray-50">
+      {/* Fixed Header */}
+      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
+        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
+            {t('site.name')}
+          </Link>
+          <div className="flex gap-8">
+            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
+              {t('nav.home')}
             </Link>
-            <div className="hidden md:flex gap-6">
-              <Link href={`/${locale}`} className="hover:text-gray-600">
-                {t('nav.home')}
-              </Link>
-              <Link href={`/${locale}/cities`} className="hover:text-gray-600">
-                {t('nav.cities')}
-              </Link>
-              <Link href={`/${locale}/about`} className="hover:text-gray-600 font-semibold">
-                {t('nav.about')}
-              </Link>
-            </div>
+            <Link href={`/${locale}/cities`} className="text-gray-600 hover:text-gray-900 transition">
+              {t('nav.cities')}
+            </Link>
+            <Link href={`/${locale}/about`} className="text-gray-900 font-semibold">
+              {t('nav.about')}
+            </Link>
           </div>
         </nav>
       </header>
 
       {/* Content */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="text-4xl font-bold mb-8">{t('about.title')}</h1>
+      <main className="pt-32 pb-20 px-6 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <h1 className="text-5xl font-bold text-gray-900 mb-8">{t('about.title')}</h1>
 
-        <div className="prose prose-lg max-w-none">
-          <p className="text-xl text-gray-600 mb-8">
-            {t('about.mission')}
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-12 mb-4">
-            {t('about.difference.title')}
-          </h2>
-          <p className="text-gray-700 mb-6">
-            {t('about.difference.description')}
-          </p>
-
-          <h2 className="text-2xl font-semibold mt-12 mb-4">
-            Built from Real Experience
-          </h2>
-          <p className="text-gray-700 mb-4">
-            TripCalc is not a generic travel blog. It's built using:
-          </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
-            <li>First-hand travel experience</li>
-            <li>Local knowledge from residents</li>
-            <li>Real-world testing of transport, ATMs, SIMs, and daily expenses</li>
-            <li>Data collected and refined over time</li>
-          </ul>
-
-          <h2 className="text-2xl font-semibold mt-12 mb-4">
-            What You Can Do with TripCalc
-          </h2>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
-            <li>Estimate the real daily cost of a trip</li>
-            <li>Compare transportation options with real prices</li>
-            <li>Calculate airport-to-city transfers</li>
-            <li>Understand tips, fees, and hidden costs</li>
-            <li>Plan cash vs card usage</li>
-            <li>Make smarter budgeting decisions before and during a trip</li>
-          </ul>
-
-          <h2 className="text-2xl font-semibold mt-12 mb-4">
-            Growing with the Community
-          </h2>
-          <p className="text-gray-700 mb-4">
-            TripCalc is designed to grow gradually:
-          </p>
-          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
-            <li>Starting with a few cities and core calculators</li>
-            <li>Expanding with better data over time</li>
-            <li>Eventually incorporating community-submitted insights</li>
-            <li>Always prioritizing accuracy over hype</li>
-          </ul>
-
-          <div className="mt-12 p-8 bg-gray-50 rounded-lg">
-            <p className="text-xl font-semibold text-center mb-2">
-              {t('footer.tagline')}
+          <div className="space-y-12">
+            <p className="text-xl text-gray-600 leading-relaxed">
+              {t('about.mission')}
             </p>
-            <p className="text-center text-gray-600">
-              TripCalc helps you plan with confidence by turning travel into numbers you can actually use.
-            </p>
+
+            <div>
+              <h2 className="text-3xl font-semibold text-gray-900 mb-4">
+                {t('about.difference.title')}
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                {t('about.difference.description')}
+              </p>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-semibold text-gray-900 mb-4">
+                Built from Real Experience
+              </h2>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                TripCalc is not a generic travel blog. It's built using:
+              </p>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>First-hand travel experience</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Local knowledge from residents</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Real-world testing of transport, ATMs, SIMs, and daily expenses</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Data collected and refined over time</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-semibold text-gray-900 mb-4">
+                What You Can Do with TripCalc
+              </h2>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Estimate the real daily cost of a trip</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Compare transportation options with real prices</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Calculate airport-to-city transfers</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Understand tips, fees, and hidden costs</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Plan cash vs card usage</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Make smarter budgeting decisions before and during a trip</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h2 className="text-3xl font-semibold text-gray-900 mb-4">
+                Growing with the Community
+              </h2>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                TripCalc is designed to grow gradually:
+              </p>
+              <ul className="space-y-3 text-gray-700">
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Starting with a few cities and core calculators</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Expanding with better data over time</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Eventually incorporating community-submitted insights</span>
+                </li>
+                <li className="flex gap-3">
+                  <span className="text-gray-400">•</span>
+                  <span>Always prioritizing accuracy over hype</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="mt-16 p-10 bg-gray-50 rounded-2xl border border-gray-200">
+              <p className="text-2xl font-semibold text-center mb-3 text-gray-900">
+                {t('footer.tagline')}
+              </p>
+              <p className="text-center text-gray-600 leading-relaxed">
+                TripCalc helps you plan with confidence by turning travel into numbers you can actually use.
+              </p>
+            </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <p className="text-gray-600 mb-2">{t('footer.tagline')}</p>
-            <p className="text-sm text-gray-500">
-              © 2026 {t('site.name')}. {t('footer.rights')}
-            </p>
-          </div>
+      <footer className="bg-gray-900 text-white py-12 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-gray-400 mb-2">{t('footer.tagline')}</p>
+          <p className="text-sm text-gray-500">
+            © 2026 {t('site.name')}. {t('footer.rights')}
+          </p>
         </div>
       </footer>
     </div>
