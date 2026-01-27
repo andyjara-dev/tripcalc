@@ -40,6 +40,10 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy i18n configuration files (needed for next-intl at runtime)
+COPY --from=builder --chown=nextjs:nodejs /app/i18n ./i18n
+COPY --from=builder --chown=nextjs:nodejs /app/messages ./messages
+
 USER nextjs
 
 EXPOSE 3000
