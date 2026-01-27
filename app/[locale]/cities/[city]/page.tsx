@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getCityById, getAllCities } from '@/data/cities';
-import DailyCostCalculator from '@/components/calculators/DailyCostCalculator';
-import TransportComparator from '@/components/calculators/TransportComparator';
-import AirportTransferCalculator from '@/components/calculators/AirportTransferCalculator';
+import CalculatorTabs from '@/components/CalculatorTabs';
 import Header from '@/components/Header';
 
 interface CityPageProps {
@@ -76,25 +74,15 @@ export default async function CityPage({ params }: CityPageProps) {
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
-        {/* Daily Cost Calculator */}
-        <section className="mb-12">
-          <DailyCostCalculator city={city} />
-        </section>
-
-        {/* Transport Comparator */}
-        <section className="mb-12">
-          <TransportComparator city={city} />
-        </section>
-
-        {/* Airport Transfer Calculator */}
-        <section className="mb-12">
-          <AirportTransferCalculator city={city} />
+        {/* Calculator Tabs */}
+        <section className="mb-16">
+          <CalculatorTabs city={city} />
         </section>
 
         {/* Tips & Info */}
-        <section className="grid md:grid-cols-2 gap-6 mb-12">
+        <section className="grid md:grid-cols-2 gap-8 mb-16">
           {/* Tipping Culture */}
-          <div className="bg-white rounded-xl p-8 border border-gray-200">
+          <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">💡 {t('cityDetails.tipping.title')}</h3>
             <div className="space-y-4">
               <div>
@@ -117,7 +105,7 @@ export default async function CityPage({ params }: CityPageProps) {
           </div>
 
           {/* Cash vs Card */}
-          <div className="bg-white rounded-xl p-8 border border-gray-200">
+          <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
             <h3 className="text-2xl font-bold text-gray-900 mb-6">💳 {t('cityDetails.cash.title')}</h3>
             <div className="space-y-4">
               <div>
@@ -143,7 +131,7 @@ export default async function CityPage({ params }: CityPageProps) {
         </section>
 
         {/* Transport Details */}
-        <section className="bg-white rounded-xl p-8 border border-gray-200 mb-12">
+        <section className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm mb-16">
           <h3 className="text-2xl font-bold text-gray-900 mb-6">🚇 {t('cityDetails.transport.title')}</h3>
           <div className="grid md:grid-cols-2 gap-8">
             {city.transport.metro && (

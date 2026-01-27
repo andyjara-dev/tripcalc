@@ -81,6 +81,7 @@
     "dailyTotal": "Daily Total:",
     "tripTotal": "Trip Total",
     "estimate": "* Estimates based on real traveler experience. Actual costs may vary.",
+    "includeInBudget": "Include in Budget",
     "transportComparison": "Transport Cost Comparison",
     "numberOfTrips": "Number of Trips",
     "trips": "trips",

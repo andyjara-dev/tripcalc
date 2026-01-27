@@ -90,8 +90,8 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
   const savings = mostExpensive ? mostExpensive.price - cheapest.price : 0;
 
   return (
-    <div className="bg-white border rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('transportComparison')}</h2>
+    <div>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('transportComparison')}</h2>
 
       {/* Trip Counter */}
       <div className="mb-6">

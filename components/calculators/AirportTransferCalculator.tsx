@@ -105,8 +105,8 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
   }));
 
   return (
-    <div className="bg-white border rounded-lg p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('airportTransferCalc')}</h2>
+    <div>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('airportTransferCalc')}</h2>
 
       {/* Inputs */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">

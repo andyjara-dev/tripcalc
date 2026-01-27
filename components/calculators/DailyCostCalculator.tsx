@@ -10,17 +10,40 @@ interface DailyCostCalculatorProps {
 
 type TripStyle = 'budget' | 'midRange' | 'luxury';
 
+interface CategoryToggle {
+  accommodation: boolean;
+  food: boolean;
+  transport: boolean;
+  activities: boolean;
+}
+
 export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) {
   const t = useTranslations('calculator');
   const [tripStyle, setTripStyle] = useState<TripStyle>('midRange');
   const [days, setDays] = useState(3);
+  const [included, setIncluded] = useState<CategoryToggle>({
+    accommodation: true,
+    food: true,
+    transport: true,
+    activities: true,
+  });
 
   const costs = city.dailyCosts[tripStyle];
-  const dailyTotal = costs.accommodation + costs.food + costs.transport + costs.activities;
+
+  const dailyTotal =
+    (included.accommodation ? costs.accommodation : 0) +
+    (included.food ? costs.food : 0) +
+    (included.transport ? costs.transport : 0) +
+    (included.activities ? costs.activities : 0);
+
   const tripTotal = dailyTotal * days;
 
+  const toggleCategory = (category: keyof CategoryToggle) => {
+    setIncluded(prev => ({ ...prev, [category]: !prev[category] }));
+  };
+
   return (
-    <div className="bg-white rounded-xl p-8 border border-gray-200">
+    <div>
       <h2 className="text-3xl font-bold text-gray-900 mb-8">{t('dailyCost')}</h2>
 
       {/* Trip Style Selector */}
@@ -77,31 +100,91 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
         <div className="text-center text-xl font-semibold text-gray-900 mt-3">{days} {t('days')}</div>
       </div>
 
-      {/* Cost Breakdown */}
-      <div className="space-y-4 mb-8">
-        <div className="flex justify-between items-center py-3 border-b border-gray-200">
-          <span className="text-gray-700">{t('accommodation')}</span>
-          <span className="font-semibold text-gray-900">
-            {city.currencySymbol}{costs.accommodation.toFixed(0)}
-          </span>
-        </div>
-        <div className="flex justify-between items-center py-3 border-b border-gray-200">
-          <span className="text-gray-700">{t('food')}</span>
-          <span className="font-semibold text-gray-900">
-            {city.currencySymbol}{costs.food.toFixed(0)}
-          </span>
-        </div>
-        <div className="flex justify-between items-center py-3 border-b border-gray-200">
-          <span className="text-gray-700">{t('transport')}</span>
-          <span className="font-semibold text-gray-900">
-            {city.currencySymbol}{costs.transport.toFixed(0)}
-          </span>
-        </div>
-        <div className="flex justify-between items-center py-3 border-b border-gray-200">
-          <span className="text-gray-700">{t('activities')}</span>
-          <span className="font-semibold text-gray-900">
-            {city.currencySymbol}{costs.activities.toFixed(0)}
-          </span>
+      {/* Cost Breakdown with Toggles */}
+      <div className="mb-8">
+        <h3 className="text-sm font-semibold text-gray-700 mb-4 uppercase tracking-wide">
+          {t('includeInBudget') || 'Include in Budget'}
+        </h3>
+        <div className="space-y-3">
+          {/* Accommodation */}
+          <div className={`flex justify-between items-center p-4 rounded-lg border-2 transition-all ${
+            included.accommodation
+              ? 'border-gray-900 bg-gray-50'
+              : 'border-gray-200 bg-white opacity-50'
+          }`}>
+            <label className="flex items-center gap-3 cursor-pointer flex-1">
+              <input
+                type="checkbox"
+                checked={included.accommodation}
+                onChange={() => toggleCategory('accommodation')}
+                className="w-5 h-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+              />
+              <span className="text-gray-900 font-medium">{t('accommodation')}</span>
+            </label>
+            <span className={`font-bold text-lg ${included.accommodation ? 'text-gray-900' : 'text-gray-400'}`}>
+              {city.currencySymbol}{costs.accommodation.toFixed(0)}
+            </span>
+          </div>
+
+          {/* Food */}
+          <div className={`flex justify-between items-center p-4 rounded-lg border-2 transition-all ${
+            included.food
+              ? 'border-gray-900 bg-gray-50'
+              : 'border-gray-200 bg-white opacity-50'
+          }`}>
+            <label className="flex items-center gap-3 cursor-pointer flex-1">
+              <input
+                type="checkbox"
+                checked={included.food}
+                onChange={() => toggleCategory('food')}
+                className="w-5 h-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+              />
+              <span className="text-gray-900 font-medium">{t('food')}</span>
+            </label>
+            <span className={`font-bold text-lg ${included.food ? 'text-gray-900' : 'text-gray-400'}`}>
+              {city.currencySymbol}{costs.food.toFixed(0)}
+            </span>
+          </div>
+
+          {/* Transport */}
+          <div className={`flex justify-between items-center p-4 rounded-lg border-2 transition-all ${
+            included.transport
+              ? 'border-gray-900 bg-gray-50'
+              : 'border-gray-200 bg-white opacity-50'
+          }`}>
+            <label className="flex items-center gap-3 cursor-pointer flex-1">
+              <input
+                type="checkbox"
+                checked={included.transport}
+                onChange={() => toggleCategory('transport')}
+                className="w-5 h-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+              />
+              <span className="text-gray-900 font-medium">{t('transport')}</span>
+            </label>
+            <span className={`font-bold text-lg ${included.transport ? 'text-gray-900' : 'text-gray-400'}`}>
+              {city.currencySymbol}{costs.transport.toFixed(0)}
+            </span>
+          </div>
+
+          {/* Activities */}
+          <div className={`flex justify-between items-center p-4 rounded-lg border-2 transition-all ${
+            included.activities
+              ? 'border-gray-900 bg-gray-50'
+              : 'border-gray-200 bg-white opacity-50'
+          }`}>
+            <label className="flex items-center gap-3 cursor-pointer flex-1">
+              <input
+                type="checkbox"
+                checked={included.activities}
+                onChange={() => toggleCategory('activities')}
+                className="w-5 h-5 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+              />
+              <span className="text-gray-900 font-medium">{t('activities')}</span>
+            </label>
+            <span className={`font-bold text-lg ${included.activities ? 'text-gray-900' : 'text-gray-400'}`}>
+              {city.currencySymbol}{costs.activities.toFixed(0)}
+            </span>
+          </div>
         </div>
       </div>
 
