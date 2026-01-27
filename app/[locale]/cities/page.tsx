@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { getAllCities } from '@/data/cities';
+import Header from '@/components/Header';
 
 export const metadata = {
   title: 'Cities - TripCalc',
@@ -19,31 +20,14 @@ export default async function CitiesPage({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
-        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
-            {t('site.name')}
-          </Link>
-          <div className="flex gap-8">
-            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.home')}
-            </Link>
-            <Link href={`/${locale}/cities`} className="text-gray-900 font-semibold">
-              {t('nav.cities')}
-            </Link>
-            <Link href={`/${locale}/about`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.about')}
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Header locale={locale} activeSection="cities" />
 
       {/* Hero */}
       <section className="pt-32 pb-16 px-6 bg-white">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-4">Cities</h1>
+          <h1 className="text-5xl font-bold text-gray-900 mb-4">{t('cities.title')}</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Real travel costs, transport prices, and practical tips for cities around the world
+            {t('cities.subtitle')}
           </p>
         </div>
       </section>
@@ -77,29 +61,29 @@ export default async function CitiesPage({
 
                   <div className="space-y-2 mb-4 text-sm">
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">Currency:</span>
+                      <span className="text-gray-500">{t('cities.currency')}:</span>
                       <span className="font-medium text-gray-900">
                         {city.currency} ({city.currencySymbol})
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="text-gray-500">Language:</span>
+                      <span className="text-gray-500">{t('cities.language')}:</span>
                       <span className="font-medium text-gray-900">{city.language}</span>
                     </div>
                   </div>
 
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                    <div className="text-sm text-gray-500 mb-1">Average Daily Cost</div>
+                    <div className="text-sm text-gray-500 mb-1">{t('cities.avgDailyCost')}</div>
                     <div className="text-3xl font-bold text-gray-900">
                       {city.currencySymbol}{midRangeCost.toFixed(0)}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">Mid-range traveler</div>
+                    <div className="text-xs text-gray-500 mt-1">{t('cities.midRangeTraveler')}</div>
                   </div>
 
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">Updated {city.lastUpdated}</span>
+                    <span className="text-gray-400">{t('cities.updated')} {city.lastUpdated}</span>
                     <span className="text-gray-900 font-semibold group-hover:underline">
-                      View Details →
+                      {t('cities.viewDetails')} →
                     </span>
                   </div>
                 </Link>
@@ -110,14 +94,14 @@ export default async function CitiesPage({
           {/* Coming Soon */}
           <div className="mt-16 text-center">
             <div className="inline-block bg-white border border-gray-200 rounded-xl p-10 shadow-sm">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">More Cities Coming Soon</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">{t('cities.comingSoon.title')}</h3>
               <p className="text-gray-600 mb-4 max-w-md">
-                We're adding more cities with real travel cost data based on experience.
+                {t('cities.comingSoon.description')}
               </p>
               <p className="text-sm text-gray-500">
-                Want to contribute data for your city?{' '}
+                {t('cities.comingSoon.contribute')}{' '}
                 <Link href={`/${locale}/about`} className="text-gray-900 hover:underline font-medium">
-                  Learn how
+                  {t('cities.comingSoon.learnHow')}
                 </Link>
               </p>
             </div>

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import Header from '@/components/Header';
 
 export default async function AboutPage({
   params,
@@ -12,24 +13,7 @@ export default async function AboutPage({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
-        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
-            {t('site.name')}
-          </Link>
-          <div className="flex gap-8">
-            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.home')}
-            </Link>
-            <Link href={`/${locale}/cities`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.cities')}
-            </Link>
-            <Link href={`/${locale}/about`} className="text-gray-900 font-semibold">
-              {t('nav.about')}
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Header locale={locale} activeSection="about" />
 
       {/* Content */}
       <main className="pt-32 pb-20 px-6 bg-white">
@@ -52,86 +36,86 @@ export default async function AboutPage({
 
             <div>
               <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-                Built from Real Experience
+                {t('about.realExperience.title')}
               </h2>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                TripCalc is not a generic travel blog. It's built using:
+                {t('about.realExperience.description')}
               </p>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>First-hand travel experience</span>
+                  <span>{t('about.realExperience.points.1')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Local knowledge from residents</span>
+                  <span>{t('about.realExperience.points.2')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Real-world testing of transport, ATMs, SIMs, and daily expenses</span>
+                  <span>{t('about.realExperience.points.3')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Data collected and refined over time</span>
+                  <span>{t('about.realExperience.points.4')}</span>
                 </li>
               </ul>
             </div>
 
             <div>
               <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-                What You Can Do with TripCalc
+                {t('about.whatYouCanDo.title')}
               </h2>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Estimate the real daily cost of a trip</span>
+                  <span>{t('about.whatYouCanDo.points.1')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Compare transportation options with real prices</span>
+                  <span>{t('about.whatYouCanDo.points.2')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Calculate airport-to-city transfers</span>
+                  <span>{t('about.whatYouCanDo.points.3')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Understand tips, fees, and hidden costs</span>
+                  <span>{t('about.whatYouCanDo.points.4')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Plan cash vs card usage</span>
+                  <span>{t('about.whatYouCanDo.points.5')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Make smarter budgeting decisions before and during a trip</span>
+                  <span>{t('about.whatYouCanDo.points.6')}</span>
                 </li>
               </ul>
             </div>
 
             <div>
               <h2 className="text-3xl font-semibold text-gray-900 mb-4">
-                Growing with the Community
+                {t('about.community.title')}
               </h2>
               <p className="text-gray-700 mb-4 leading-relaxed">
-                TripCalc is designed to grow gradually:
+                {t('about.community.description')}
               </p>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Starting with a few cities and core calculators</span>
+                  <span>{t('about.community.points.1')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Expanding with better data over time</span>
+                  <span>{t('about.community.points.2')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Eventually incorporating community-submitted insights</span>
+                  <span>{t('about.community.points.3')}</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-gray-400">•</span>
-                  <span>Always prioritizing accuracy over hype</span>
+                  <span>{t('about.community.points.4')}</span>
                 </li>
               </ul>
             </div>
@@ -141,7 +125,7 @@ export default async function AboutPage({
                 {t('footer.tagline')}
               </p>
               <p className="text-center text-gray-600 leading-relaxed">
-                TripCalc helps you plan with confidence by turning travel into numbers you can actually use.
+                {t('about.finalMessage')}
               </p>
             </div>
           </div>

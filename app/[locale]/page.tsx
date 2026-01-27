@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import Header from '@/components/Header';
 
 export default async function HomePage({
   params,
@@ -12,24 +13,7 @@ export default async function HomePage({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
-        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
-            {t('site.name')}
-          </Link>
-          <div className="flex gap-8">
-            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.home')}
-            </Link>
-            <Link href={`/${locale}/cities`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.cities')}
-            </Link>
-            <Link href={`/${locale}/about`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.about')}
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Header locale={locale} activeSection="home" />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-6">

@@ -43,6 +43,23 @@
       }
     }
   },
+  "cities": {
+    "title": "Cities",
+    "subtitle": "Real travel costs, transport prices, and practical tips for cities around the world",
+    "currency": "Currency",
+    "language": "Language",
+    "avgDailyCost": "Average Daily Cost",
+    "midRangeTraveler": "Mid-range traveler",
+    "updated": "Updated",
+    "viewDetails": "View Details",
+    "comingSoon": {
+      "title": "More Cities Coming Soon",
+      "description": "We're adding more cities with real travel cost data based on experience.",
+      "contribute": "Want to contribute data for your city?",
+      "learnHow": "Learn how"
+    },
+    "lastUpdated": "Last updated"
+  },
   "calculator": {
     "dailyCost": "Daily Cost Estimator",
     "accommodation": "Accommodation",
@@ -54,7 +71,16 @@
     "total": "Total per day",
     "budget": "Budget",
     "midRange": "Mid-range",
-    "luxury": "Luxury"
+    "luxury": "Luxury",
+    "travelStyle": "Travel Style",
+    "basic": "Basic",
+    "comfortable": "Comfortable",
+    "premium": "Premium",
+    "numberOfDays": "Number of Days",
+    "days": "days",
+    "dailyTotal": "Daily Total:",
+    "tripTotal": "Trip Total",
+    "estimate": "* Estimates based on real traveler experience. Actual costs may vary."
   },
   "about": {
     "title": "About TripCalc",
@@ -62,6 +88,71 @@
     "difference": {
       "title": "Why TripCalc?",
       "description": "Most travel sites focus on inspiration, hotels, and attractions. TripCalc focuses on something more practical: real-world numbers, real traveler decisions, and real costs — based on experience, not generic averages."
+    },
+    "realExperience": {
+      "title": "Built from Real Experience",
+      "description": "TripCalc is not a generic travel blog. It's built using:",
+      "points": {
+        "1": "First-hand travel experience",
+        "2": "Local knowledge from residents",
+        "3": "Real-world testing of transport, ATMs, SIMs, and daily expenses",
+        "4": "Data collected and refined over time"
+      }
+    },
+    "whatYouCanDo": {
+      "title": "What You Can Do with TripCalc",
+      "points": {
+        "1": "Estimate the real daily cost of a trip",
+        "2": "Compare transportation options with real prices",
+        "3": "Calculate airport-to-city transfers",
+        "4": "Understand tips, fees, and hidden costs",
+        "5": "Plan cash vs card usage",
+        "6": "Make smarter budgeting decisions before and during a trip"
+      }
+    },
+    "community": {
+      "title": "Growing with the Community",
+      "description": "TripCalc is designed to grow gradually:",
+      "points": {
+        "1": "Starting with a few cities and core calculators",
+        "2": "Expanding with better data over time",
+        "3": "Eventually incorporating community-submitted insights",
+        "4": "Always prioritizing accuracy over hype"
+      }
+    },
+    "finalMessage": "TripCalc helps you plan with confidence by turning travel into numbers you can actually use."
+  },
+  "cityDetails": {
+    "tipping": {
+      "title": "Tipping Culture",
+      "restaurants": "Restaurants",
+      "cafes": "Cafes",
+      "taxis": "Taxis",
+      "general": "General"
+    },
+    "cash": {
+      "title": "Cash & Cards",
+      "cardsAccepted": "Cards Accepted?",
+      "yesWidely": "Yes, widely",
+      "limitedCash": "Limited, carry cash",
+      "atmAvailability": "ATM Availability",
+      "atmFees": "ATM Fees",
+      "recommended": "Recommended Amount"
+    },
+    "transport": {
+      "title": "Transport Details",
+      "metro": "Metro/Subway",
+      "bus": "Bus",
+      "taxi": "Taxi",
+      "uber": "Uber/Rideshare",
+      "singleTicket": "Single ticket",
+      "dayPass": "Day pass",
+      "tripPack": "trip pack",
+      "baseRate": "Base rate",
+      "perKm": "Per km",
+      "perMinute": "Per minute",
+      "available": "Available",
+      "airportToCity": "Airport to city"
     }
   },
   "footer": {

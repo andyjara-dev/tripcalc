@@ -25,7 +25,7 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
 
       {/* Trip Style Selector */}
       <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700 mb-4">Travel Style</label>
+        <label className="block text-sm font-medium text-gray-700 mb-4">{t('travelStyle')}</label>
         <div className="grid grid-cols-3 gap-3">
           <button
             onClick={() => setTripStyle('budget')}
@@ -36,7 +36,7 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
             }`}
           >
             <div className="font-semibold">{t('budget')}</div>
-            <div className={`text-sm ${tripStyle === 'budget' ? 'text-gray-200' : 'text-gray-500'}`}>Basic</div>
+            <div className={`text-sm ${tripStyle === 'budget' ? 'text-gray-200' : 'text-gray-500'}`}>{t('basic')}</div>
           </button>
           <button
             onClick={() => setTripStyle('midRange')}
@@ -47,7 +47,7 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
             }`}
           >
             <div className="font-semibold">{t('midRange')}</div>
-            <div className={`text-sm ${tripStyle === 'midRange' ? 'text-gray-200' : 'text-gray-500'}`}>Comfortable</div>
+            <div className={`text-sm ${tripStyle === 'midRange' ? 'text-gray-200' : 'text-gray-500'}`}>{t('comfortable')}</div>
           </button>
           <button
             onClick={() => setTripStyle('luxury')}
@@ -58,14 +58,14 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
             }`}
           >
             <div className="font-semibold">{t('luxury')}</div>
-            <div className={`text-sm ${tripStyle === 'luxury' ? 'text-gray-200' : 'text-gray-500'}`}>Premium</div>
+            <div className={`text-sm ${tripStyle === 'luxury' ? 'text-gray-200' : 'text-gray-500'}`}>{t('premium')}</div>
           </button>
         </div>
       </div>
 
       {/* Days Selector */}
       <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-700 mb-3">Number of Days</label>
+        <label className="block text-sm font-medium text-gray-700 mb-3">{t('numberOfDays')}</label>
         <input
           type="range"
           min="1"
@@ -74,7 +74,7 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
           onChange={(e) => setDays(Number(e.target.value))}
           className="w-full accent-gray-900"
         />
-        <div className="text-center text-xl font-semibold text-gray-900 mt-3">{days} days</div>
+        <div className="text-center text-xl font-semibold text-gray-900 mt-3">{days} {t('days')}</div>
       </div>
 
       {/* Cost Breakdown */}
@@ -108,13 +108,13 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
       {/* Totals */}
       <div className="bg-gray-50 rounded-xl p-6 space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-lg font-medium text-gray-700">Daily Total:</span>
+          <span className="text-lg font-medium text-gray-700">{t('dailyTotal')}</span>
           <span className="text-3xl font-bold text-gray-900">
             {city.currencySymbol}{dailyTotal.toFixed(0)}
           </span>
         </div>
         <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-          <span className="text-lg font-medium text-gray-700">Trip Total ({days} days):</span>
+          <span className="text-lg font-medium text-gray-700">{t('tripTotal')} ({days} {t('days')}):</span>
           <span className="text-3xl font-bold text-gray-900">
             {city.currencySymbol}{tripTotal.toFixed(0)}
           </span>
@@ -123,7 +123,7 @@ export default function DailyCostCalculator({ city }: DailyCostCalculatorProps) 
 
       {/* Note */}
       <p className="text-sm text-gray-500 mt-6">
-        * Estimates based on real traveler experience. Actual costs may vary.
+        {t('estimate')}
       </p>
     </div>
   );

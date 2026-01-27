@@ -43,6 +43,23 @@
       }
     }
   },
+  "cities": {
+    "title": "Ciudades",
+    "subtitle": "Costos reales de viaje, precios de transporte y consejos prácticos para ciudades de todo el mundo",
+    "currency": "Moneda",
+    "language": "Idioma",
+    "avgDailyCost": "Costo Diario Promedio",
+    "midRangeTraveler": "Viajero medio",
+    "updated": "Actualizado",
+    "viewDetails": "Ver Detalles",
+    "comingSoon": {
+      "title": "Más Ciudades Próximamente",
+      "description": "Estamos agregando más ciudades con datos reales de costos de viaje basados en experiencia.",
+      "contribute": "¿Quieres contribuir datos de tu ciudad?",
+      "learnHow": "Aprende cómo"
+    },
+    "lastUpdated": "Última actualización"
+  },
   "calculator": {
     "dailyCost": "Estimador de Costo Diario",
     "accommodation": "Alojamiento",
@@ -54,7 +71,16 @@
     "total": "Total por día",
     "budget": "Económico",
     "midRange": "Medio",
-    "luxury": "Lujo"
+    "luxury": "Lujo",
+    "travelStyle": "Estilo de Viaje",
+    "basic": "Básico",
+    "comfortable": "Confortable",
+    "premium": "Premium",
+    "numberOfDays": "Número de Días",
+    "days": "días",
+    "dailyTotal": "Total Diario:",
+    "tripTotal": "Total del Viaje",
+    "estimate": "* Estimaciones basadas en experiencia real de viajeros. Los costos reales pueden variar."
   },
   "about": {
     "title": "Acerca de TripCalc",
@@ -62,6 +88,71 @@
     "difference": {
       "title": "¿Por qué TripCalc?",
       "description": "La mayoría de sitios de viajes se enfocan en inspiración, hoteles y atracciones. TripCalc se enfoca en algo más práctico: números del mundo real, decisiones de viajeros reales y costos reales — basados en experiencia, no en promedios genéricos."
+    },
+    "realExperience": {
+      "title": "Construido desde Experiencia Real",
+      "description": "TripCalc no es un blog genérico de viajes. Está construido usando:",
+      "points": {
+        "1": "Experiencia de viaje de primera mano",
+        "2": "Conocimiento local de residentes",
+        "3": "Pruebas reales de transporte, cajeros automáticos, SIMs y gastos diarios",
+        "4": "Datos recopilados y refinados con el tiempo"
+      }
+    },
+    "whatYouCanDo": {
+      "title": "Qué Puedes Hacer con TripCalc",
+      "points": {
+        "1": "Estimar el costo diario real de un viaje",
+        "2": "Comparar opciones de transporte con precios reales",
+        "3": "Calcular traslados aeropuerto-ciudad",
+        "4": "Entender propinas, tarifas y costos ocultos",
+        "5": "Planificar uso de efectivo vs tarjetas",
+        "6": "Tomar decisiones presupuestarias más inteligentes antes y durante un viaje"
+      }
+    },
+    "community": {
+      "title": "Creciendo con la Comunidad",
+      "description": "TripCalc está diseñado para crecer gradualmente:",
+      "points": {
+        "1": "Comenzando con algunas ciudades y calculadoras básicas",
+        "2": "Expandiéndose con mejores datos con el tiempo",
+        "3": "Eventualmente incorporando conocimientos enviados por la comunidad",
+        "4": "Siempre priorizando precisión sobre exageración"
+      }
+    },
+    "finalMessage": "TripCalc te ayuda a planificar con confianza convirtiendo los viajes en números que realmente puedes usar."
+  },
+  "cityDetails": {
+    "tipping": {
+      "title": "Cultura de Propinas",
+      "restaurants": "Restaurantes",
+      "cafes": "Cafés",
+      "taxis": "Taxis",
+      "general": "General"
+    },
+    "cash": {
+      "title": "Efectivo y Tarjetas",
+      "cardsAccepted": "¿Tarjetas Aceptadas?",
+      "yesWidely": "Sí, ampliamente",
+      "limitedCash": "Limitado, lleva efectivo",
+      "atmAvailability": "Disponibilidad de Cajeros",
+      "atmFees": "Tarifas de Cajeros",
+      "recommended": "Cantidad Recomendada"
+    },
+    "transport": {
+      "title": "Detalles de Transporte",
+      "metro": "Metro/Subterráneo",
+      "bus": "Autobús",
+      "taxi": "Taxi",
+      "uber": "Uber/Transporte Compartido",
+      "singleTicket": "Billete sencillo",
+      "dayPass": "Pase diario",
+      "tripPack": "pack de viajes",
+      "baseRate": "Tarifa base",
+      "perKm": "Por km",
+      "perMinute": "Por minuto",
+      "available": "Disponible",
+      "airportToCity": "Aeropuerto a ciudad"
     }
   },
   "footer": {

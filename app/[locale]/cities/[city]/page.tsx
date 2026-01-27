@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
 import { getCityById, getAllCities } from '@/data/cities';
 import DailyCostCalculator from '@/components/calculators/DailyCostCalculator';
 import TransportComparator from '@/components/calculators/TransportComparator';
 import AirportTransferCalculator from '@/components/calculators/AirportTransferCalculator';
+import Header from '@/components/Header';
 
 interface CityPageProps {
   params: Promise<{
@@ -49,24 +49,7 @@ export default async function CityPage({ params }: CityPageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
-        <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href={`/${locale}`} className="text-xl font-bold text-gray-900">
-            {t('site.name')}
-          </Link>
-          <div className="flex gap-8">
-            <Link href={`/${locale}`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.home')}
-            </Link>
-            <Link href={`/${locale}/cities`} className="text-gray-900 font-semibold">
-              {t('nav.cities')}
-            </Link>
-            <Link href={`/${locale}/about`} className="text-gray-600 hover:text-gray-900 transition">
-              {t('nav.about')}
-            </Link>
-          </div>
-        </nav>
-      </header>
+      <Header locale={locale} activeSection="cities" />
 
       {/* City Header */}
       <section className="pt-32 pb-16 px-6 bg-white">
@@ -78,7 +61,7 @@ export default async function CityPage({ params }: CityPageProps) {
             <span className="flex items-center gap-2">🗣️ {city.language}</span>
           </div>
           <div className="mt-4 text-sm text-gray-500">
-            Last updated: {city.lastUpdated}
+            {t('cities.lastUpdated')}: {city.lastUpdated}
           </div>
         </div>
       </section>
@@ -104,22 +87,22 @@ export default async function CityPage({ params }: CityPageProps) {
         <section className="grid md:grid-cols-2 gap-6 mb-12">
           {/* Tipping Culture */}
           <div className="bg-white rounded-xl p-8 border border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">💡 Tipping Culture</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">💡 {t('cityDetails.tipping.title')}</h3>
             <div className="space-y-4">
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">Restaurants</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.tipping.restaurants')}</div>
                 <div className="text-gray-900">{city.tips.restaurants}</div>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">Cafes</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.tipping.cafes')}</div>
                 <div className="text-gray-900">{city.tips.cafes}</div>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">Taxis</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.tipping.taxis')}</div>
                 <div className="text-gray-900">{city.tips.taxis}</div>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">General</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.tipping.general')}</div>
                 <div className="text-gray-900">{city.tips.general}</div>
               </div>
             </div>
@@ -127,24 +110,24 @@ export default async function CityPage({ params }: CityPageProps) {
 
           {/* Cash vs Card */}
           <div className="bg-white rounded-xl p-8 border border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">💳 Cash & Cards</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-6">💳 {t('cityDetails.cash.title')}</h3>
             <div className="space-y-4">
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">Cards Accepted?</div>
-                <div className="text-gray-900">{city.cash.widelyAccepted ? '✅ Yes, widely' : '⚠️ Limited, carry cash'}</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.cash.cardsAccepted')}</div>
+                <div className="text-gray-900">{city.cash.widelyAccepted ? `✅ ${t('cityDetails.cash.yesWidely')}` : `⚠️ ${t('cityDetails.cash.limitedCash')}`}</div>
               </div>
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">ATM Availability</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.cash.atmAvailability')}</div>
                 <div className="text-gray-900">{city.cash.atmAvailability}</div>
               </div>
               {city.cash.atmFees && (
                 <div>
-                  <div className="font-semibold text-sm text-gray-500 mb-1">ATM Fees</div>
+                  <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.cash.atmFees')}</div>
                   <div className="text-gray-900">{city.cash.atmFees}</div>
                 </div>
               )}
               <div>
-                <div className="font-semibold text-sm text-gray-500 mb-1">Recommended Amount</div>
+                <div className="font-semibold text-sm text-gray-500 mb-1">{t('cityDetails.cash.recommended')}</div>
                 <div className="text-gray-900">{city.cash.recommendedAmount}</div>
               </div>
             </div>
@@ -153,19 +136,19 @@ export default async function CityPage({ params }: CityPageProps) {
 
         {/* Transport Details */}
         <section className="bg-white rounded-xl p-8 border border-gray-200 mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">🚇 Transport Details</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">🚇 {t('cityDetails.transport.title')}</h3>
           <div className="grid md:grid-cols-2 gap-8">
             {city.transport.metro && (
               <div>
-                <div className="font-semibold text-gray-900 mb-3">Metro/Subway</div>
+                <div className="font-semibold text-gray-900 mb-3">{t('cityDetails.transport.metro')}</div>
                 <ul className="text-sm space-y-2 text-gray-700">
-                  <li>Single ticket: {city.currencySymbol}{city.transport.metro.singleTicket}</li>
+                  <li>{t('cityDetails.transport.singleTicket')}: {city.currencySymbol}{city.transport.metro.singleTicket}</li>
                   {city.transport.metro.dayPass && (
-                    <li>Day pass: {city.currencySymbol}{city.transport.metro.dayPass}</li>
+                    <li>{t('cityDetails.transport.dayPass')}: {city.currencySymbol}{city.transport.metro.dayPass}</li>
                   )}
                   {city.transport.metro.multiTicket && (
                     <li>
-                      {city.transport.metro.multiTicket.rides}-trip pack: {city.currencySymbol}
+                      {city.transport.metro.multiTicket.rides}-{t('cityDetails.transport.tripPack')}: {city.currencySymbol}
                       {city.transport.metro.multiTicket.price}
                     </li>
                   )}
@@ -175,11 +158,11 @@ export default async function CityPage({ params }: CityPageProps) {
 
             {city.transport.bus && (
               <div>
-                <div className="font-semibold text-gray-900 mb-3">Bus</div>
+                <div className="font-semibold text-gray-900 mb-3">{t('cityDetails.transport.bus')}</div>
                 <ul className="text-sm space-y-2 text-gray-700">
-                  <li>Single ticket: {city.currencySymbol}{city.transport.bus.singleTicket}</li>
+                  <li>{t('cityDetails.transport.singleTicket')}: {city.currencySymbol}{city.transport.bus.singleTicket}</li>
                   {city.transport.bus.dayPass && (
-                    <li>Day pass: {city.currencySymbol}{city.transport.bus.dayPass}</li>
+                    <li>{t('cityDetails.transport.dayPass')}: {city.currencySymbol}{city.transport.bus.dayPass}</li>
                   )}
                 </ul>
               </div>
@@ -187,12 +170,12 @@ export default async function CityPage({ params }: CityPageProps) {
 
             {city.transport.taxi && (
               <div>
-                <div className="font-semibold text-gray-900 mb-3">Taxi</div>
+                <div className="font-semibold text-gray-900 mb-3">{t('cityDetails.transport.taxi')}</div>
                 <ul className="text-sm space-y-2 text-gray-700">
-                  <li>Base rate: {city.currencySymbol}{city.transport.taxi.baseRate}</li>
-                  <li>Per km: {city.currencySymbol}{city.transport.taxi.perKm}</li>
+                  <li>{t('cityDetails.transport.baseRate')}: {city.currencySymbol}{city.transport.taxi.baseRate}</li>
+                  <li>{t('cityDetails.transport.perKm')}: {city.currencySymbol}{city.transport.taxi.perKm}</li>
                   {city.transport.taxi.perMinute && (
-                    <li>Per minute: {city.currencySymbol}{city.transport.taxi.perMinute}</li>
+                    <li>{t('cityDetails.transport.perMinute')}: {city.currencySymbol}{city.transport.taxi.perMinute}</li>
                   )}
                 </ul>
               </div>
@@ -200,12 +183,12 @@ export default async function CityPage({ params }: CityPageProps) {
 
             {city.transport.uber?.available && (
               <div>
-                <div className="font-semibold text-gray-900 mb-3">Uber/Rideshare</div>
+                <div className="font-semibold text-gray-900 mb-3">{t('cityDetails.transport.uber')}</div>
                 <ul className="text-sm space-y-2 text-gray-700">
-                  <li>✅ Available</li>
+                  <li>✅ {t('cityDetails.transport.available')}</li>
                   {city.transport.uber.averageAirportToCity && (
                     <li>
-                      Airport to city: ~{city.currencySymbol}
+                      {t('cityDetails.transport.airportToCity')}: ~{city.currencySymbol}
                       {city.transport.uber.averageAirportToCity}
                     </li>
                   )}
