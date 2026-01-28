@@ -42,19 +42,19 @@ export default function CalculatorTabs({ city }: CalculatorTabsProps) {
     <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
       {/* Tab Headers */}
       <div className="border-b border-gray-200 bg-gray-50">
-        <div className="flex overflow-x-auto">
+        <div className="flex flex-col md:flex-row md:overflow-x-auto">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 min-w-fit px-6 py-4 font-semibold text-sm transition-all whitespace-nowrap ${
+              className={`flex items-center gap-3 px-6 py-4 font-semibold text-sm transition-all whitespace-nowrap text-left ${
                 activeTab === tab.id
-                  ? 'bg-white text-gray-900 border-b-2 border-gray-900'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'bg-white text-gray-900 border-l-4 md:border-l-0 md:border-b-2 border-gray-900'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-l-4 border-transparent'
               }`}
             >
-              <span className="mr-2">{tab.icon}</span>
-              {tab.label}
+              <span className="text-xl">{tab.icon}</span>
+              <span className="flex-1">{tab.label}</span>
             </button>
           ))}
         </div>

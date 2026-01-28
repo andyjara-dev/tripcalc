@@ -19,6 +19,14 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
   const t = useTranslations('calculator');
   const [trips, setTrips] = useState(1);
 
+  const getTransportIcon = (name: string) => {
+    if (name.includes('Metro') || name.includes('metro')) return '🚇';
+    if (name.includes('Bus') || name.includes('Autobús')) return '🚌';
+    if (name.includes('Taxi')) return '🚕';
+    if (name.includes('Uber')) return '🚗';
+    return '🚆';
+  };
+
   const options: TransportOption[] = [];
 
   // Metro
@@ -118,17 +126,22 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
                 : 'border-gray-200'
             }`}
           >
-            <div className="flex justify-between items-center mb-1">
-              <span className="font-semibold text-gray-900">{option.name}</span>
-              <span className="text-xl font-bold text-gray-900">
+            <div className="flex justify-between items-center mb-2">
+              <span className="flex items-center gap-3 font-semibold text-gray-900">
+                <span className="text-3xl" role="img" aria-label={option.name}>
+                  {getTransportIcon(option.name)}
+                </span>
+                <span>{option.name}</span>
+              </span>
+              <span className="text-2xl font-bold text-gray-900">
                 {city.currencySymbol}{option.price.toFixed(2)}
               </span>
             </div>
             {option.notes && (
-              <div className="text-sm text-gray-600">{option.notes}</div>
+              <div className="text-sm text-gray-600 ml-12">{option.notes}</div>
             )}
             {index === 0 && (
-              <div className="text-sm font-semibold text-green-700 mt-2">
+              <div className="text-sm font-semibold text-green-700 mt-2 ml-12">
                 ✓ {t('bestValue')}
               </div>
             )}

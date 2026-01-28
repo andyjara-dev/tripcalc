@@ -63,5 +63,19 @@ export const newYork: CityData = {
     atmFees: '$3-5 per transaction for out-of-network ATMs',
     recommendedAmount: 'Cards accepted almost everywhere (OMNY contactless widely used). Keep $50-100 for street vendors and small shops'
   },
+  hiddenCosts: [
+    {
+      type: 'tax',
+      title: 'Hotel Occupancy Tax',
+      description: 'Hotels in NYC charge 14.75% in combined city and state taxes, plus $3.50/night room fee.',
+      amount: '14.75% + $3.50/night'
+    },
+    {
+      type: 'surcharge',
+      title: 'Congestion Pricing',
+      description: 'Vehicles entering Manhattan south of 60th St are charged a toll during peak hours.',
+      amount: '$15'
+    }
+  ],
   lastUpdated: '2026-01-27'
 };

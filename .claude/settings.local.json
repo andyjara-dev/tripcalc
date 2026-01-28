@@ -12,7 +12,12 @@
       "Bash(tree:*)",
       "WebFetch(domain:www.desarrollador.cl)",
       "Bash(wc:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: agregar traducciones completas a calculadoras de transporte\n\n- Implementar traducciones i18n en TransportComparator\n- Implementar traducciones i18n en AirportTransferCalculator\n- Agregar todas las claves de traducción faltantes en en.json y es.json\n- Soportar interpolación de variables en traducciones \\(count, km\\)\n- Todos los componentes de calculadora ahora soportan inglés y español\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: mejorar contraste de texto en calculadoras de transporte\n\n- Agregar text-gray-900 a títulos y textos principales\n- Agregar text-gray-700 a labels para mejor legibilidad\n- Agregar bordes y colores explícitos a selects\n- Agregar accent-gray-900 al slider de rango\n- Resolver problema de textos grises ilegibles en fondo blanco\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: mejorar significativamente la UX de las calculadoras\n\nCambios principales:\n- Crear componente CalculatorTabs con pestañas para organizar las 3 calculadoras\n- Agregar checkboxes interactivos en DailyCostCalculator para personalizar presupuesto\n- Permitir incluir/excluir categorías \\(alojamiento, comida, transporte, actividades\\)\n- Mejorar espaciado visual entre secciones \\(mb-12 → mb-16\\)\n- Agregar efectos hover y sombras sutiles a cards\n- Unificar tamaños de títulos \\(text-3xl\\) para consistencia\n- Eliminar bordes duplicados de calculadoras dentro de tabs\n- Agregar estados visuales claros para categorías incluidas/excluidas\n\nMejoras de interactividad:\n- Checkboxes con estilos mejorados y feedback visual\n- Transiciones suaves en cambio de estado\n- Opacidad reducida para elementos deshabilitados\n- Bordes destacados para elementos activos\n\nTraducciones agregadas:\n- includeInBudget \\(en/es\\)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

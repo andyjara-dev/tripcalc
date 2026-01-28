@@ -29,7 +29,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     options.push({
       name: t('trainMetro'),
       price: city.transport.train.airportToCity * people,
-      duration: '30-45 min',
+      duration: t('durations.trainAirport'),
       comfort: 3,
       convenience: 4,
       notes: t('fastFrequent'),
@@ -38,7 +38,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     options.push({
       name: t('metro'),
       price: city.transport.metro.singleTicket * people,
-      duration: '45-60 min',
+      duration: t('durations.metroAirport'),
       comfort: 2,
       convenience: 3,
       notes: t('cheapestMayTransfer'),
@@ -51,7 +51,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     options.push({
       name: t('airportBus'),
       price: busCost * people,
-      duration: '45-60 min',
+      duration: t('durations.busAirport'),
       comfort: 3,
       convenience: 4,
       notes: t('comfortableDirect'),
@@ -72,7 +72,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     options.push({
       name: t('taxi'),
       price: taxiTotal,
-      duration: '25-40 min',
+      duration: t('durations.taxiAirport'),
       comfort: 4,
       convenience: 5,
       notes: t('doorToDoor'),
@@ -88,7 +88,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
     options.push({
       name: t('uberRideshare'),
       price: uberCost,
-      duration: '25-40 min',
+      duration: t('durations.uberAirport'),
       comfort: 4,
       convenience: 5,
       notes: t('bookInApp'),

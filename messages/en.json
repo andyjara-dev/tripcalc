@@ -58,7 +58,23 @@
       "contribute": "Want to contribute data for your city?",
       "learnHow": "Learn how"
     },
-    "lastUpdated": "Last updated"
+    "lastUpdated": "Last updated",
+    "lastUpdatedTooltip": "Prices and information last verified on this date",
+    "metadata": {
+      "title": "{city} Travel Costs - TripCalc",
+      "description": "Calculate real travel costs for {city}, {country}. Daily budgets, transport prices, and practical tips based on experience."
+    },
+    "notFound": {
+      "title": "City Not Found - TripCalc",
+      "description": "The city you're looking for doesn't exist in our database yet."
+    },
+    "disclaimer": {
+      "title": "About Our Data",
+      "message": "All costs are based on real travel experience and verified sources. Prices may vary by season, demand, and exchange rates."
+    },
+    "hiddenCosts": {
+      "title": "Hidden Costs & Fees"
+    }
   },
   "calculator": {
     "dailyCost": "Daily Cost Estimator",
@@ -82,6 +98,15 @@
     "tripTotal": "Trip Total",
     "estimate": "* Estimates based on real traveler experience. Actual costs may vary.",
     "includeInBudget": "Include in Budget",
+    "perDay": "(per day)",
+    "pricesPerPerson": "All prices are per person, per day",
+    "durations": {
+      "trainAirport": "30-45 min",
+      "metroAirport": "45-60 min",
+      "busAirport": "45-60 min",
+      "taxiAirport": "25-40 min",
+      "uberAirport": "25-40 min"
+    },
     "transportComparison": "Transport Cost Comparison",
     "numberOfTrips": "Number of Trips",
     "trips": "trips",
@@ -200,6 +225,12 @@
   },
   "footer": {
     "tagline": "Because travelers deserve tools, not just inspiration.",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "cta": {
+      "title": "Plan Your Next Trip",
+      "subtitle": "Explore real costs for cities around the world and travel with confidence.",
+      "exploreCities": "Explore Cities",
+      "learnMore": "Learn More"
+    }
   }
 }

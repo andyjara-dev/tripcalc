@@ -60,5 +60,6 @@ export const mexicoCity: CityData = {
     atmFees: '30-50 pesos per transaction',
     recommendedAmount: 'Many small places prefer cash. Carry 1,000-2,000 pesos daily'
   },
+  hiddenCosts: [],
   lastUpdated: '2026-01'
 };

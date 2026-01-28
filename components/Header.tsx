@@ -8,20 +8,21 @@ interface HeaderProps {
     home: string;
     cities: string;
     about: string;
+    logoAlt: string;
   };
 }
 
 export default function Header({ locale, activeSection = 'home', translations }: HeaderProps) {
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
-      <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
         <Link href={`/${locale}`} className="flex items-center gap-2">
           <Image
             src="/logo.png"
-            alt="TripCalc"
+            alt={translations.logoAlt}
             width={800}
             height={267}
-            className="h-40 w-auto"
+            className="h-35 md:h-35 w-auto"
             priority
           />
         </Link>

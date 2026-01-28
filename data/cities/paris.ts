@@ -65,5 +65,6 @@ export const paris: CityData = {
     atmFees: '2-5€ for foreign cards, varies by bank',
     recommendedAmount: 'Cards widely accepted. Keep 50-100€ cash for small cafes and markets'
   },
+  hiddenCosts: [],
   lastUpdated: '2026-01'
 };

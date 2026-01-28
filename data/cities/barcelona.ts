@@ -65,5 +65,6 @@ export const barcelona: CityData = {
     atmFees: 'Usually 2-5€ for foreign cards',
     recommendedAmount: 'Cards widely accepted. Carry 50-100€ for small vendors and markets'
   },
+  hiddenCosts: [],
   lastUpdated: '2026-01'
 };

@@ -63,5 +63,6 @@ export const tokyo: CityData = {
     atmFees: '200-300¥ per transaction',
     recommendedAmount: 'Japan is still very cash-based. Carry 20,000-30,000¥ for daily expenses'
   },
+  hiddenCosts: [],
   lastUpdated: '2026-01'
 };

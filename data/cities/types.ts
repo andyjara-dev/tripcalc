@@ -52,6 +52,13 @@ export interface CashInfo {
   recommendedAmount: string;
 }
 
+export interface HiddenCost {
+  type: 'tax' | 'fee' | 'surcharge' | 'warning';
+  title: string;
+  description: string;
+  amount?: string;
+}
+
 export interface CityData {
   id: string;
   name: string;
@@ -63,5 +70,6 @@ export interface CityData {
   dailyCosts: DailyCosts;
   tips: TipsInfo;
   cash: CashInfo;
+  hiddenCosts?: HiddenCost[];
   lastUpdated: string;
 }

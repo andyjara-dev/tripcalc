@@ -58,7 +58,23 @@
       "contribute": "¿Quieres contribuir datos de tu ciudad?",
       "learnHow": "Aprende cómo"
     },
-    "lastUpdated": "Última actualización"
+    "lastUpdated": "Última actualización",
+    "lastUpdatedTooltip": "Precios e información verificados por última vez en esta fecha",
+    "metadata": {
+      "title": "Costos de Viaje en {city} - TripCalc",
+      "description": "Calcula los costos reales de viaje para {city}, {country}. Presupuestos diarios, precios de transporte y consejos prácticos basados en experiencia."
+    },
+    "notFound": {
+      "title": "Ciudad No Encontrada - TripCalc",
+      "description": "La ciudad que buscas aún no existe en nuestra base de datos."
+    },
+    "disclaimer": {
+      "title": "Acerca de Nuestros Datos",
+      "message": "Todos los costos están basados en experiencia real de viaje y fuentes verificadas. Los precios pueden variar según temporada, demanda y tipos de cambio."
+    },
+    "hiddenCosts": {
+      "title": "Costos Ocultos y Tarifas"
+    }
   },
   "calculator": {
     "dailyCost": "Estimador de Costo Diario",
@@ -82,6 +98,15 @@
     "tripTotal": "Total del Viaje",
     "estimate": "* Estimaciones basadas en experiencia real de viajeros. Los costos reales pueden variar.",
     "includeInBudget": "Incluir en Presupuesto",
+    "perDay": "(por día)",
+    "pricesPerPerson": "Todos los precios son por persona, por día",
+    "durations": {
+      "trainAirport": "30-45 min",
+      "metroAirport": "45-60 min",
+      "busAirport": "45-60 min",
+      "taxiAirport": "25-40 min",
+      "uberAirport": "25-40 min"
+    },
     "transportComparison": "Comparación de Costos de Transporte",
     "numberOfTrips": "Número de Viajes",
     "trips": "viajes",
@@ -200,6 +225,12 @@
   },
   "footer": {
     "tagline": "Porque los viajeros merecen herramientas, no solo inspiración.",
-    "rights": "Todos los derechos reservados."
+    "rights": "Todos los derechos reservados.",
+    "cta": {
+      "title": "Planifica Tu Próximo Viaje",
+      "subtitle": "Explora costos reales para ciudades de todo el mundo y viaja con confianza.",
+      "exploreCities": "Explorar Ciudades",
+      "learnMore": "Saber Más"
+    }
   }
 }

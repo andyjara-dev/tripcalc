@@ -26,7 +26,8 @@ export default async function CitiesPage({
         translations={{
           home: t('nav.home'),
           cities: t('nav.cities'),
-          about: t('nav.about')
+          about: t('nav.about'),
+          logoAlt: t('site.name') + ' - ' + t('site.tagline')
         }}
       />
 
