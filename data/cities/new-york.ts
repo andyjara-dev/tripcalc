@@ -9,44 +9,44 @@ export const newYork: CityData = {
   language: 'English',
   transport: {
     metro: {
-      singleTicket: 2.90,
+      singleTicket: 3.00,  // Tarifa básica MTA 2026 (efectiva desde enero 4, 2026)[web:2][web:3][web:8]
       multiTicket: {
         rides: 7,
-        price: 34.00 // 7-day unlimited
+        price: 35.00  // 7-day rolling fare cap MTA 2026[web:2][web:5]
       }
     },
     bus: {
-      singleTicket: 2.90
+      singleTicket: 3.00  // Tarifa básica unificada subway/bus local MTA 2026[web:2][web:3][web:8]
     },
     taxi: {
-      baseRate: 3.00,
+      baseRate: 3.00,  // Tarifa inicial confirmada para 2026[web:9]
       perKm: 1.56,
       perMinute: 0.50
     },
     uber: {
       available: true,
-      averageAirportToCity: 65
+      averageAirportToCity: 100  // Promedio actualizado 2025-2026 (rangos $80-$180 según demanda)[web:14][web:15]
     },
     train: {
-      airportToCity: 10.75 // AirTrain + Subway
+      airportToCity: 11.50  // AirTrain JFK ($8.50) + Subway ($3.00)[web:21][web:2][web:3]
     }
   },
   dailyCosts: {
     budget: {
-      accommodation: 80,
-      food: 45,
+      accommodation: 85,  // Ajustado por inflación 2026[web:20]
+      food: 50,  // Ajustado según costos de comida 2026[web:10]
       transport: 15,
       activities: 30
     },
     midRange: {
-      accommodation: 200,
-      food: 90,
+      accommodation: 210,  // Promedio hoteles mid-range 2026[web:20]
+      food: 100,  // Ajustado según costos de restaurantes 2026[web:10]
       transport: 25,
       activities: 60
     },
     luxury: {
-      accommodation: 500,
-      food: 200,
+      accommodation: 520,  // Ajustado según hoteles de lujo 2026[web:20]
+      food: 210,
       transport: 60,
       activities: 150
     }
@@ -61,7 +61,7 @@ export const newYork: CityData = {
     widelyAccepted: false,
     atmAvailability: 'ATMs everywhere, very common',
     atmFees: '$3-5 per transaction for out-of-network ATMs',
-    recommendedAmount: 'Cards accepted almost everywhere. Keep $50-100 for street vendors and small shops'
+    recommendedAmount: 'Cards accepted almost everywhere (OMNY contactless widely used). Keep $50-100 for street vendors and small shops'
   },
-  lastUpdated: '2026-01'
+  lastUpdated: '2026-01-27'
 };
