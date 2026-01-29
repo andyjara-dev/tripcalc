@@ -1,5 +1,9 @@
 // Day-by-Day Trip Planner Types
 
+// Import and re-export CustomItemLocal from validations (single source of truth)
+import type { CustomItemLocal } from '@/lib/validations/custom-item';
+export type { CustomItemLocal };
+
 export type TripStyle = 'budget' | 'midRange' | 'luxury';
 
 export type ItemCategory = 'ACCOMMODATION' | 'FOOD' | 'TRANSPORT' | 'ACTIVITIES' | 'SHOPPING' | 'OTHER';
@@ -16,16 +20,6 @@ export interface CustomCosts {
   food?: number;
   transport?: number;
   activities?: number;
-}
-
-export interface CustomItemLocal {
-  id: string;
-  category: ItemCategory;
-  name: string;
-  amount: number;  // In cents
-  visits: number;
-  isOneTime: boolean;
-  notes?: string;
 }
 
 export interface DayPlan {

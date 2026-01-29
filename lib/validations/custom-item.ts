@@ -28,10 +28,39 @@ export interface CustomItemLocal {
   notes?: string;
 }
 
-// Normalization helper
-export function normalizeActivityName(rawName: string): string {
+// Normalization helpers for analytics
+export function normalizeItemName(rawName: string): string {
   return rawName
     .toLowerCase()
     .trim()
     .replace(/\s+/g, ' ');
 }
+
+// Prepare CustomItemLocal for DB insertion (Phase 2)
+// This will be used when saving to database with analytics fields
+export function prepareItemForDB(
+  item: CustomItemLocal,
+  cityId: string,
+  userLocale: string
+): CustomItemInput & {
+  normalizedName: string;
+  cityId: string;
+  userLocale: string;
+} {
+  return {
+    name: item.name,
+    category: item.category,
+    amount: item.amount,
+    currency: 'USD', // TODO: Get from city data
+    notes: item.notes,
+    visits: item.visits,
+    isOneTime: item.isOneTime,
+    // Analytics fields
+    normalizedName: normalizeItemName(item.name),
+    cityId,
+    userLocale,
+  };
+}
+
+// Backward compatibility alias
+export const normalizeActivityName = normalizeItemName;
