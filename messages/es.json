@@ -277,6 +277,7 @@
     "tryAgain": "Intentar de Nuevo",
     "errors": {
       "default": "Ocurrió un error durante la autenticación. Por favor, intenta de nuevo.",
+      "Configuration": "Error de configuración del servidor. Por favor, contacta al administrador.",
       "oauthSignin": "Error al conectar con el proveedor de autenticación.",
       "oauthCallback": "Error al procesar la respuesta de autenticación.",
       "oauthCreateAccount": "No se pudo crear una cuenta con este proveedor.",
@@ -284,7 +285,9 @@
       "callback": "Error en la respuesta de autenticación.",
       "oauthAccountNotLinked": "Este email ya está asociado con un método de inicio de sesión diferente.",
       "emailSignin": "No se pudo enviar el email. Por favor, intenta de nuevo.",
-      "credentialsSignin": "Inicio de sesión fallido. Verifica que los datos sean correctos."
+      "credentialsSignin": "Inicio de sesión fallido. Verifica que los datos sean correctos.",
+      "AccessDenied": "Acceso denegado.",
+      "Verification": "El token de verificación ha expirado o ya ha sido usado."
     }
   },
   "trips": {

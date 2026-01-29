@@ -277,6 +277,7 @@
     "tryAgain": "Try Again",
     "errors": {
       "default": "An error occurred during authentication. Please try again.",
+      "Configuration": "Server configuration error. Please contact the administrator.",
       "oauthSignin": "Error connecting to the authentication provider.",
       "oauthCallback": "Error processing the authentication callback.",
       "oauthCreateAccount": "Could not create an account with this provider.",
@@ -284,7 +285,9 @@
       "callback": "Error in authentication callback.",
       "oauthAccountNotLinked": "This email is already associated with a different sign-in method.",
       "emailSignin": "Could not send the email. Please try again.",
-      "credentialsSignin": "Sign in failed. Check the details you provided are correct."
+      "credentialsSignin": "Sign in failed. Check the details you provided are correct.",
+      "AccessDenied": "Access denied.",
+      "Verification": "The verification token has expired or has already been used."
     }
   },
   "trips": {
