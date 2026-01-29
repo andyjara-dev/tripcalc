@@ -26,7 +26,7 @@ export function UserMenu() {
             referrerPolicy="no-referrer"
             onError={(e) => {
               e.currentTarget.style.display = 'none'
-              const fallback = e.currentTarget.nextElementSibling
+              const fallback = e.currentTarget.nextElementSibling as HTMLElement | null
               if (fallback) fallback.style.display = 'flex'
             }}
           />
