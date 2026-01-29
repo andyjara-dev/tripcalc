@@ -1,5 +1,10 @@
+'use client'
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { SignInButton } from './auth/SignInButton';
+import { UserMenu } from './auth/UserMenu';
 
 interface HeaderProps {
   locale: string;
@@ -13,6 +18,8 @@ interface HeaderProps {
 }
 
 export default function Header({ locale, activeSection = 'home', translations }: HeaderProps) {
+  const { data: session, status } = useSession();
+
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-gray-200 z-50">
       <nav className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
@@ -26,7 +33,7 @@ export default function Header({ locale, activeSection = 'home', translations }:
             priority
           />
         </Link>
-        <div className="flex gap-8">
+        <div className="flex items-center gap-8">
           <Link
             href={`/${locale}`}
             className={`transition ${
@@ -57,6 +64,13 @@ export default function Header({ locale, activeSection = 'home', translations }:
           >
             {translations.about}
           </Link>
+          {status === 'loading' ? (
+            <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+          ) : session ? (
+            <UserMenu />
+          ) : (
+            <SignInButton />
+          )}
         </div>
       </nav>
     </header>

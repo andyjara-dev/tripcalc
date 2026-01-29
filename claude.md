@@ -346,8 +346,17 @@ See [DOCKER.md](DOCKER.md) for complete Docker deployment guides.
 
 ### Environment Variables
 
-- `NEXT_PUBLIC_SITE_URL`: Base URL (https://tripcalc.site)
-- `NODE_ENV`: production/development
+Required:
+- `DATABASE_URL`: Supabase PostgreSQL connection string
+- `NEXTAUTH_URL`: Base URL (http://localhost:3000 or production URL)
+- `NEXTAUTH_SECRET`: JWT encryption secret (generate with openssl)
+- `EMAIL_SERVER`: SMTP server for magic links (Resend recommended)
+- `EMAIL_FROM`: Sender email address
+
+Optional:
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`: Google OAuth
+- `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET`: GitHub OAuth
+- `NEXT_PUBLIC_SITE_URL`: Public site URL
 - Future: API keys for exchange rates, analytics, etc.
 
 ### Cost Comparison
@@ -357,17 +366,59 @@ See [DOCKER.md](DOCKER.md) for complete Docker deployment guides.
 - **Cloud Run/ECS**: Pay per use - Good for variable traffic
 - **Kubernetes**: $30+/month - Only if significant scale
 
+## User System & Database (Phase 1 Complete ✅)
+
+The project now includes a complete user authentication and database system:
+
+### Stack
+- **Database**: Supabase (PostgreSQL via Prisma ORM)
+- **Auth**: NextAuth.js v5 with email, Google, and GitHub providers
+- **Validation**: Zod for runtime type safety
+- **Sessions**: Database-backed, 30-day expiration
+
+### Features Implemented
+- User authentication (email magic link + OAuth)
+- Database schema for users, trips, custom items, and expenses
+- Session management with secure cookies
+- Fully translated UI (EN + ES)
+- User menu with profile and trips access
+
+### Getting Started
+See `SETUP_AUTH.md` for complete setup instructions:
+1. Create Supabase project
+2. Configure environment variables
+3. Run migrations: `npm run db:migrate`
+4. Start dev server: `npm run dev`
+
+### Database Commands
+```bash
+npm run db:generate      # Generate Prisma client
+npm run db:migrate       # Run migrations (dev)
+npm run db:studio        # Open Prisma Studio
+npm run db:reset         # Reset database (dev only)
+```
+
+### Documentation
+- `SETUP_AUTH.md` - Step-by-step setup guide
+- `IMPLEMENTATION_STATUS.md` - Detailed implementation status
+- `PHASE1_COMPLETE.md` - Phase 1 summary and next steps
+
+### Next Features (Upcoming Phases)
+- Phase 2: Save trips from calculators
+- Phase 3: Customize trip costs
+- Phase 4: Add custom budget items
+- Phase 5: Track real expenses
+- Phase 6: Share trips and export PDF
+
 ## Future Considerations
 
-### Database Migration
+### Database Status
 
-When dataset grows beyond ~50 cities:
-
-- **Option 1**: Supabase (PostgreSQL, free tier generous)
-- **Option 2**: Neon (serverless PostgreSQL)
-- **Option 3**: PlanetScale (MySQL, generous free tier)
-
-Keep current TypeScript interfaces, migrate data to tables.
+✅ **Already Implemented**: Supabase (PostgreSQL via Prisma)
+- User accounts and authentication
+- Trip storage with calculator state
+- Custom items and expense tracking
+- Ready for ~10k users on free tier
 
 ### API
 
@@ -392,6 +443,12 @@ When ready for community data:
 npm run dev
 npm run build
 
+# Database
+npm run db:generate       # Generate Prisma client
+npm run db:migrate        # Run migrations
+npm run db:studio         # Open Prisma Studio
+npm run db:reset          # Reset database (dev only)
+
 # Docker
 ./scripts/deploy.sh              # Deploy to production
 ./scripts/check-health.sh        # Health check
@@ -407,12 +464,15 @@ docker stats tripcalc-prod
 
 - **Production**: https://tripcalc.site
 - **Documentation**:
-  - claude.md (this file) - Complete project docs
+  - CLAUDE.md (this file) - Complete project docs
+  - SETUP_AUTH.md - Authentication setup guide
+  - PHASE1_COMPLETE.md - User system implementation summary
+  - IMPLEMENTATION_STATUS.md - Detailed implementation status
   - DEPLOYMENT_VPS.md - VPS deployment guide
   - scripts/README.md - Scripts documentation
 
 ---
 
-**Last Updated**: 2026-01-27
-**Project Status**: Production ready
-**Current**: 5 cities, 3 calculators, Docker deployment configured
+**Last Updated**: 2026-01-29
+**Project Status**: Production ready + User system (Phase 1)
+**Current**: 5 cities, 3 calculators, user auth & database, Docker deployment configured

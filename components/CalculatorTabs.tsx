@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { CityData } from '@/data/cities';
-import DailyCostCalculator from './calculators/DailyCostCalculator';
+import TripCalculatorWrapper from './calculators/TripCalculatorWrapper';
 import TransportComparator from './calculators/TransportComparator';
 import AirportTransferCalculator from './calculators/AirportTransferCalculator';
 
@@ -22,7 +22,7 @@ export default function CalculatorTabs({ city }: CalculatorTabsProps) {
       id: 'daily' as TabId,
       label: t('dailyCost'),
       icon: '💰',
-      component: <DailyCostCalculator city={city} />,
+      component: <TripCalculatorWrapper city={city} />,
     },
     {
       id: 'transport' as TabId,

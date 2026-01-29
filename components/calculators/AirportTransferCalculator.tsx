@@ -150,13 +150,13 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
             <div className="flex justify-between items-start mb-3">
               <div>
                 <div className="font-bold text-lg text-gray-900">{option.name}</div>
-                <div className="text-sm text-gray-600">{option.duration}</div>
+                <div className="text-sm text-gray-700">{option.duration}</div>
               </div>
               <div className="text-right">
                 <div className="text-2xl font-bold text-gray-900">
                   {city.currencySymbol}{option.price.toFixed(2)}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-700">
                   {city.currencySymbol}{(option.price / people).toFixed(2)}{t('perPerson')}
                 </div>
               </div>
@@ -165,7 +165,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
             {/* Ratings */}
             <div className="grid grid-cols-2 gap-2 mb-2">
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{t('comfort')}:</span>
+                <span className="text-sm text-gray-700">{t('comfort')}:</span>
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < option.comfort ? 'text-yellow-400' : 'text-gray-300'}>
@@ -175,7 +175,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{t('convenience')}:</span>
+                <span className="text-sm text-gray-700">{t('convenience')}:</span>
                 <div className="flex">
                   {[...Array(5)].map((_, i) => (
                     <span key={i} className={i < option.convenience ? 'text-yellow-400' : 'text-gray-300'}>
@@ -186,7 +186,7 @@ export default function AirportTransferCalculator({ city }: AirportTransferCalcu
               </div>
             </div>
 
-            <div className="text-sm text-gray-600">{option.notes}</div>
+            <div className="text-sm text-gray-700">{option.notes}</div>
 
             {index === 0 && (
               <div className="text-sm font-semibold text-green-700 mt-2">

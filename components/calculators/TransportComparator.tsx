@@ -138,7 +138,7 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
               </span>
             </div>
             {option.notes && (
-              <div className="text-sm text-gray-600 ml-12">{option.notes}</div>
+              <div className="text-sm text-gray-700 ml-12">{option.notes}</div>
             )}
             {index === 0 && (
               <div className="text-sm font-semibold text-green-700 mt-2 ml-12">
@@ -158,7 +158,7 @@ export default function TransportComparator({ city }: TransportComparatorProps) 
           <div className="text-2xl font-bold text-blue-600">
             {city.currencySymbol}{savings.toFixed(2)}
           </div>
-          <div className="text-sm text-gray-600 mt-1">
+          <div className="text-sm text-gray-700 mt-1">
             {t('vsMostExpensive')}
           </div>
         </div>

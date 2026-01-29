@@ -4,25 +4,39 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "docker:build": "docker build -t tripcalc:latest .",
     "docker:run": "docker run -p 3000:3000 --name tripcalc tripcalc:latest",
     "docker:stop": "docker stop tripcalc && docker rm tripcalc",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:dev": "docker-compose --profile dev up tripcalc-dev",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
   },
   "author": "",
   "license": "MIT",
   "description": "TripCalc - Real Travel Costs Calculator",
   "dependencies": {
+    "@auth/prisma-adapter": "^2.11.1",
+    "@prisma/client": "5.22.0",
+    "date-fns": "^4.1.0",
+    "jspdf": "^4.0.0",
+    "nanoid": "^5.1.6",
     "next": "15.1.0",
+    "next-auth": "^5.0.0-beta.30",
     "next-intl": "4.7.0",
     "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react-dom": "18.3.1",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.18",
@@ -30,6 +44,7 @@
     "@types/react": "^19.2.9",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
+    "prisma": "5.22.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   }
