@@ -290,6 +290,22 @@
       "Verification": "The verification token has expired or has already been used."
     }
   },
+  "tripPlanner": {
+    "quickEstimate": "Quick Estimate",
+    "quickEstimateDesc": "Fast budget calculation",
+    "dayByDayPlanner": "Day-by-Day Planner",
+    "dayByDayPlannerDesc": "Detailed daily itinerary",
+    "signInToUse": "Sign in to use Day-by-Day Planner",
+    "signInToUseDesc": "Create detailed daily itineraries with specific activities, dates, and costs for each day of your trip.",
+    "unlockTitle": "Unlock Day-by-Day Trip Planner",
+    "unlockSubtitle": "Create an account to access our advanced Day-by-Day Planner:",
+    "feature1": "Plan each day of your trip individually",
+    "feature2": "Add specific activities and dates",
+    "feature3": "Save and edit your itinerary anytime",
+    "feature4": "Export detailed trip breakdown",
+    "signInToGetStarted": "Sign In to Get Started",
+    "createAccount": "Create Account"
+  },
   "trips": {
     "title": "My Trips",
     "noTrips": "No trips yet",
