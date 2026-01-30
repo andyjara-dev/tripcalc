@@ -124,6 +124,14 @@ export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
       luxury: 'LUXURY',
     } as const;
 
+    console.log('Saving trip with data:', {
+      name: data.name,
+      cityId: city.id,
+      cityName: city.name,
+      days: days.length,
+      tripStyle: tripStyleMap[tripStyle],
+    });
+
     const response = await fetch('/api/trips', {
       method: 'POST',
       headers: {
@@ -141,12 +149,16 @@ export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
       }),
     });
 
+    console.log('Response status:', response.status);
+
     if (!response.ok) {
       const error = await response.json();
+      console.error('Error saving trip:', error);
       throw new Error(error.error || 'Failed to save trip');
     }
 
     const result = await response.json();
+    console.log('Trip saved successfully:', result);
 
     // Show success message
     setSaveSuccess(true);

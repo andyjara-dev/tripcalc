@@ -69,14 +69,24 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.id) {
+      console.error('POST /api/trips - No session or user ID');
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
+    console.log('POST /api/trips - User ID:', session.user.id);
+
     const body = await request.json();
     const validated = createTripSchema.parse(body);
+
+    console.log('POST /api/trips - Creating trip:', {
+      userId: session.user.id,
+      name: validated.name,
+      cityId: validated.cityId,
+      days: validated.days,
+    });
 
     // Create trip
     const trip = await prisma.trip.create({
@@ -92,6 +102,8 @@ export async function POST(request: NextRequest) {
         calculatorState: validated.calculatorState,
       },
     });
+
+    console.log('POST /api/trips - Trip created with ID:', trip.id);
 
     // Extract and save custom items with normalization
     const calculatorState = validated.calculatorState as any[];

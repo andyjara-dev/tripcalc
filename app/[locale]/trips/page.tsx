@@ -30,6 +30,8 @@ export default async function TripsPage({
     redirect('/auth/signin');
   }
 
+  console.log('My Trips page - User ID:', session.user.id);
+
   const trips = await prisma.trip.findMany({
     where: {
       userId: session.user.id,
@@ -45,6 +47,8 @@ export default async function TripsPage({
       },
     },
   });
+
+  console.log('My Trips page - Found trips:', trips.length);
 
   const t = await getTranslations({ locale, namespace: 'trips' });
   const tNav = await getTranslations({ locale, namespace: 'nav' });
