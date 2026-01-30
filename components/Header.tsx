@@ -8,7 +8,7 @@ import { UserMenu } from './auth/UserMenu';
 
 interface HeaderProps {
   locale: string;
-  activeSection?: 'home' | 'cities' | 'about';
+  activeSection?: 'home' | 'cities' | 'about' | 'trips';
   translations: {
     home: string;
     cities: string;
