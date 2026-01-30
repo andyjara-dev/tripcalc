@@ -16,10 +16,10 @@ export interface CategoryIncluded {
 }
 
 export interface CustomCosts {
-  accommodation?: number;  // Override base cost
-  food?: number;
-  transport?: number;
-  activities?: number;
+  accommodation: number | null;  // null = use default, number = custom cost
+  food: number | null;
+  transport: number | null;
+  activities: number | null;
 }
 
 export interface DayPlan {

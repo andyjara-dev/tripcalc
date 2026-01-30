@@ -1,13 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 export function UserMenu() {
   const { data: session } = useSession()
   const t = useTranslations('auth')
+  const locale = useLocale()
   const [isOpen, setIsOpen] = useState(false)
 
   if (!session?.user) return null
@@ -50,14 +51,14 @@ export function UserMenu() {
           />
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
             <Link
-              href="/trips"
+              href={`/${locale}/trips`}
               className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
               onClick={() => setIsOpen(false)}
             >
               {t('myTrips')}
             </Link>
             <Link
-              href="/profile"
+              href={`/${locale}/profile`}
               className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
               onClick={() => setIsOpen(false)}
             >

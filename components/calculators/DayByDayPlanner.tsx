@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { nanoid } from 'nanoid';
 import type { CityData } from '@/data/cities';
 import type { DayPlan, TripPlanDetailed, TripStyle, CustomItemLocal } from '@/types/trip-planner';
 import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/trip-planner';
 import DayPlanCard from './DayPlanCard';
+import SaveTripModal from '../trips/SaveTripModal';
 
 interface DayByDayPlannerProps {
   city: CityData;
@@ -14,6 +16,8 @@ interface DayByDayPlannerProps {
 
 export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
   const t = useTranslations('calculator');
+  const tTrips = useTranslations('trips');
+  const router = useRouter();
   const [tripStyle, setTripStyle] = useState<TripStyle>('midRange');
   const [activeDay, setActiveDay] = useState(1);
   const [days, setDays] = useState<DayPlan[]>([
@@ -22,6 +26,8 @@ export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
     createDefaultDay(3),
   ]);
   const [animateTotal, setAnimateTotal] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const costs = city.dailyCosts[tripStyle];
 
@@ -110,18 +116,76 @@ export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
     return () => clearTimeout(timer);
   }, [days, tripStyle]);
 
+  // Handle save trip
+  const handleSaveTrip = async (data: { name: string; startDate?: string; endDate?: string }) => {
+    const tripStyleMap = {
+      budget: 'BUDGET',
+      midRange: 'MID_RANGE',
+      luxury: 'LUXURY',
+    } as const;
+
+    const response = await fetch('/api/trips', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: data.name,
+        cityId: city.id,
+        cityName: city.name,
+        startDate: data.startDate || null,
+        endDate: data.endDate || null,
+        days: days.length,
+        tripStyle: tripStyleMap[tripStyle],
+        calculatorState: days,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to save trip');
+    }
+
+    const result = await response.json();
+
+    // Show success message
+    setSaveSuccess(true);
+    setTimeout(() => setSaveSuccess(false), 3000);
+
+    // Optionally redirect to trips page
+    // router.push('/trips');
+  };
+
   const activeD = days.find(d => d.dayNumber === activeDay);
 
   return (
     <div>
+      {/* Success notification */}
+      {saveSuccess && (
+        <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <p className="text-green-800 font-medium">
+            ✓ {tTrips('saveSuccess')}
+          </p>
+        </div>
+      )}
+
       {/* Title */}
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
-          Day-by-Day Trip Planner
-        </h2>
-        <p className="text-sm text-gray-700">
-          Plan your trip day by day with detailed activities and costs
-        </p>
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Day-by-Day Trip Planner
+          </h2>
+          <p className="text-sm text-gray-700">
+            Plan your trip day by day with detailed activities and costs
+          </p>
+        </div>
+        <button
+          onClick={() => setShowSaveModal(true)}
+          className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+        >
+          <span>💾</span>
+          <span>{tTrips('saveTrip')}</span>
+        </button>
       </div>
 
       {/* Trip Style Selector */}
@@ -269,8 +333,16 @@ export default function DayByDayPlanner({ city }: DayByDayPlannerProps) {
 
       {/* Note */}
       <p className="text-sm text-gray-600 mt-6">
-        * Your detailed day-by-day plan is automatically saved
+        * Your detailed day-by-day plan is saved locally. Click "Save Trip" to save to your account.
       </p>
+
+      {/* Save Trip Modal */}
+      <SaveTripModal
+        isOpen={showSaveModal}
+        onClose={() => setShowSaveModal(false)}
+        onSave={handleSaveTrip}
+        defaultName={`${city.name} Trip`}
+      />
     </div>
   );
 }
