@@ -97,7 +97,7 @@ export default function ShareTripModal({
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, locale }),
       });
 
       if (!response.ok) {

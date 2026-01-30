@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 const emailSchema = z.object({
   email: z.string().email('Invalid email address'),
+  locale: z.string().optional().default('en'), // Add locale parameter
 });
 
 interface RouteParams {
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const { email } = validation.data;
+    const { email, locale } = validation.data;
 
     // Get trip
     const trip = await prisma.trip.findUnique({
@@ -67,7 +68,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
 
     // Get base URL from environment or request
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${request.headers.get('host')}`;
-    const shareUrl = `${baseUrl}/en/shared/${trip.shareToken}`;
+    const shareUrl = `${baseUrl}/${locale}/shared/${trip.shareToken}`;
 
     // Format trip style for display
     const tripStyleDisplay = trip.tripStyle === 'MID_RANGE'
