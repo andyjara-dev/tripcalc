@@ -11,6 +11,7 @@ import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/
 import DayPlanCard from '../calculators/DayPlanCard';
 import SaveTripModal from './SaveTripModal';
 import CustomizeCostsModal from './CustomizeCostsModal';
+import ShareTripModal from './ShareTripModal';
 import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
@@ -34,6 +35,8 @@ interface TripViewProps {
     budgetFood?: number | null;
     budgetTransport?: number | null;
     budgetActivities?: number | null;
+    shareToken?: string | null;
+    isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
   };
@@ -62,6 +65,7 @@ export default function TripView({ trip }: TripViewProps) {
   const [showCustomizeCostsModal, setShowCustomizeCostsModal] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
   const [expensesLoading, setExpensesLoading] = useState(true);
 
@@ -334,6 +338,13 @@ export default function TripView({ trip }: TripViewProps) {
               {tTrips('edit')}
             </button>
             <button
+              onClick={() => setShowShareModal(true)}
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2"
+            >
+              <span>{trip.isPublic ? '🌐' : '🔒'}</span>
+              <span>{tTrips('share')}</span>
+            </button>
+            <button
               onClick={handleSaveChanges}
               disabled={isSaving}
               className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
@@ -550,6 +561,15 @@ export default function TripView({ trip }: TripViewProps) {
           activities: trip.budgetActivities ? trip.budgetActivities / 100 : null,
         }}
         currencySymbol={city.currencySymbol}
+      />
+
+      {/* Share Trip Modal */}
+      <ShareTripModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        tripId={trip.id}
+        initialIsPublic={trip.isPublic}
+        initialShareToken={trip.shareToken}
       />
     </div>
   );

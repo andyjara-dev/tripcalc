@@ -411,6 +411,14 @@
     "copyLink": "Copiar Enlace",
     "linkCopied": "¡Enlace copiado!",
     "publicTrip": "Viaje Público",
+    "tripIsPublic": "Este viaje es público",
+    "tripIsPrivate": "Este viaje es privado",
+    "shareLink": "Enlace para Compartir",
+    "sharedTrip": "Viaje Compartido",
+    "viewOriginal": "Ver Original",
+    "exportPDF": "Exportar PDF",
+    "downloadPDF": "Descargar PDF",
+    "generatingPDF": "Generando PDF...",
     "customCost": "Personalizado",
     "defaultCost": "Por Defecto",
     "editCosts": "Editar Costos",
@@ -418,10 +426,17 @@
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",
+    "rights": "Todos los derechos reservados.",
     "copyright": "© {year} TripCalc. Todos los derechos reservados.",
     "terms": "Términos de Servicio",
     "privacy": "Política de Privacidad",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "cta": {
+      "title": "Planifica Tu Próximo Viaje",
+      "subtitle": "Explora costos reales para ciudades de todo el mundo y viaja con confianza.",
+      "exploreCities": "Explorar Ciudades",
+      "learnMore": "Saber Más"
+    }
   },
   "terms": {
     "title": "Términos de Servicio",
@@ -511,8 +526,8 @@
     },
     "section11": {
       "title": "11. Ley Aplicable",
-      "p1": "Estos términos se rigen por las leyes de [Tu Jurisdicción].",
-      "p2": "Cualquier disputa se resolverá en los tribunales de [Tu Jurisdicción]."
+      "p1": "Estos términos se rigen por las leyes de la República de Chile.",
+      "p2": "Cualquier disputa se resolverá en los tribunales de la República de Chile."
     },
     "acceptance": "Al usar TripCalc, reconoces que has leído, entendido y aceptas estos Términos de Servicio."
   },

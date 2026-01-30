@@ -388,6 +388,14 @@
     "copyLink": "Copy Link",
     "linkCopied": "Link copied!",
     "publicTrip": "Public Trip",
+    "tripIsPublic": "This trip is public",
+    "tripIsPrivate": "This trip is private",
+    "shareLink": "Share Link",
+    "sharedTrip": "Shared Trip",
+    "viewOriginal": "View Original",
+    "exportPDF": "Export PDF",
+    "downloadPDF": "Download PDF",
+    "generatingPDF": "Generating PDF...",
     "customCost": "Custom",
     "defaultCost": "Default",
     "editCosts": "Edit Costs",
@@ -395,10 +403,17 @@
   },
   "footer": {
     "tagline": "Real travel costs, no surprises",
+    "rights": "All rights reserved.",
     "copyright": "© {year} TripCalc. All rights reserved.",
     "terms": "Terms of Service",
     "privacy": "Privacy Policy",
-    "contact": "Contact"
+    "contact": "Contact",
+    "cta": {
+      "title": "Plan Your Next Trip",
+      "subtitle": "Explore real costs for cities around the world and travel with confidence.",
+      "exploreCities": "Explore Cities",
+      "learnMore": "Learn More"
+    }
   },
   "terms": {
     "title": "Terms of Service",
@@ -488,8 +503,8 @@
     },
     "section11": {
       "title": "11. Governing Law",
-      "p1": "These terms are governed by the laws of [Your Jurisdiction].",
-      "p2": "Any disputes will be resolved in the courts of [Your Jurisdiction]."
+      "p1": "These terms are governed by the laws of Republic of Chile.",
+      "p2": "Any disputes will be resolved in the courts of Republic of Chile."
     },
     "acceptance": "By using TripCalc, you acknowledge that you have read, understood, and agree to these Terms of Service."
   },
