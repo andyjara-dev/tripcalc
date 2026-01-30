@@ -1,7 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import Image from 'next/image';
 import Header from '@/components/Header';
+import HeroCarousel from '@/components/HeroCarousel';
 
 export default async function HomePage({
   params,
@@ -45,18 +45,9 @@ export default async function HomePage({
               </Link>
             </div>
 
-            {/* Hero Image */}
+            {/* Hero Carousel */}
             <div className="order-1 md:order-2 relative">
-              <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/hero-couple-airport.jpg"
-                  alt="Couple planning their trip at the airport"
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
+              <HeroCarousel />
             </div>
           </div>
         </div>
