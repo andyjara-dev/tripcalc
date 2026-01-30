@@ -163,7 +163,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* Basic Information */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Basic Information</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="md:col-span-2">
@@ -175,7 +175,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               value={formData.name}
               onChange={(e) => handleNameChange(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Barcelona"
             />
           </div>
@@ -191,7 +191,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               required
               disabled={mode === 'edit'}
               pattern="[a-z0-9-]+"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white disabled:bg-gray-100 disabled:text-gray-600"
               placeholder="e.g., barcelona"
             />
             <p className="mt-1 text-xs text-gray-500">
@@ -208,7 +208,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               value={formData.country}
               onChange={(e) => setFormData({ ...formData, country: e.target.value })}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Spain"
             />
           </div>
@@ -219,7 +219,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               type="text"
               value={formData.region}
               onChange={(e) => setFormData({ ...formData, region: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Europe"
             />
           </div>
@@ -233,7 +233,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               value={formData.language}
               onChange={(e) => setFormData({ ...formData, language: e.target.value })}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Spanish, Catalan"
             />
           </div>
@@ -242,7 +242,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* Currency */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Currency</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Currency</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -260,7 +260,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
                 });
               }}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
             >
               {currencyOptions.map((curr) => (
                 <option key={curr.code} value={curr.code}>
@@ -280,7 +280,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               onChange={(e) => setFormData({ ...formData, currencySymbol: e.target.value })}
               required
               maxLength={5}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., €"
             />
           </div>
@@ -289,7 +289,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* Metadata */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Metadata</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Metadata</h2>
 
         <div className="space-y-4">
           <div>
@@ -298,7 +298,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               type="text"
               value={formData.timezone}
               onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Europe/Madrid"
             />
           </div>
@@ -313,7 +313,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               onChange={(e) =>
                 setFormData({ ...formData, population: e.target.value ? parseInt(e.target.value) : undefined })
               }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., 1600000"
             />
           </div>
@@ -326,7 +326,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               type="text"
               value={formData.touristSeason}
               onChange={(e) => setFormData({ ...formData, touristSeason: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Year-round, Summer, Winter"
             />
           </div>
@@ -340,7 +340,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={4}
               maxLength={1000}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="Brief description of the city for internal use"
             />
           </div>
@@ -349,7 +349,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* SEO */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">SEO</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">SEO</h2>
 
         <div className="space-y-4">
           <div>
@@ -361,7 +361,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               value={formData.metaTitle}
               onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
               maxLength={60}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="e.g., Barcelona Travel Costs - Daily Budget Calculator"
             />
             <p className="mt-1 text-xs text-gray-500">
@@ -378,7 +378,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
               rows={3}
               maxLength={160}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="SEO description for search engines"
             />
             <p className="mt-1 text-xs text-gray-500">
@@ -390,7 +390,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* Media */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Media</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Media</h2>
 
         <div className="space-y-4">
           <div>
@@ -399,7 +399,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               type="url"
               value={formData.imageUrl}
               onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="https://example.com/image.jpg"
             />
           </div>
@@ -413,7 +413,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               value={formData.imageCredit}
               onChange={(e) => setFormData({ ...formData, imageCredit: e.target.value })}
               maxLength={200}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="Photo by Author Name / Source"
             />
           </div>
@@ -422,7 +422,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       {/* Publishing */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <h2 className="text-xl font-semibold mb-4">Publishing</h2>
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Publishing</h2>
 
         <div className="space-y-4">
           <div>
@@ -449,7 +449,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
               onChange={(e) => setFormData({ ...formData, lastUpdated: e.target.value })}
               required
               pattern="\d{4}-\d{2}"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 bg-white"
               placeholder="YYYY-MM (e.g., 2026-01)"
             />
             <p className="mt-1 text-xs text-gray-500">Format: YYYY-MM</p>
