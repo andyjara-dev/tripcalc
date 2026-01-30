@@ -100,6 +100,29 @@
     "includeInBudget": "Incluir en Presupuesto",
     "perDay": "(por día)",
     "pricesPerPerson": "Todos los precios son por persona, por día",
+    "customItems": {
+      "addCustom": "Agregar actividad personalizada",
+      "addCustomAccommodation": "Agregar alojamiento específico",
+      "addCustomFood": "Agregar comida/cena específica",
+      "addCustomTransport": "Agregar transporte específico",
+      "baseEstimate": "Actividades estimadas",
+      "baseEstimateAccommodation": "Alojamiento estimado",
+      "baseEstimateFood": "Comida y bebidas estimadas",
+      "baseEstimateTransport": "Transporte estimado",
+      "baseEstimateActivities": "Actividades estimadas",
+      "addBackBase": "Restaurar estimación base",
+      "form": {
+        "namePlaceholder": "ej: Museo MET, Show de Broadway",
+        "namePlaceholderAccommodation": "ej: Hotel Marriott, Airbnb Centro",
+        "namePlaceholderFood": "ej: Desayuno en Café, Cena en Restaurante",
+        "namePlaceholderTransport": "ej: Uber al Aeropuerto, Pase Diario Metro",
+        "price": "Precio",
+        "visits": "Visitas",
+        "notes": "Notas (opcional)",
+        "cancel": "Cancelar",
+        "add": "Agregar"
+      }
+    },
     "durations": {
       "trainAirport": "30-45 min",
       "metroAirport": "45-60 min",
