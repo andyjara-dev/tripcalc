@@ -308,6 +308,7 @@
   },
   "trips": {
     "title": "My Trips",
+    "browseCities": "Browse Cities",
     "customizeCosts": "Customize Costs",
     "customizeCostsTitle": "Customize Daily Costs",
     "usingCustomCosts": "Custom",

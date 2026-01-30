@@ -308,6 +308,7 @@
   },
   "trips": {
     "title": "Mis Viajes",
+    "browseCities": "Explorar Ciudades",
     "customizeCosts": "Personalizar Costos",
     "customizeCostsTitle": "Personalizar Costos Diarios",
     "usingCustomCosts": "Personalizado",

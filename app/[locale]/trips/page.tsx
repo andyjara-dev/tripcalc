@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db';
 import { useTranslations } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import Header from '@/components/Header';
 import TripCard from '@/components/trips/TripCard';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -17,7 +18,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   };
 }
 
-export default async function TripsPage() {
+export default async function TripsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -40,10 +46,27 @@ export default async function TripsPage() {
     },
   });
 
-  const t = await getTranslations('trips');
+  const t = await getTranslations({ locale, namespace: 'trips' });
+  const tNav = await getTranslations({ locale, namespace: 'nav' });
+  const tSite = await getTranslations({ locale, namespace: 'site' });
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <Header
+        locale={locale}
+        activeSection="trips"
+        translations={{
+          home: tNav('home'),
+          cities: tNav('cities'),
+          about: tNav('about'),
+          logoAlt: tSite('name') + ' - ' + tSite('tagline')
+        }}
+      />
+
+      {/* Main Content */}
+      <div className="pt-24 pb-12">
+        <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-2">{t('title')}</h1>
@@ -66,7 +89,7 @@ export default async function TripsPage() {
             href="/"
             className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Browse Cities
+            {t('browseCities')}
           </Link>
         </div>
       ) : (
@@ -76,6 +99,8 @@ export default async function TripsPage() {
           ))}
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
