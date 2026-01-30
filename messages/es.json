@@ -415,5 +415,179 @@
     "defaultCost": "Por Defecto",
     "editCosts": "Editar Costos",
     "resetToDefault": "Restaurar a Valores por Defecto"
+  },
+  "footer": {
+    "tagline": "Costos reales de viaje, sin sorpresas",
+    "copyright": "© {year} TripCalc. Todos los derechos reservados.",
+    "terms": "Términos de Servicio",
+    "privacy": "Política de Privacidad",
+    "contact": "Contacto"
+  },
+  "terms": {
+    "title": "Términos de Servicio",
+    "lastUpdated": "Última actualización: {date}",
+    "intro": "Bienvenido a TripCalc. Al usar nuestro servicio, aceptas estos términos.",
+    "section1": {
+      "title": "1. Privacidad de Datos",
+      "p1": "Nunca venderemos ni compartiremos tus datos personales con terceros para fines de marketing.",
+      "p2": "Tu email solo se usa para autenticación y comunicaciones esenciales del servicio.",
+      "p3": "Respetamos tu privacidad y estamos comprometidos a proteger tu información personal."
+    },
+    "section2": {
+      "title": "2. Uso de tus Datos",
+      "p1": "Los datos de viajes (presupuestos, gastos, items personalizados) se usan para:",
+      "list": {
+        "item1": "Proporcionar funcionalidad de calculadoras y planificación de viajes",
+        "item2": "Generar estadísticas anónimas para ayudar a futuros viajeros",
+        "item3": "Mejorar la precisión de precios mediante normalización de datos",
+        "item4": "Identificar actividades y destinos populares"
+      },
+      "p2": "Todos los datos agregados son anónimos y no pueden rastrearse a usuarios individuales."
+    },
+    "section3": {
+      "title": "3. Descargo de Precisión de Precios",
+      "p1": "Aunque nos esforzamos por la precisión, los costos de viaje mostrados en TripCalc:",
+      "list": {
+        "item1": "Pueden contener errores o estar desactualizados",
+        "item2": "Varían según temporada, demanda y tipos de cambio",
+        "item3": "Se basan en experiencia personal y datos enviados por usuarios",
+        "item4": "Deben verificarse antes de tomar decisiones de viaje"
+      },
+      "p2": "Los precios son estimaciones y guías, no garantías."
+    },
+    "section4": {
+      "title": "4. Limitación de Responsabilidad",
+      "p1": "TripCalc proporciona información de costos de viaje solo como guía.",
+      "p2": "No somos responsables de:",
+      "list": {
+        "item1": "Decisiones tomadas basadas en nuestros datos",
+        "item2": "Pérdidas financieras debido a información inexacta",
+        "item3": "Cambios en precios o condiciones de viaje",
+        "item4": "Problemas derivados de planificación de viajes basada en nuestras herramientas"
+      },
+      "p3": "Tú eres el único responsable de verificar toda la información y tomar tus propias decisiones de viaje."
+    },
+    "section5": {
+      "title": "5. Contenido Generado por Usuarios",
+      "p1": "Al enviar items personalizados, gastos o comentarios, otorgas a TripCalc el derecho de:",
+      "list": {
+        "item1": "Usar los datos para mejorar el servicio",
+        "item2": "Incluirlos en estadísticas anónimas",
+        "item3": "Compartir información agregada con la comunidad"
+      },
+      "p2": "Mantienes la propiedad de tus datos y puedes eliminarlos en cualquier momento."
+    },
+    "section6": {
+      "title": "6. Uso Aceptable",
+      "p1": "Aceptas no:",
+      "list": {
+        "item1": "Extraer datos del sitio automáticamente (scraping)",
+        "item2": "Enviar información falsa o engañosa",
+        "item3": "Abusar del servicio o interferir con otros usuarios",
+        "item4": "Usar el servicio para fines ilegales"
+      }
+    },
+    "section7": {
+      "title": "7. Propiedad Intelectual",
+      "p1": "Todo el contenido, diseño, código y datos en TripCalc es propiedad de TripCalc o sus licenciantes.",
+      "p2": "No puedes copiar, modificar o distribuir nuestro contenido sin permiso."
+    },
+    "section8": {
+      "title": "8. Terminación de Cuenta",
+      "p1": "Puedes eliminar tu cuenta en cualquier momento, lo que eliminará todos tus datos personales.",
+      "p2": "Nos reservamos el derecho de suspender o terminar cuentas que violen estos términos."
+    },
+    "section9": {
+      "title": "9. Cambios en los Términos",
+      "p1": "Podemos actualizar estos términos ocasionalmente.",
+      "p2": "El uso continuo del servicio después de cambios constituye aceptación de los nuevos términos.",
+      "p3": "Notificaremos a los usuarios de cambios significativos por email o notificación en el sitio."
+    },
+    "section10": {
+      "title": "10. Contacto y Soporte",
+      "p1": "Para preguntas, errores o comentarios, contáctanos en:",
+      "email": "hello@tripcalc.site",
+      "p2": "Damos la bienvenida a tus sugerencias y haremos nuestro mejor esfuerzo para responder pronto."
+    },
+    "section11": {
+      "title": "11. Ley Aplicable",
+      "p1": "Estos términos se rigen por las leyes de [Tu Jurisdicción].",
+      "p2": "Cualquier disputa se resolverá en los tribunales de [Tu Jurisdicción]."
+    },
+    "acceptance": "Al usar TripCalc, reconoces que has leído, entendido y aceptas estos Términos de Servicio."
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: {date}",
+    "intro": "Esta Política de Privacidad explica cómo TripCalc recopila, usa y protege tu información.",
+    "section1": {
+      "title": "1. Información que Recopilamos",
+      "p1": "Recopilamos información que proporcionas directamente:",
+      "list": {
+        "item1": "Dirección de email (para autenticación)",
+        "item2": "Datos de viajes (presupuestos, gastos, items personalizados)",
+        "item3": "Datos de uso (páginas visitadas, funciones usadas)"
+      }
+    },
+    "section2": {
+      "title": "2. Cómo Usamos tu Información",
+      "p1": "Usamos tu información para:",
+      "list": {
+        "item1": "Proporcionar y mejorar el servicio",
+        "item2": "Autenticar tu cuenta",
+        "item3": "Generar estadísticas anónimas",
+        "item4": "Responder a tus preguntas y solicitudes de soporte"
+      }
+    },
+    "section3": {
+      "title": "3. Compartir Datos",
+      "p1": "No vendemos tus datos personales.",
+      "p2": "Podemos compartir datos anonimizados y agregados con la comunidad para ayudar a viajeros.",
+      "p3": "Podemos compartir datos con proveedores de servicios (hosting, autenticación) bajo estricta confidencialidad."
+    },
+    "section4": {
+      "title": "4. Seguridad de Datos",
+      "p1": "Usamos medidas de seguridad estándar de la industria para proteger tus datos.",
+      "p2": "Todas las conexiones están encriptadas (HTTPS).",
+      "p3": "Las contraseñas son hasheadas y nunca se almacenan en texto plano."
+    },
+    "section5": {
+      "title": "5. Tus Derechos (GDPR)",
+      "p1": "Si estás en la UE, tienes derecho a:",
+      "list": {
+        "item1": "Acceder a tus datos personales",
+        "item2": "Corregir datos inexactos",
+        "item3": "Eliminar tus datos ('derecho al olvido')",
+        "item4": "Exportar tus datos en formato portable",
+        "item5": "Optar por no participar en procesamiento de datos para analytics"
+      }
+    },
+    "section6": {
+      "title": "6. Cookies y Analytics",
+      "p1": "Usamos cookies esenciales para autenticación y gestión de sesiones.",
+      "p2": "Podemos usar herramientas de analytics (Google Analytics, Vercel Analytics) para entender patrones de uso.",
+      "p3": "Puedes desactivar cookies en la configuración de tu navegador."
+    },
+    "section7": {
+      "title": "7. Retención de Datos",
+      "p1": "Retenemos tus datos mientras tu cuenta esté activa.",
+      "p2": "Cuando eliminas tu cuenta, tus datos personales se eliminan permanentemente.",
+      "p3": "Las estadísticas anonimizadas pueden retenerse indefinidamente."
+    },
+    "section8": {
+      "title": "8. Privacidad de Menores",
+      "p1": "TripCalc no está destinado a usuarios menores de 13 años.",
+      "p2": "No recopilamos conscientemente datos de menores."
+    },
+    "section9": {
+      "title": "9. Cambios en la Política de Privacidad",
+      "p1": "Podemos actualizar esta política ocasionalmente.",
+      "p2": "Te notificaremos de cambios significativos."
+    },
+    "section10": {
+      "title": "10. Contacto",
+      "p1": "Para preguntas relacionadas con privacidad, contáctanos en:",
+      "email": "hello@tripcalc.site"
+    }
   }
 }
