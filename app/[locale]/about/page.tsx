@@ -140,16 +140,6 @@ export default async function AboutPage({
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-400 mb-2">{t('footer.tagline')}</p>
-          <p className="text-sm text-gray-500">
-            © 2026 {t('site.name')}. {t('footer.rights')}
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }

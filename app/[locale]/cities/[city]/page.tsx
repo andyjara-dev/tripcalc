@@ -260,40 +260,29 @@ export default async function CityPage({ params }: CityPageProps) {
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          {/* CTA Section */}
-          <div className="text-center mb-12 pb-12 border-b border-gray-700">
-            <h3 className="text-3xl font-bold mb-4">{t('footer.cta.title')}</h3>
-            <p className="text-gray-400 text-lg mb-6 max-w-2xl mx-auto">
-              {t('footer.cta.subtitle')}
-            </p>
-            <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <Link
-                href={`/${locale}/cities`}
-                className="px-8 py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                {t('footer.cta.exploreCities')}
-              </Link>
-              <Link
-                href={`/${locale}/about`}
-                className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition-colors"
-              >
-                {t('footer.cta.learnMore')}
-              </Link>
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <div className="text-center">
-            <p className="text-gray-400 mb-2">{t('footer.tagline')}</p>
-            <p className="text-sm text-gray-500">
-              © 2026 {t('site.name')}. {t('footer.rights')}
-            </p>
+      {/* CTA Section */}
+      <section className="bg-gray-900 text-white py-16 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h3 className="text-3xl font-bold mb-4">{t('footer.cta.title')}</h3>
+          <p className="text-gray-400 text-lg mb-6 max-w-2xl mx-auto">
+            {t('footer.cta.subtitle')}
+          </p>
+          <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+            <Link
+              href={`/${locale}/cities`}
+              className="px-8 py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              {t('footer.cta.exploreCities')}
+            </Link>
+            <Link
+              href={`/${locale}/about`}
+              className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-gray-900 transition-colors"
+            >
+              {t('footer.cta.learnMore')}
+            </Link>
           </div>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import Image from 'next/image';
 import Header from '@/components/Header';
 
 export default async function HomePage({
@@ -25,20 +26,39 @@ export default async function HomePage({
       />
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            {t('home.hero.title')}
-          </h1>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            {t('home.hero.subtitle')}
-          </p>
-          <Link
-            href={`/${locale}/cities`}
-            className="inline-block bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
-          >
-            {t('home.hero.cta')}
-          </Link>
+      <section className="pt-24 pb-12 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
+            <div className="order-2 md:order-1">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                {t('home.hero.title')}
+              </h1>
+              <p className="text-lg md:text-xl text-gray-600 mb-8 leading-relaxed">
+                {t('home.hero.subtitle')}
+              </p>
+              <Link
+                href={`/${locale}/cities`}
+                className="inline-block bg-gray-900 text-white px-8 py-4 rounded-lg hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl"
+              >
+                {t('home.hero.cta')}
+              </Link>
+            </div>
+
+            {/* Hero Image */}
+            <div className="order-1 md:order-2 relative">
+              <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/hero-couple-airport.jpg"
+                  alt="Couple planning their trip at the airport"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -62,16 +82,6 @@ export default async function HomePage({
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-gray-400 mb-2">{t('footer.tagline')}</p>
-          <p className="text-sm text-gray-500">
-            © 2026 {t('site.name')}. {t('footer.rights')}
-          </p>
-        </div>
-      </footer>
     </div>
   );
 }
