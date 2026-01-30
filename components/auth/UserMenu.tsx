@@ -10,6 +10,7 @@ export function UserMenu() {
   const t = useTranslations('auth')
   const locale = useLocale()
   const [isOpen, setIsOpen] = useState(false)
+  const [adminSubmenuOpen, setAdminSubmenuOpen] = useState(false)
 
   if (!session?.user) return null
 
@@ -49,17 +50,49 @@ export function UserMenu() {
             className="fixed inset-0 z-10"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+          <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
             {/* @ts-ignore - isAdmin is added to session in auth config */}
             {session.user.isAdmin && (
               <>
-                <Link
-                  href={`/${locale}/admin/cities`}
-                  className="block px-4 py-2 hover:bg-gray-100 transition-colors text-blue-600 font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  ⚙️ {t('admin')}
-                </Link>
+                <div className="relative">
+                  <button
+                    onMouseEnter={() => setAdminSubmenuOpen(true)}
+                    onMouseLeave={() => setAdminSubmenuOpen(false)}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-blue-600 font-medium flex items-center justify-between"
+                  >
+                    <span>⚙️ {t('admin')}</span>
+                    <span className="text-gray-400">›</span>
+                  </button>
+
+                  {adminSubmenuOpen && (
+                    <div
+                      onMouseEnter={() => setAdminSubmenuOpen(true)}
+                      onMouseLeave={() => setAdminSubmenuOpen(false)}
+                      className="absolute left-full top-0 ml-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1"
+                    >
+                      <Link
+                        href={`/${locale}/admin/users`}
+                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        onClick={() => {
+                          setAdminSubmenuOpen(false)
+                          setIsOpen(false)
+                        }}
+                      >
+                        👥 {t('adminUsers')}
+                      </Link>
+                      <Link
+                        href={`/${locale}/admin/cities`}
+                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        onClick={() => {
+                          setAdminSubmenuOpen(false)
+                          setIsOpen(false)
+                        }}
+                      >
+                        🌍 {t('adminCities')}
+                      </Link>
+                    </div>
+                  )}
+                </div>
                 <hr className="my-1" />
               </>
             )}
