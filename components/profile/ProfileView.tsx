@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import type { Session } from 'next-auth';
 import AccountStats from './AccountStats';
 import PremiumBadge from './PremiumBadge';
@@ -14,6 +14,7 @@ interface ProfileViewProps {
 
 export default function ProfileView({ session }: ProfileViewProps) {
   const t = useTranslations('profile');
+  const locale = useLocale();
   const [isEditing, setIsEditing] = useState(false);
 
   // @ts-ignore - isPremium and isAdmin are custom fields
@@ -24,11 +25,11 @@ export default function ProfileView({ session }: ProfileViewProps) {
   // @ts-ignore - createdAt is a custom field
   const memberSince = session.user.createdAt
     // @ts-ignore
-    ? new Date(session.user.createdAt).toLocaleDateString('en-US', {
+    ? new Date(session.user.createdAt).toLocaleDateString(locale, {
         year: 'numeric',
         month: 'long',
       })
-    : new Date().toLocaleDateString('en-US', {
+    : new Date().toLocaleDateString(locale, {
         year: 'numeric',
         month: 'long',
       });
@@ -78,10 +79,10 @@ export default function ProfileView({ session }: ProfileViewProps) {
       {/* Premium Features Info */}
       {(isPremium || isAdmin) && (
         <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg shadow p-6 border border-yellow-200">
-          <h2 className="text-xl font-semibold mb-2 flex items-center">
+          <h2 className="text-xl font-semibold mb-2 flex items-center text-gray-900">
             {isAdmin ? '🛡️' : '👑'} {t('premium.features')}
           </h2>
-          <p className="text-gray-700">{t('premium.unlocked')}</p>
+          <p className="text-gray-900">{t('premium.unlocked')}</p>
         </div>
       )}
 

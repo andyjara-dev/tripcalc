@@ -55,7 +55,7 @@ export default function DeleteAccount() {
             value={confirmText}
             onChange={(e) => setConfirmText(e.target.value)}
             placeholder={t('confirmText')}
-            className="w-full px-4 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500"
+            className="w-full px-4 py-2 border border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 text-gray-900 placeholder-gray-500"
           />
         </div>
 
