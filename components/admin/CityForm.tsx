@@ -37,6 +37,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
 
   // Get current month in YYYY-MM format
   const getCurrentMonth = () => {
@@ -113,6 +114,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setValidationErrors({});
 
     try {
       const url = mode === 'create' ? '/api/admin/cities' : `/api/admin/cities/${city.id}`;
@@ -127,14 +129,22 @@ export default function CityForm({ city, mode }: CityFormProps) {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to save city');
+
+        // Handle validation errors
+        if (data.details) {
+          setValidationErrors(data.details);
+          setError('Please fix the validation errors below');
+        } else {
+          setError(data.error || 'Failed to save city');
+        }
+        return;
       }
 
       // Redirect to cities list
       router.push('/admin/cities');
       router.refresh();
     } catch (err: any) {
-      setError(err.message);
+      setError(err.message || 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -158,7 +168,17 @@ export default function CityForm({ city, mode }: CityFormProps) {
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto">
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-600">{error}</p>
+          <p className="text-red-600 font-semibold mb-2">{error}</p>
+          {Object.keys(validationErrors).length > 0 && (
+            <ul className="mt-2 space-y-1">
+              {Object.entries(validationErrors).map(([field, errors]) => (
+                <li key={field} className="text-sm text-red-600">
+                  <strong className="capitalize">{field.replace(/([A-Z])/g, ' $1').trim()}:</strong>{' '}
+                  {errors.join(', ')}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
 
