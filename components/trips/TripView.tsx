@@ -297,10 +297,10 @@ export default function TripView({ trip }: TripViewProps) {
   const handleExportPDF = async () => {
     setIsExporting(true);
     try {
-      // Load logo as data URL
+      // Load logo as data URL (optimized small version)
       let logoDataUrl: string | undefined;
       try {
-        const response = await fetch('/logo.png');
+        const response = await fetch('/logo-small.png');
         const blob = await response.blob();
         logoDataUrl = await new Promise<string>((resolve) => {
           const reader = new FileReader();

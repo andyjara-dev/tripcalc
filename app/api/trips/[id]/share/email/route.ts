@@ -82,8 +82,8 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     // Get sender name
     const senderName = session.user.name || 'Someone';
 
-    // Logo URL - absolute path
-    const logoUrl = `${baseUrl}/logo.png`;
+    // Logo URL - absolute path (optimized version)
+    const logoUrl = `${baseUrl}/logo-small.png`;
 
     // Send email
     const { data, error } = await resend.emails.send({
