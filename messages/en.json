@@ -265,6 +265,7 @@
     "signInPromptMessage": "Create an account to save your trip calculations, customize costs, and access your travel plans from anywhere.",
     "myTrips": "My Trips",
     "profile": "Profile",
+    "admin": "Admin",
     "continueWithGoogle": "Continue with Google",
     "continueWithGitHub": "Continue with GitHub",
     "continueWithEmail": "Continue with Email",

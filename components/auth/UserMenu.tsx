@@ -50,6 +50,19 @@ export function UserMenu() {
             onClick={() => setIsOpen(false)}
           />
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-20">
+            {/* @ts-ignore - isAdmin is added to session in auth config */}
+            {session.user.isAdmin && (
+              <>
+                <Link
+                  href={`/${locale}/admin/cities`}
+                  className="block px-4 py-2 hover:bg-gray-100 transition-colors text-blue-600 font-medium"
+                  onClick={() => setIsOpen(false)}
+                >
+                  ⚙️ {t('admin')}
+                </Link>
+                <hr className="my-1" />
+              </>
+            )}
             <Link
               href={`/${locale}/trips`}
               className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
