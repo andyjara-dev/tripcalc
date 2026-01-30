@@ -17,6 +17,7 @@ import BudgetVsActual from './BudgetVsActual';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
 import { exportTripToPDF } from '@/lib/utils/pdf-export';
+import { downloadICalendar } from '@/lib/utils/ical-export';
 
 // Import city data to get costs
 import { getCityById } from '@/data/cities';
@@ -68,6 +69,7 @@ export default function TripView({ trip }: TripViewProps) {
   const [isSaving, setIsSaving] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+  const [isExportingCalendar, setIsExportingCalendar] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
   const [expensesLoading, setExpensesLoading] = useState(true);
 
@@ -359,6 +361,39 @@ export default function TripView({ trip }: TripViewProps) {
     }
   };
 
+  const handleExportCalendar = async () => {
+    if (!trip.startDate) {
+      alert('Please set a start date for your trip first');
+      return;
+    }
+
+    setIsExportingCalendar(true);
+    try {
+      downloadICalendar({
+        tripName: trip.name,
+        cityName: trip.cityName,
+        startDate: trip.startDate,
+        days,
+        costs,
+        currencySymbol: city.currencySymbol,
+        translations: {
+          day: tTrips('day'),
+          estimatedCost: tTrips('estimatedCost'),
+          accommodation: t('accommodation'),
+          food: t('food'),
+          transport: t('transport'),
+          activities: t('activities'),
+          generatedBy: tTrips('generatedBy'),
+        },
+      });
+    } catch (error) {
+      console.error('Error exporting calendar:', error);
+      alert('Failed to export calendar');
+    } finally {
+      setIsExportingCalendar(false);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Success notification */}
@@ -420,6 +455,15 @@ export default function TripView({ trip }: TripViewProps) {
             >
               <span>📄</span>
               <span>{isExporting ? tTrips('generatingPDF') : tTrips('exportPDF')}</span>
+            </button>
+            <button
+              onClick={handleExportCalendar}
+              disabled={isExportingCalendar || !trip.startDate}
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2 disabled:opacity-50"
+              title={!trip.startDate ? 'Please set a start date first' : ''}
+            >
+              <span>📅</span>
+              <span>{isExportingCalendar ? tTrips('exportingCalendar') : tTrips('addToCalendar')}</span>
             </button>
             <button
               onClick={handleSaveChanges}
