@@ -443,7 +443,10 @@
     "budgetVsActual": "Presupuesto vs Real",
     "budgeted": "Presupuestado",
     "actual": "Real",
-    "generatedBy": "Generado por"
+    "generatedBy": "Generado por",
+    "city": "Ciudad",
+    "dates": "Fechas",
+    "style": "Estilo"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",

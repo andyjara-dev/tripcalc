@@ -20,6 +20,7 @@ interface PDFExportData {
   dailyPlans: DayPlan[];
   tripTotal: number;
   expenses?: ExpenseDisplay[];
+  logoDataUrl?: string;
   translations: {
     tripDetails: string;
     city: string;
@@ -34,6 +35,7 @@ interface PDFExportData {
     perDay: string;
     dailyBreakdown: string;
     day: string;
+    days: string;
     totalTrip: string;
     averagePerDay: string;
     budgetVsActual: string;
@@ -59,12 +61,38 @@ export async function exportTripToPDF(data: PDFExportData) {
     return false;
   };
 
-  // Header - TripCalc Logo (text)
-  doc.setFontSize(24);
-  doc.setFont('helvetica', 'bold');
-  doc.setTextColor(37, 99, 235); // Blue
-  doc.text('TripCalc', pageWidth / 2, yPosition, { align: 'center' });
-  yPosition += 10;
+  // Header - TripCalc Logo
+  if (data.logoDataUrl) {
+    try {
+      // Add logo image centered
+      const logoWidth = 40;
+      const logoHeight = 13; // Maintain aspect ratio (800x267 = ~3:1)
+      doc.addImage(
+        data.logoDataUrl,
+        'PNG',
+        (pageWidth - logoWidth) / 2,
+        yPosition - 5,
+        logoWidth,
+        logoHeight
+      );
+      yPosition += 15;
+    } catch (error) {
+      console.error('Error adding logo to PDF:', error);
+      // Fallback to text
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(37, 99, 235);
+      doc.text('TripCalc', pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 10;
+    }
+  } else {
+    // Fallback to text if no logo
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(37, 99, 235);
+    doc.text('TripCalc', pageWidth / 2, yPosition, { align: 'center' });
+    yPosition += 10;
+  }
 
   // Trip Name
   doc.setFontSize(18);
@@ -101,7 +129,7 @@ export async function exportTripToPDF(data: PDFExportData) {
   doc.setFont('helvetica', 'bold');
   doc.text(`${data.translations.duration}:`, 20, yPosition);
   doc.setFont('helvetica', 'normal');
-  doc.text(`${data.days} ${data.days === 1 ? data.translations.day : data.translations.duration}`, 45, yPosition);
+  doc.text(`${data.days} ${data.days === 1 ? data.translations.day : data.translations.days}`, 45, yPosition);
   yPosition += 7;
 
   // Style

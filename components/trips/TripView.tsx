@@ -295,6 +295,20 @@ export default function TripView({ trip }: TripViewProps) {
   const handleExportPDF = async () => {
     setIsExporting(true);
     try {
+      // Load logo as data URL
+      let logoDataUrl: string | undefined;
+      try {
+        const response = await fetch('/logo.png');
+        const blob = await response.blob();
+        logoDataUrl = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        console.error('Error loading logo:', error);
+      }
+
       const tripStyleLabels = {
         budget: t('budget'),
         midRange: t('midRange'),
@@ -313,12 +327,13 @@ export default function TripView({ trip }: TripViewProps) {
         dailyPlans: days,
         tripTotal,
         expenses,
+        logoDataUrl,
         translations: {
           tripDetails: tTrips('tripDetails'),
-          city: t('city'),
+          city: tTrips('city'),
           dates: tTrips('dates'),
           duration: tTrips('duration'),
-          style: t('travelStyle'),
+          style: tTrips('style'),
           budgetBreakdown: tTrips('budgetBreakdown'),
           accommodation: t('accommodation'),
           food: t('food'),
@@ -327,6 +342,7 @@ export default function TripView({ trip }: TripViewProps) {
           perDay: tTrips('perDay'),
           dailyBreakdown: tTrips('dailyBreakdown'),
           day: tTrips('day'),
+          days: tTrips('days'),
           totalTrip: tTrips('totalTrip'),
           averagePerDay: tTrips('averagePerDay'),
           budgetVsActual: tTrips('budgetVsActual'),
