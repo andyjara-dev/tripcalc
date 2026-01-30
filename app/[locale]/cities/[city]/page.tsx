@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
-import { getCityById, getAllCities } from '@/data/cities';
+import { getCity, getAllCities } from '@/lib/cities/service';
 import CalculatorTabs from '@/components/CalculatorTabs';
 import Header from '@/components/Header';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -16,7 +16,7 @@ interface CityPageProps {
 
 // Generate static params for all cities
 export async function generateStaticParams() {
-  const cities = getAllCities();
+  const cities = await getAllCities();
   return cities.map((city) => ({
     city: city.id,
   }));
@@ -24,7 +24,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: CityPageProps) {
   const { city: cityId, locale } = await params;
-  const city = getCityById(cityId);
+  const city = await getCity(cityId);
   const t = await getTranslations({ locale, namespace: 'cities' });
 
   if (!city) {
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: CityPageProps) {
 export default async function CityPage({ params }: CityPageProps) {
   const { city: cityId, locale } = await params;
   const t = await getTranslations({ locale });
-  const city = getCityById(cityId);
+  const city = await getCity(cityId);
 
   if (!city) {
     notFound();

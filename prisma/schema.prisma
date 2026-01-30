@@ -166,3 +166,164 @@ model Expense {
   @@index([tripId])
   @@index([date])
 }
+
+// Cities Database Models
+
+model City {
+  id          String   @id // URL slug: "barcelona", "new-york"
+  name        String   // Display name: "Barcelona"
+  country     String
+  region      String?  // "Europe", "Asia", etc.
+
+  // Currency
+  currency       String  // ISO code: "EUR", "USD"
+  currencySymbol String  // "€", "$"
+
+  // Metadata
+  language       String   // Primary language(s): "Spanish, Catalan"
+  timezone       String?  // "Europe/Madrid"
+  population     Int?
+  touristSeason  String?  // "Year-round", "Summer", etc.
+
+  // SEO
+  description    String?  @db.Text
+  metaTitle      String?
+  metaDescription String?
+
+  // Media
+  imageUrl       String?
+  imageCredit    String?
+
+  // Status
+  isPublished    Boolean  @default(false)
+  lastUpdated    String   // "2026-01" format
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  dailyCosts  CityDailyCost[]
+  transport   CityTransport[]
+  airports    CityAirport[]
+  tips        CityTip[]
+  cashInfo    CityCashInfo?
+  priceHistory CityPriceHistory[]
+
+  @@index([country])
+  @@index([isPublished])
+}
+
+model CityDailyCost {
+  id     String @id @default(cuid())
+  cityId String
+
+  travelStyle String // "budget", "midRange", "luxury"
+
+  // Daily costs (in cents)
+  accommodation Int
+  food          Int
+  transport     Int
+  activities    Int
+
+  // Optional breakdown
+  breakfast     Int?
+  lunch         Int?
+  dinner        Int?
+  snacks        Int?
+
+  validFrom  DateTime  @default(now())
+  validUntil DateTime?
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId, travelStyle])
+  @@index([validFrom, validUntil])
+}
+
+model CityTransport {
+  id     String @id @default(cuid())
+  cityId String
+
+  type String // "metro", "taxi", "uber", "bus", "tram"
+  name String // "Metro Single Ticket", "Uber Pool"
+
+  // Price (in cents)
+  price     Int
+  priceNote String? // "Per ride", "Per km", "Base fare"
+
+  // Details
+  description String? @db.Text
+  tips        String? @db.Text
+  bookingUrl  String?
+
+  validFrom  DateTime  @default(now())
+  validUntil DateTime?
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId, type])
+}
+
+model CityAirport {
+  id     String @id @default(cuid())
+  cityId String
+
+  code String // "BCN", "JFK"
+  name String // "Barcelona El Prat"
+
+  // Transfer options (array of objects with type, name, price, duration, etc.)
+  transfers Json
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId])
+}
+
+model CityTip {
+  id       String @id @default(cuid())
+  cityId   String
+
+  category String // "payment", "safety", "culture", "language"
+  title    String
+  content  String @db.Text
+
+  order Int @default(0) // Display order
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId, category])
+}
+
+model CityCashInfo {
+  id     String @id @default(cuid())
+  cityId String @unique
+
+  cashNeeded       String // "low", "medium", "high"
+  cardsAccepted    String // "widely", "most-places", "limited"
+  atmAvailability  String // "everywhere", "common", "limited"
+
+  recommendations  String @db.Text
+  atmFees          String?
+  bestExchange     String?
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+}
+
+// Price history tracking
+model CityPriceHistory {
+  id        String   @id @default(cuid())
+  cityId    String
+  category  String   // "dailyCost", "transport"
+  field     String   // "accommodation", "metro"
+  oldValue  Int
+  newValue  Int
+  reason    String?  // "Inflation", "User report", "Personal update"
+
+  changedBy String   // User ID
+  changedAt DateTime @default(now())
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([cityId])
+  @@index([changedAt])
+}

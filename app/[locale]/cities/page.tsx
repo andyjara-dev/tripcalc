@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
-import { getAllCities } from '@/data/cities';
+import { getAllCities } from '@/lib/cities/service';
 import Header from '@/components/Header';
 
 export const metadata = {
@@ -15,7 +15,7 @@ export default async function CitiesPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
-  const cities = getAllCities();
+  const cities = await getAllCities();
 
   return (
     <div className="min-h-screen bg-gray-50">
