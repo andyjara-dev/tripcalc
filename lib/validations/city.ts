@@ -184,6 +184,6 @@ export function fromCents(cents: number): number {
  * Validate currency format (basic check)
  */
 export function isValidCurrency(code: string): boolean {
-  const validCurrencies = ['EUR', 'USD', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'MXN', 'BRL'];
+  const validCurrencies = ['EUR', 'USD', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'CNY', 'MXN', 'BRL', 'CLP'];
   return validCurrencies.includes(code.toUpperCase());
 }

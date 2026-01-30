@@ -151,6 +151,7 @@ export default function CityForm({ city, mode }: CityFormProps) {
     { code: 'CNY', symbol: '¥' },
     { code: 'MXN', symbol: 'MX$' },
     { code: 'BRL', symbol: 'R$' },
+    { code: 'CLP', symbol: '$' },
   ];
 
   return (
