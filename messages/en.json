@@ -532,6 +532,21 @@
     },
     "acceptance": "By using TripCalc, you acknowledge that you have read, understood, and agree to these Terms of Service."
   },
+  "admin": {
+    "adminDashboard": "Admin Dashboard",
+    "manageUsers": "Manage users and their premium status",
+    "users": "Users",
+    "totalUsers": "Total Users",
+    "premiumUsers": "Premium Users",
+    "adminUsers": "Admin Users",
+    "user": "User",
+    "trips": "Trips",
+    "status": "Status",
+    "joined": "Joined",
+    "actions": "Actions",
+    "noUsers": "No users found",
+    "confirmAdminChange": "Are you sure you want to change admin status for this user?"
+  },
   "privacy": {
     "title": "Privacy Policy",
     "lastUpdated": "Last updated: {date}",

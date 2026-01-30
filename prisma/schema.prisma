@@ -49,6 +49,8 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  isPremium     Boolean   @default(false)
+  isAdmin       Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 

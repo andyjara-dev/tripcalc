@@ -53,6 +53,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id
+        // @ts-ignore - Add custom fields to session
+        session.user.isPremium = user.isPremium || false
+        // @ts-ignore - Add custom fields to session
+        session.user.isAdmin = user.isAdmin || false
       }
       return session
     },

@@ -555,6 +555,21 @@
     },
     "acceptance": "Al usar TripCalc, reconoces que has leído, entendido y aceptas estos Términos de Servicio."
   },
+  "admin": {
+    "adminDashboard": "Panel de Administración",
+    "manageUsers": "Gestionar usuarios y su estado premium",
+    "users": "Usuarios",
+    "totalUsers": "Total de Usuarios",
+    "premiumUsers": "Usuarios Premium",
+    "adminUsers": "Usuarios Admin",
+    "user": "Usuario",
+    "trips": "Viajes",
+    "status": "Estado",
+    "joined": "Registro",
+    "actions": "Acciones",
+    "noUsers": "No se encontraron usuarios",
+    "confirmAdminChange": "¿Estás seguro de cambiar el estado de administrador para este usuario?"
+  },
   "privacy": {
     "title": "Política de Privacidad",
     "lastUpdated": "Última actualización: {date}",
