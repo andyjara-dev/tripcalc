@@ -670,5 +670,22 @@
       "deleting": "Deleting...",
       "confirmText": "DELETE"
     }
+  },
+  "email": {
+    "shareTrip": {
+      "subject": "{sender} shared a trip with you - {tripName}",
+      "sharedWith": "{sender} shared a trip with you",
+      "viewButton": "View Trip Plan",
+      "orCopy": "Or copy and paste this link into your browser:",
+      "readOnly": "This is a read-only link. The trip owner can update the plan anytime, and you'll see the latest version.",
+      "sentBy": "Sent by",
+      "tagline": "Real travel costs, no surprises",
+      "clickBelow": "Click the button below to view the complete trip plan with daily costs, activities, and more.",
+      "city": "City",
+      "style": "Style",
+      "duration": "Duration",
+      "day": "day",
+      "days": "days"
+    }
   }
 }

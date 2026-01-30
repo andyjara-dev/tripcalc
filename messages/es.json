@@ -693,5 +693,22 @@
       "deleting": "Eliminando...",
       "confirmText": "ELIMINAR"
     }
+  },
+  "email": {
+    "shareTrip": {
+      "subject": "{sender} compartió un viaje contigo - {tripName}",
+      "sharedWith": "{sender} compartió un viaje contigo",
+      "viewButton": "Ver Plan de Viaje",
+      "orCopy": "O copia y pega este enlace en tu navegador:",
+      "readOnly": "Este es un enlace de solo lectura. El dueño del viaje puede actualizar el plan en cualquier momento, y verás la versión más reciente.",
+      "sentBy": "Enviado por",
+      "tagline": "Costos reales de viaje, sin sorpresas",
+      "clickBelow": "Haz clic en el botón a continuación para ver el plan completo del viaje con costos diarios, actividades y más.",
+      "city": "Ciudad",
+      "style": "Estilo",
+      "duration": "Duración",
+      "day": "día",
+      "days": "días"
+    }
   }
 }

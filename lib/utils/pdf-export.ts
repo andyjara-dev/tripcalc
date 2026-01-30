@@ -64,18 +64,18 @@ export async function exportTripToPDF(data: PDFExportData) {
   // Header - TripCalc Logo
   if (data.logoDataUrl) {
     try {
-      // Add logo image centered
-      const logoWidth = 40;
-      const logoHeight = 13; // Maintain aspect ratio (800x267 = ~3:1)
+      // Add logo image centered - increased size for better visibility
+      const logoWidth = 70; // Increased from 40
+      const logoHeight = 23; // Maintain aspect ratio (800x267 = ~3:1)
       doc.addImage(
         data.logoDataUrl,
         'PNG',
         (pageWidth - logoWidth) / 2,
-        yPosition - 5,
+        yPosition,
         logoWidth,
         logoHeight
       );
-      yPosition += 15;
+      yPosition += 28;
     } catch (error) {
       console.error('Error adding logo to PDF:', error);
       // Fallback to text

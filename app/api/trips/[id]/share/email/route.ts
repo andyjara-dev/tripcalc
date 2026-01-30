@@ -3,6 +3,7 @@ import { requireAuth } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
 import { Resend } from 'resend';
 import { z } from 'zod';
+import { getTranslations } from 'next-intl/server';
 
 const emailSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -70,16 +71,25 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || `https://${request.headers.get('host')}`;
     const shareUrl = `${baseUrl}/${locale}/shared/${trip.shareToken}`;
 
+    // Load translations for the email
+    const t = await getTranslations({ locale, namespace: 'email.shareTrip' });
+
     // Format trip style for display
     const tripStyleDisplay = trip.tripStyle === 'MID_RANGE'
       ? 'Mid-Range'
       : trip.tripStyle.charAt(0) + trip.tripStyle.slice(1).toLowerCase();
 
+    // Get sender name
+    const senderName = session.user.name || 'Someone';
+
+    // Logo URL - absolute path
+    const logoUrl = `${baseUrl}/logo.png`;
+
     // Send email
     const { data, error } = await resend.emails.send({
       from: 'TripCalc <noreply@tripcalc.site>',
       to: email,
-      subject: `${session.user.name || 'Someone'} shared a trip with you - ${trip.name}`,
+      subject: t('subject', { sender: senderName, tripName: trip.name }),
       html: `
         <!DOCTYPE html>
         <html>
@@ -91,43 +101,43 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
           <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 30px;">
-              <h1 style="color: #2563eb; margin: 0; font-size: 28px;">TripCalc</h1>
-              <p style="color: #6b7280; margin: 5px 0; font-size: 14px;">Real Travel Costs, No Surprises</p>
+              <img src="${logoUrl}" alt="TripCalc" style="max-width: 200px; height: auto;" />
+              <p style="color: #6b7280; margin: 10px 0 0 0; font-size: 14px;">${t('tagline')}</p>
             </div>
 
             <!-- Main Content -->
             <div style="background: #f9fafb; border-radius: 12px; padding: 30px; margin-bottom: 20px;">
               <h2 style="margin-top: 0; color: #1f2937; font-size: 22px;">
-                ${session.user.name || 'Someone'} shared a trip with you
+                ${t('sharedWith', { sender: senderName })}
               </h2>
 
               <div style="background: white; border-radius: 8px; padding: 20px; margin: 20px 0; border-left: 4px solid #2563eb;">
                 <h3 style="margin: 0 0 10px 0; color: #1f2937; font-size: 18px;">${trip.name}</h3>
                 <p style="margin: 5px 0; color: #6b7280; font-size: 14px;">
-                  <strong>City:</strong> ${trip.cityName}
+                  <strong>${t('city')}:</strong> ${trip.cityName}
                 </p>
                 <p style="margin: 5px 0; color: #6b7280; font-size: 14px;">
-                  <strong>Style:</strong> ${tripStyleDisplay}
+                  <strong>${t('style')}:</strong> ${tripStyleDisplay}
                 </p>
                 <p style="margin: 5px 0; color: #6b7280; font-size: 14px;">
-                  <strong>Duration:</strong> ${trip.days} ${trip.days === 1 ? 'day' : 'days'}
+                  <strong>${t('duration')}:</strong> ${trip.days} ${trip.days === 1 ? t('day') : t('days')}
                 </p>
               </div>
 
               <p style="color: #4b5563; margin: 20px 0;">
-                Click the button below to view the complete trip plan with daily costs, activities, and more.
+                ${t('clickBelow')}
               </p>
 
               <!-- CTA Button -->
               <div style="text-align: center; margin: 30px 0;">
                 <a href="${shareUrl}"
                    style="display: inline-block; background: #2563eb; color: white; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px;">
-                  View Trip Plan
+                  ${t('viewButton')}
                 </a>
               </div>
 
               <p style="color: #9ca3af; font-size: 13px; margin: 20px 0 0 0;">
-                Or copy and paste this link into your browser:<br>
+                ${t('orCopy')}<br>
                 <a href="${shareUrl}" style="color: #2563eb; word-break: break-all;">${shareUrl}</a>
               </p>
             </div>
@@ -135,29 +145,29 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
             <!-- Footer -->
             <div style="text-align: center; padding-top: 20px; border-top: 1px solid #e5e7eb;">
               <p style="color: #9ca3af; font-size: 13px; margin: 10px 0;">
-                This is a read-only link. The trip owner can update the plan anytime, and you'll see the latest version.
+                ${t('readOnly')}
               </p>
               <p style="color: #9ca3af; font-size: 12px; margin: 15px 0 0 0;">
-                Sent by <a href="${baseUrl}" style="color: #2563eb; text-decoration: none;">TripCalc</a> - Real travel costs, no surprises
+                ${t('sentBy')} <a href="${baseUrl}" style="color: #2563eb; text-decoration: none;">TripCalc</a> - ${t('tagline')}
               </p>
             </div>
           </body>
         </html>
       `,
       text: `
-${session.user.name || 'Someone'} shared a trip with you
+${t('sharedWith', { sender: senderName })}
 
 ${trip.name}
-City: ${trip.cityName}
-Style: ${tripStyleDisplay}
-Duration: ${trip.days} ${trip.days === 1 ? 'day' : 'days'}
+${t('city')}: ${trip.cityName}
+${t('style')}: ${tripStyleDisplay}
+${t('duration')}: ${trip.days} ${trip.days === 1 ? t('day') : t('days')}
 
-View the complete trip plan here:
+${t('clickBelow')}
 ${shareUrl}
 
-This is a read-only link. The trip owner can update the plan anytime.
+${t('readOnly')}
 
-Sent by TripCalc - Real travel costs, no surprises
+${t('sentBy')} TripCalc - ${t('tagline')}
 ${baseUrl}
       `.trim(),
     });
