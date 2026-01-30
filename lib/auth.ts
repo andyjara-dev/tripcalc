@@ -57,6 +57,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.isPremium = user.isPremium || false
         // @ts-ignore - Add custom fields to session
         session.user.isAdmin = user.isAdmin || false
+        // @ts-ignore - Add createdAt to session
+        session.user.createdAt = user.createdAt
       }
       return session
     },

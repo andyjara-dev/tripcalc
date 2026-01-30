@@ -646,5 +646,44 @@
       "p1": "Para preguntas relacionadas con privacidad, contáctanos en:",
       "email": "hello@tripcalc.site"
     }
+  },
+  "profile": {
+    "title": "Perfil",
+    "noName": "Sin nombre",
+    "accountSettings": "Configuración de Cuenta",
+    "editProfile": "Editar Perfil",
+    "save": "Guardar Cambios",
+    "cancel": "Cancelar",
+    "memberSince": "Miembro desde",
+    "stats": {
+      "totalTrips": "Viajes Totales",
+      "sharedTrips": "Viajes Compartidos",
+      "totalExpenses": "Gastos Registrados"
+    },
+    "edit": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "updating": "Actualizando...",
+      "success": "Perfil actualizado exitosamente",
+      "error": "Error al actualizar perfil"
+    },
+    "premium": {
+      "badge": "Premium",
+      "adminBadge": "Admin",
+      "features": "Funciones Premium",
+      "unlocked": "Tienes acceso a todas las funciones premium",
+      "upgrade": "Actualizar a Premium"
+    },
+    "dangerZone": {
+      "title": "Zona de Peligro",
+      "deleteAccount": "Eliminar Cuenta",
+      "deleteWarning": "Esto eliminará permanentemente tu cuenta y todos los datos asociados. Esta acción no se puede deshacer.",
+      "confirmDelete": "Escribe 'ELIMINAR' para confirmar",
+      "deleteButton": "Eliminar Mi Cuenta",
+      "deleting": "Eliminando...",
+      "confirmText": "ELIMINAR"
+    }
   }
 }

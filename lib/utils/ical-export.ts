@@ -109,7 +109,7 @@ export function generateICalendar(data: ICalExportData): string {
       ...activities,
       '',
       data.translations.generatedBy + ' TripCalc - tripcalc.site',
-    ].join('\\n');
+    ].join('\n');
 
     // Create event
     const eventTitle = day.dayName
