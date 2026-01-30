@@ -435,7 +435,15 @@
     "createOwnTripDesc": "Crea tu propio plan de viaje detallado con las herramientas gratuitas de TripCalc",
     "startPlanningFor": "Comenzar a Planificar {city}",
     "poweredBy": "Desarrollado por",
-    "tagline": "Costos reales de viaje, sin sorpresas"
+    "tagline": "Costos reales de viaje, sin sorpresas",
+    "tripDetails": "Detalles del Viaje",
+    "duration": "Duración",
+    "budgetBreakdown": "Desglose de Presupuesto",
+    "perDay": "/día",
+    "budgetVsActual": "Presupuesto vs Real",
+    "budgeted": "Presupuestado",
+    "actual": "Real",
+    "generatedBy": "Generado por"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",

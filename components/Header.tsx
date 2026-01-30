@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { SignInButton } from './auth/SignInButton';
 import { UserMenu } from './auth/UserMenu';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface HeaderProps {
   locale: string;
@@ -64,6 +65,7 @@ export default function Header({ locale, activeSection = 'home', translations }:
           >
             {translations.about}
           </Link>
+          <LanguageSwitcher />
           {status === 'loading' ? (
             <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
           ) : session ? (

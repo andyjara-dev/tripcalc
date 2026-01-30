@@ -16,6 +16,7 @@ import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
+import { exportTripToPDF } from '@/lib/utils/pdf-export';
 
 // Import city data to get costs
 import { getCityById } from '@/data/cities';
@@ -66,6 +67,7 @@ export default function TripView({ trip }: TripViewProps) {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
   const [expensesLoading, setExpensesLoading] = useState(true);
 
@@ -290,6 +292,57 @@ export default function TripView({ trip }: TripViewProps) {
     });
   };
 
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    try {
+      const tripStyleLabels = {
+        budget: t('budget'),
+        midRange: t('midRange'),
+        luxury: t('luxury'),
+      };
+
+      await exportTripToPDF({
+        tripName: trip.name,
+        cityName: trip.cityName,
+        startDate: trip.startDate ? formatDate(trip.startDate) : null,
+        endDate: trip.endDate ? formatDate(trip.endDate) : null,
+        days: days.length,
+        tripStyle: tripStyleLabels[tripStyle],
+        currencySymbol: city.currencySymbol,
+        costs,
+        dailyPlans: days,
+        tripTotal,
+        expenses,
+        translations: {
+          tripDetails: tTrips('tripDetails'),
+          city: t('city'),
+          dates: tTrips('dates'),
+          duration: tTrips('duration'),
+          style: t('travelStyle'),
+          budgetBreakdown: tTrips('budgetBreakdown'),
+          accommodation: t('accommodation'),
+          food: t('food'),
+          transport: t('transport'),
+          activities: t('activities'),
+          perDay: tTrips('perDay'),
+          dailyBreakdown: tTrips('dailyBreakdown'),
+          day: tTrips('day'),
+          totalTrip: tTrips('totalTrip'),
+          averagePerDay: tTrips('averagePerDay'),
+          budgetVsActual: tTrips('budgetVsActual'),
+          budgeted: tTrips('budgeted'),
+          actual: tTrips('actual'),
+          generatedBy: tTrips('generatedBy'),
+        },
+      });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Failed to export PDF');
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Success notification */}
@@ -343,6 +396,14 @@ export default function TripView({ trip }: TripViewProps) {
             >
               <span>{trip.isPublic ? '🌐' : '🔒'}</span>
               <span>{tTrips('share')}</span>
+            </button>
+            <button
+              onClick={handleExportPDF}
+              disabled={isExporting}
+              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2 disabled:opacity-50"
+            >
+              <span>📄</span>
+              <span>{isExporting ? tTrips('generatingPDF') : tTrips('exportPDF')}</span>
             </button>
             <button
               onClick={handleSaveChanges}
