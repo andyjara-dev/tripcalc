@@ -21,9 +21,10 @@ const updateTripSchema = z.object({
 // GET /api/trips/[id] - Get specific trip
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -35,7 +36,7 @@ export async function GET(
 
     const trip = await prisma.trip.findUnique({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id, // Ensure user owns this trip
       },
       include: {
@@ -63,9 +64,10 @@ export async function GET(
 // PUT /api/trips/[id] - Update trip
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -78,7 +80,7 @@ export async function PUT(
     // Verify ownership
     const existingTrip = await prisma.trip.findUnique({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id,
       },
     });
@@ -96,7 +98,7 @@ export async function PUT(
     // Update trip
     const trip = await prisma.trip.update({
       where: {
-        id: params.id,
+        id,
       },
       data: {
         name: validated.name,
@@ -118,7 +120,7 @@ export async function PUT(
       // Delete existing custom items
       await prisma.customItem.deleteMany({
         where: {
-          tripId: params.id,
+          tripId: id,
         },
       });
 
@@ -171,9 +173,10 @@ export async function PUT(
 // DELETE /api/trips/[id] - Delete trip
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
 
     if (!session?.user?.id) {
@@ -186,7 +189,7 @@ export async function DELETE(
     // Verify ownership and delete
     const trip = await prisma.trip.deleteMany({
       where: {
-        id: params.id,
+        id,
         userId: session.user.id, // Ensure user owns this trip
       },
     });
