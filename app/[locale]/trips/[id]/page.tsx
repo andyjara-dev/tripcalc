@@ -6,14 +6,15 @@ import { getTranslations } from 'next-intl/server';
 import TripView from '@/components/trips/TripView';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     locale: string;
     id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.locale, namespace: 'trips' });
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'trips' });
 
   return {
     title: `${t('tripDetails')} - TripCalc`,
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function TripDetailPage({ params }: PageProps) {
+  const { id } = await params;
   const session = await auth();
 
   if (!session?.user?.id) {
@@ -29,7 +31,7 @@ export default async function TripDetailPage({ params }: PageProps) {
 
   const trip = await prisma.trip.findUnique({
     where: {
-      id: params.id,
+      id,
       userId: session.user.id, // Ensure user owns this trip
     },
     include: {

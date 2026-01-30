@@ -7,8 +7,9 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import TripCard from '@/components/trips/TripCard';
 
-export async function generateMetadata({ params }: { params: { locale: string } }): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.locale, namespace: 'trips' });
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'trips' });
 
   return {
     title: `${t('title')} - TripCalc`,
