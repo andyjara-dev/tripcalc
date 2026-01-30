@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getLocale } from 'next-intl/server';
 import PublicTripView from '@/components/trips/PublicTripView';
 
 interface PageProps {
   params: Promise<{
+    locale: string;
     shareToken: string;
   }>;
 }
@@ -40,8 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function SharedTripPage({ params }: PageProps) {
-  const { shareToken } = await params;
-  const locale = await getLocale();
+  const { locale, shareToken } = await params;
 
   // Fetch trip data
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface ShareTripModalProps {
   isOpen: boolean;
@@ -19,6 +19,7 @@ export default function ShareTripModal({
   initialShareToken,
 }: ShareTripModalProps) {
   const t = useTranslations('trips');
+  const locale = useLocale();
   const [isPublic, setIsPublic] = useState(initialIsPublic);
   const [shareToken, setShareToken] = useState(initialShareToken);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +28,7 @@ export default function ShareTripModal({
   if (!isOpen) return null;
 
   const shareUrl = shareToken
-    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/shared/${shareToken}`
+    ? `${typeof window !== 'undefined' ? window.location.origin : ''}/${locale}/shared/${shareToken}`
     : '';
 
   const handleTogglePublic = async () => {

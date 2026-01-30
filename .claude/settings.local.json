@@ -28,7 +28,8 @@
       "Bash(ss:*)",
       "Bash(wait:*)",
       "Bash(npm run dev:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(/mnt/c/andy/trabajos/andysoft/tripcalc/scripts/deploy.sh:*)"
     ]
   }
 }
