@@ -11,7 +11,10 @@ import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/
 import DayPlanCard from '../calculators/DayPlanCard';
 import SaveTripModal from './SaveTripModal';
 import CustomizeCostsModal from './CustomizeCostsModal';
+import ExpensesList from './ExpensesList';
+import BudgetVsActual from './BudgetVsActual';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
+import type { ExpenseDisplay } from '@/lib/validations/expense';
 
 // Import city data to get costs
 import { getCityById } from '@/data/cities';
@@ -59,6 +62,8 @@ export default function TripView({ trip }: TripViewProps) {
   const [showCustomizeCostsModal, setShowCustomizeCostsModal] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
+  const [expensesLoading, setExpensesLoading] = useState(true);
 
   // Get city data
   const city = getCityById(trip.cityId);
@@ -69,6 +74,25 @@ export default function TripView({ trip }: TripViewProps) {
   // Get effective costs (custom or defaults)
   const cityDefaults = city.dailyCosts[tripStyle];
   const costs = getEffectiveCosts(trip, cityDefaults);
+
+  // Load expenses
+  useEffect(() => {
+    const fetchExpenses = async () => {
+      try {
+        const response = await fetch(`/api/trips/${trip.id}/expenses`);
+        if (response.ok) {
+          const data = await response.json();
+          setExpenses(data.expenses);
+        }
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
+      } finally {
+        setExpensesLoading(false);
+      }
+    };
+
+    fetchExpenses();
+  }, [trip.id]);
 
   // Trigger animation on changes
   useEffect(() => {
@@ -122,6 +146,18 @@ export default function TripView({ trip }: TripViewProps) {
 
     setDays([...days, newDay]);
     setActiveDay(newDay.dayNumber);
+  };
+
+  const handleRefreshExpenses = async () => {
+    try {
+      const response = await fetch(`/api/trips/${trip.id}/expenses`);
+      if (response.ok) {
+        const data = await response.json();
+        setExpenses(data.expenses);
+      }
+    } catch (error) {
+      console.error('Error refreshing expenses:', error);
+    }
   };
 
   const handleSaveCustomCosts = async (customCosts: CustomCosts) => {
@@ -421,6 +457,31 @@ export default function TripView({ trip }: TripViewProps) {
           onDuplicate={() => duplicateDay(activeD.dayNumber)}
         />
       )}
+
+      {/* Expenses & Budget Tracking */}
+      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Expenses List */}
+        <div>
+          <ExpensesList
+            tripId={trip.id}
+            expenses={expenses}
+            currencySymbol={city.currencySymbol}
+            onExpenseAdded={handleRefreshExpenses}
+          />
+        </div>
+
+        {/* Budget vs Actual */}
+        <div>
+          {!expensesLoading && (
+            <BudgetVsActual
+              budget={costs}
+              expenses={expenses}
+              days={days.length}
+              currencySymbol={city.currencySymbol}
+            />
+          )}
+        </div>
+      </div>
 
       {/* Trip Summary */}
       <div className="mt-8 bg-gray-50 rounded-xl p-6 space-y-4">
