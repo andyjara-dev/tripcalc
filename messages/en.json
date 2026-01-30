@@ -399,7 +399,20 @@
     "customCost": "Custom",
     "defaultCost": "Default",
     "editCosts": "Edit Costs",
-    "resetToDefault": "Reset to Default"
+    "resetToDefault": "Reset to Default",
+    "cityNotFound": "City not found",
+    "cityNotFoundDesc": "This trip references a city that doesn't exist.",
+    "day": "day",
+    "days": "days",
+    "tripSummary": "Trip Summary",
+    "totalTrip": "Total Trip",
+    "averagePerDay": "Average per day",
+    "dailyBreakdown": "Daily Breakdown",
+    "planYourOwnTrip": "Plan Your Own Trip",
+    "createOwnTripDesc": "Create your own detailed trip plan with TripCalc's free tools",
+    "startPlanningFor": "Start Planning for {city}",
+    "poweredBy": "Powered by",
+    "tagline": "Real travel costs, no surprises"
   },
   "footer": {
     "tagline": "Real travel costs, no surprises",

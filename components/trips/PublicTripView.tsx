@@ -48,8 +48,8 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">City not found</h1>
-          <p className="text-gray-600">This trip references a city that doesn't exist.</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{tTrips('cityNotFound')}</h1>
+          <p className="text-gray-600">{tTrips('cityNotFoundDesc')}</p>
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
             )}
             <span className="flex items-center gap-2">
               <span>⏱️</span>
-              <span>{trip.days} {trip.days === 1 ? 'day' : 'days'}</span>
+              <span>{trip.days} {trip.days === 1 ? tTrips('day') : tTrips('days')}</span>
             </span>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Trip Summary */}
         <div className="bg-white rounded-xl p-6 shadow-md mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Trip Summary</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">{tTrips('tripSummary')}</h2>
 
           {/* Budget Breakdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -143,14 +143,14 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
           <div className="border-t border-gray-200 pt-4">
             <div className="flex justify-between items-center">
               <span className="text-lg font-medium text-gray-700">
-                Total Trip ({days.length} {days.length === 1 ? 'day' : 'days'}):
+                {tTrips('totalTrip')} ({days.length} {days.length === 1 ? tTrips('day') : tTrips('days')}):
               </span>
               <span className="text-3xl font-bold text-gray-900">
                 {city.currencySymbol}{tripTotal.toFixed(2)}
               </span>
             </div>
             <div className="text-sm text-gray-600 text-right mt-1">
-              Average per day: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
+              {tTrips('averagePerDay')}: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
 
         {/* Day breakdown */}
         <div className="bg-white rounded-xl p-6 shadow-md mb-8">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Daily Breakdown</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">{tTrips('dailyBreakdown')}</h3>
           <div className="space-y-2">
             {days.map(day => {
               const dayCost = calculateDayCost(day, costs);
@@ -194,22 +194,22 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
         {/* CTA to create own trip */}
         <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-xl p-8 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Plan Your Own Trip
+            {tTrips('planYourOwnTrip')}
           </h3>
           <p className="text-gray-700 mb-4">
-            Create your own detailed trip plan with TripCalc's free tools
+            {tTrips('createOwnTripDesc')}
           </p>
           <Link
             href={`/${locale}/cities/${trip.cityId}`}
             className="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Start Planning for {trip.cityName}
+            {tTrips('startPlanningFor', { city: trip.cityName })}
           </Link>
         </div>
 
         {/* Footer note */}
         <p className="text-center text-sm text-gray-600 mt-8">
-          Powered by <Link href={`/${locale}`} className="text-blue-600 hover:underline">TripCalc</Link> - Real travel costs, no surprises
+          {tTrips('poweredBy')} <Link href={`/${locale}`} className="text-blue-600 hover:underline">TripCalc</Link> - {tTrips('tagline')}
         </p>
       </div>
     </div>

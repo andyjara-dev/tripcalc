@@ -422,7 +422,20 @@
     "customCost": "Personalizado",
     "defaultCost": "Por Defecto",
     "editCosts": "Editar Costos",
-    "resetToDefault": "Restaurar a Valores por Defecto"
+    "resetToDefault": "Restaurar a Valores por Defecto",
+    "cityNotFound": "Ciudad no encontrada",
+    "cityNotFoundDesc": "Este viaje hace referencia a una ciudad que no existe.",
+    "day": "día",
+    "days": "días",
+    "tripSummary": "Resumen del Viaje",
+    "totalTrip": "Total del Viaje",
+    "averagePerDay": "Promedio por día",
+    "dailyBreakdown": "Desglose Diario",
+    "planYourOwnTrip": "Planifica Tu Propio Viaje",
+    "createOwnTripDesc": "Crea tu propio plan de viaje detallado con las herramientas gratuitas de TripCalc",
+    "startPlanningFor": "Comenzar a Planificar {city}",
+    "poweredBy": "Desarrollado por",
+    "tagline": "Costos reales de viaje, sin sorpresas"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",
