@@ -24,6 +24,10 @@ export default function ShareTripModal({
   const [shareToken, setShareToken] = useState(initialShareToken);
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState('');
 
   if (!isOpen) return null;
 
@@ -80,6 +84,38 @@ export default function ShareTripModal({
     }
   };
 
+  const handleSendEmail = async () => {
+    if (!email || !shareToken) return;
+
+    setIsSendingEmail(true);
+    setEmailError('');
+    setEmailSent(false);
+
+    try {
+      const response = await fetch(`/api/trips/${tripId}/share/email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Failed to send email');
+      }
+
+      setEmailSent(true);
+      setEmail('');
+      setTimeout(() => setEmailSent(false), 5000);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setEmailError(error instanceof Error ? error.message : t('emailError'));
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
@@ -106,35 +142,75 @@ export default function ShareTripModal({
 
         {/* Share Link */}
         {isPublic && shareToken && (
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              {t('shareLink')}
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={shareUrl}
-                readOnly
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 text-sm"
-                onClick={(e) => (e.target as HTMLInputElement).select()}
-              />
-              <button
-                onClick={handleCopyLink}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  copied
-                    ? 'bg-green-600 text-white'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
-                }`}
-              >
-                {copied ? '✓' : t('copyLink')}
-              </button>
+          <>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('shareLink')}
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={shareUrl}
+                  readOnly
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-700 text-sm"
+                  onClick={(e) => (e.target as HTMLInputElement).select()}
+                />
+                <button
+                  onClick={handleCopyLink}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    copied
+                      ? 'bg-green-600 text-white'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {copied ? '✓' : t('copyLink')}
+                </button>
+              </div>
+              {copied && (
+                <p className="text-sm text-green-600 mt-1">
+                  {t('linkCopied')}
+                </p>
+              )}
             </div>
-            {copied && (
-              <p className="text-sm text-green-600 mt-1">
-                {t('linkCopied')}
-              </p>
-            )}
-          </div>
+
+            {/* Send by Email */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {t('shareByEmail')}
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t('emailPlaceholder')}
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-gray-900 text-sm focus:ring-2 focus:ring-blue-500"
+                  disabled={isSendingEmail}
+                />
+                <button
+                  onClick={handleSendEmail}
+                  disabled={!email || isSendingEmail}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                    emailSent
+                      ? 'bg-green-600 text-white'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {isSendingEmail ? t('sending') : emailSent ? '✓' : t('sendEmail')}
+                </button>
+              </div>
+              {emailSent && (
+                <p className="text-sm text-green-600 mt-1">
+                  {t('emailSent')}
+                </p>
+              )}
+              {emailError && (
+                <p className="text-sm text-red-600 mt-1">
+                  {emailError}
+                </p>
+              )}
+            </div>
+          </>
         )}
 
         {/* Actions */}
