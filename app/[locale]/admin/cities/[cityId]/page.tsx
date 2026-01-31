@@ -75,6 +75,7 @@ export default async function EditCityPage({ params }: Props) {
         translations={{
           home: tNav('home'),
           cities: tNav('cities'),
+          calculators: tNav('calculators'),
           about: tNav('about'),
           logoAlt: tSite('name') + ' - ' + tSite('tagline')
         }}

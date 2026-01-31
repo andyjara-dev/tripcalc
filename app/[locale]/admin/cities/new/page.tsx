@@ -52,6 +52,7 @@ export default async function NewCityPage({ params }: PageProps) {
         translations={{
           home: tNav('home'),
           cities: tNav('cities'),
+          calculators: tNav('calculators'),
           about: tNav('about'),
           logoAlt: tSite('name') + ' - ' + tSite('tagline')
         }}
