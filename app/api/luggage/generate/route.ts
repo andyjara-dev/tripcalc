@@ -12,6 +12,7 @@ const packingParamsSchema = z.object({
   climate: z.enum(['cold', 'mild', 'warm', 'hot', 'mixed']),
   gender: z.enum(['male', 'female', 'unisex']),
   activities: z.array(z.string()).optional(),
+  locale: z.enum(['en', 'es']).default('en'),
 });
 
 export async function POST(request: NextRequest) {

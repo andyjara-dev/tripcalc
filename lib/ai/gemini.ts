@@ -17,6 +17,7 @@ export type PackingParams = {
   climate: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
   gender: 'male' | 'female' | 'unisex';
   activities?: string[];
+  locale?: 'en' | 'es';
 };
 
 export type PackingItem = {
@@ -90,7 +91,15 @@ function buildPackingPrompt(params: PackingParams): string {
     ? `\n- Activities: ${params.activities.join(', ')}`
     : '';
 
-  return `You are a professional travel packing expert. Generate a detailed, realistic packing list for the following trip:
+  const language = params.locale === 'es' ? 'Spanish' : 'English';
+  const languageInstruction = params.locale === 'es'
+    ? 'IMPORTANTE: Toda la respuesta debe estar en ESPAÑOL. Los nombres de items, notas, consejos y advertencias deben estar en español.'
+    : 'IMPORTANT: All responses must be in ENGLISH. Item names, notes, tips, and warnings must be in English.';
+
+  return `You are a professional travel packing expert. Generate a detailed, realistic packing list for the following trip.
+
+**LANGUAGE: ${language}**
+${languageInstruction}
 
 **Luggage Constraints:**
 - Type: ${params.luggageType}
@@ -129,25 +138,25 @@ ${params.dimensions ? `- Dimensions: ${params.dimensions}cm` : ''}
 - Laptop: 1200-2000g
 - Phone charger: 100-150g
 
-Respond ONLY with valid JSON in this exact format:
+Respond ONLY with valid JSON in this exact format (remember to use ${language}):
 {
   "items": [
     {
-      "category": "Clothing",
-      "name": "T-shirt",
+      "category": "${params.locale === 'es' ? 'Ropa' : 'Clothing'}",
+      "name": "${params.locale === 'es' ? 'Camiseta' : 'T-shirt'}",
       "quantity": 3,
       "weightPerItem": 150,
       "totalWeight": 450,
       "essential": true,
-      "notes": "Quick-dry fabric recommended"
+      "notes": "${params.locale === 'es' ? 'Se recomienda tela de secado rápido' : 'Quick-dry fabric recommended'}"
     }
   ],
   "totalWeight": ${Math.round(weightLimitGrams * 0.9)},
   "remainingWeight": ${Math.round(weightLimitGrams * 0.1)},
   "tips": [
-    "Wear your heaviest items during travel",
-    "Use packing cubes to maximize space",
-    "Roll clothes instead of folding to save space"
+    "${params.locale === 'es' ? 'Usa tus artículos más pesados durante el viaje' : 'Wear your heaviest items during travel'}",
+    "${params.locale === 'es' ? 'Usa cubos organizadores para maximizar el espacio' : 'Use packing cubes to maximize space'}",
+    "${params.locale === 'es' ? 'Enrolla la ropa en lugar de doblarla para ahorrar espacio' : 'Roll clothes instead of folding to save space'}"
   ],
   "warnings": []
 }

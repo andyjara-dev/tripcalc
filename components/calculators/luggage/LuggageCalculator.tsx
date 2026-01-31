@@ -45,7 +45,7 @@ export default function LuggageCalculator({ locale }: Props) {
       const response = await fetch('/api/luggage/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newParams),
+        body: JSON.stringify({ ...newParams, locale }),
       });
 
       if (!response.ok) {
