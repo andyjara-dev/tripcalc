@@ -9,10 +9,11 @@ import LanguageSwitcher from './LanguageSwitcher';
 
 interface HeaderProps {
   locale: string;
-  activeSection?: 'home' | 'cities' | 'about' | 'trips';
+  activeSection?: 'home' | 'cities' | 'calculators' | 'about' | 'trips';
   translations: {
     home: string;
     cities: string;
+    calculators: string;
     about: string;
     logoAlt: string;
   };
@@ -54,6 +55,16 @@ export default function Header({ locale, activeSection = 'home', translations }:
             }`}
           >
             {translations.cities}
+          </Link>
+          <Link
+            href={`/${locale}/calculators/luggage`}
+            className={`transition ${
+              activeSection === 'calculators'
+                ? 'text-gray-900 font-semibold'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            {translations.calculators}
           </Link>
           <Link
             href={`/${locale}/about`}

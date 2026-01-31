@@ -23,9 +23,12 @@ type Props = {
 const LUGGAGE_PRESETS = {
   'ryanair-carryon': { type: 'carry-on' as const, weight: 10, dimensions: '40x20x25' },
   'standard-carryon': { type: 'carry-on' as const, weight: 7, dimensions: '55x40x20' },
+  'copa-carryon': { type: 'carry-on' as const, weight: 10, dimensions: '56x36x26' },
+  'latam-carryon': { type: 'carry-on' as const, weight: 8, dimensions: '55x35x25' },
   'checked-20kg': { type: 'checked' as const, weight: 20, dimensions: '75x50x30' },
   'checked-23kg': { type: 'checked' as const, weight: 23, dimensions: '80x55x35' },
   'backpack-small': { type: 'backpack' as const, weight: 8, dimensions: '45x35x20' },
+  'custom': { type: 'custom' as const, weight: 10, dimensions: '55x40x20' },
 };
 
 export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
@@ -78,11 +81,48 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
         >
           <option value="ryanair-carryon">🧳 Ryanair Carry-on (10kg, 40x20x25cm)</option>
           <option value="standard-carryon">✈️ Standard Carry-on (7kg, 55x40x20cm)</option>
+          <option value="copa-carryon">🛫 Copa Airlines Carry-on (10kg, 56x36x26cm)</option>
+          <option value="latam-carryon">🛬 LATAM Airlines Carry-on (8kg, 55x35x25cm)</option>
           <option value="checked-20kg">🛄 Checked Baggage 20kg (75x50x30cm)</option>
           <option value="checked-23kg">🛄 Checked Baggage 23kg (80x55x35cm)</option>
           <option value="backpack-small">🎒 Small Backpack (8kg, 45x35x20cm)</option>
+          <option value="custom">⚙️ {t('custom')}</option>
         </select>
       </div>
+
+      {/* Custom Fields - Show only when custom is selected */}
+      {preset === 'custom' && (
+        <div className="grid grid-cols-2 gap-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
+              {t('customWeight')}
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                max="50"
+                value={weightLimit}
+                onChange={(e) => setWeightLimit(parseInt(e.target.value) || 1)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+              />
+              <span className="text-gray-900 font-medium">kg</span>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-900 mb-2">
+              {t('customDimensions')}
+            </label>
+            <input
+              type="text"
+              value={dimensions}
+              onChange={(e) => setDimensions(e.target.value)}
+              placeholder="55x40x20"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Weight Limit */}
       <div>

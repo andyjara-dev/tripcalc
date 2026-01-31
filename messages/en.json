@@ -706,6 +706,9 @@
     "config": {
       "title": "Configure Your Luggage",
       "preset": "Airline Preset",
+      "custom": "Custom",
+      "customWeight": "Weight (kg)",
+      "customDimensions": "Dimensions (LxWxH cm)",
       "weightLimit": "Weight Limit",
       "duration": "Trip Duration",
       "day": "day",

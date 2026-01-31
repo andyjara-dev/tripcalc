@@ -47,7 +47,7 @@ export default async function LuggageCalculatorPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header locale={locale} translations={headerTranslations} />
+      <Header locale={locale} activeSection="calculators" translations={headerTranslations} />
 
       <div className="pt-24 pb-12">
         <div className="max-w-5xl mx-auto px-4 py-8">

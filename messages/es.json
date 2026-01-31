@@ -729,6 +729,9 @@
     "config": {
       "title": "Configura Tu Equipaje",
       "preset": "Preset de Aerolínea",
+      "custom": "Personalizado",
+      "customWeight": "Peso (kg)",
+      "customDimensions": "Dimensiones (LxAxP cm)",
       "weightLimit": "Límite de Peso",
       "duration": "Duración del Viaje",
       "day": "día",
