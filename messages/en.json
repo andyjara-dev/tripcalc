@@ -694,5 +694,93 @@
       "day": "day",
       "days": "days"
     }
+  },
+  "luggage": {
+    "title": "Smart Luggage Calculator",
+    "description": "AI-powered packing suggestions optimized for your weight limit",
+    "generating": "Generating your packing list...",
+    "aiThinking": "AI is analyzing your trip requirements",
+    "error": "Error",
+    "savedSuccessfully": "Packing list saved successfully!",
+    "saveFailed": "Failed to save packing list",
+    "config": {
+      "title": "Configure Your Luggage",
+      "preset": "Airline Preset",
+      "weightLimit": "Weight Limit",
+      "duration": "Trip Duration",
+      "day": "day",
+      "days": "days",
+      "tripType": {
+        "label": "Trip Type",
+        "business": "Business",
+        "leisure": "Leisure",
+        "adventure": "Adventure",
+        "beach": "Beach",
+        "ski": "Ski",
+        "city": "City Break"
+      },
+      "climate": {
+        "label": "Climate",
+        "cold": "Cold",
+        "mild": "Mild",
+        "warm": "Warm",
+        "hot": "Hot",
+        "mixed": "Mixed"
+      },
+      "gender": {
+        "label": "Clothing Style",
+        "male": "Male",
+        "female": "Female",
+        "unisex": "Unisex"
+      },
+      "generate": "Generate Packing List",
+      "generating": "Generating..."
+    },
+    "tracker": {
+      "title": "Weight Tracker",
+      "of": "of",
+      "remaining": "Remaining",
+      "status": "Status",
+      "overweight": "Overweight",
+      "almostFull": "Almost Full",
+      "goodToGo": "Good to Go",
+      "overweightWarning": "Your packing list exceeds the weight limit. Consider removing non-essential items.",
+      "almostFullTip": "You're close to the limit. Pack carefully to avoid extra charges."
+    },
+    "list": {
+      "title": "Your Packing List",
+      "save": "Save List",
+      "packingTips": "Packing Tips",
+      "warnings": "Warnings",
+      "packed": "Packed"
+    },
+    "premium": {
+      "title": "Smart Luggage Calculator",
+      "subtitle": "AI-powered packing suggestions",
+      "upgradeTitle": "Premium Feature",
+      "upgradeDescription": "Get personalized packing lists with AI-powered weight optimization and smart suggestions.",
+      "upgradeButton": "Upgrade to Premium",
+      "freeTrialInfo": "7-day free trial • Cancel anytime",
+      "features": {
+        "title": "Premium Features",
+        "aiSuggestions": "AI-Powered Packing Suggestions",
+        "aiSuggestionsDescription": "Smart item recommendations based on your trip type and climate",
+        "weightCalculation": "Accurate Weight Calculations",
+        "weightCalculationDescription": "Real-world weights for every item to stay under airline limits",
+        "airlinePresets": "Airline Presets",
+        "airlinePresetsDescription": "Pre-configured limits for Ryanair, standard carry-on, and checked bags",
+        "saveExport": "Save & Export Lists",
+        "saveExportDescription": "Save your lists and export as PDF checklist"
+      },
+      "pricing": {
+        "title": "Premium Access",
+        "subtitle": "Unlock all features",
+        "perMonth": "per month"
+      },
+      "useCase": {
+        "title": "Perfect for travelers who want to:",
+        "description": "Pack light with carry-on only • Avoid overweight baggage fees • Optimize for longer trips with laundry stops • Pack efficiently for mixed climates"
+      }
+    }
   }
 }

@@ -54,9 +54,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
-  accounts Account[]
-  sessions Session[]
-  trips    Trip[]
+  accounts     Account[]
+  sessions     Session[]
+  trips        Trip[]
+  packingLists PackingList[]
 }
 
 model VerificationToken {
@@ -114,9 +115,10 @@ model Trip {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   customItems  CustomItem[]
   expenses     Expense[]
+  packingLists PackingList[]
 
   @@index([userId])
   @@index([shareToken])
@@ -326,4 +328,39 @@ model CityPriceHistory {
 
   @@index([cityId])
   @@index([changedAt])
+}
+
+// Luggage Calculator (Premium Feature)
+model PackingList {
+  id        String   @id @default(cuid())
+  userId    String
+  tripId    String?  // Optional: link to a trip
+
+  // Luggage Configuration
+  luggageType   String   // "carry-on", "checked", "backpack", "custom"
+  weightLimit   Int      // in grams
+  dimensions    String?  // "55x40x20" (optional)
+
+  // Trip Context
+  duration      Int      // days
+  tripType      String   // "business", "leisure", "adventure", "beach", "ski", "city"
+  climate       String   // "cold", "mild", "warm", "hot", "mixed"
+  gender        String   // "male", "female", "unisex"
+  activities    String?  // JSON array of activities
+
+  // AI Generated Response
+  items         Json     // Array of packing items with weights
+  totalWeight   Int      // Total weight in grams
+  tips          Json     // Array of packing tips
+  warnings      Json?    // Array of warnings (e.g., "over weight limit")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trip Trip? @relation(fields: [tripId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([tripId])
+  @@index([createdAt])
 }

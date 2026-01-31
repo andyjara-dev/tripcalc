@@ -717,5 +717,93 @@
       "day": "día",
       "days": "días"
     }
+  },
+  "luggage": {
+    "title": "Calculadora Inteligente de Equipaje",
+    "description": "Sugerencias de empaque con IA optimizadas para tu límite de peso",
+    "generating": "Generando tu lista de empaque...",
+    "aiThinking": "La IA está analizando los requisitos de tu viaje",
+    "error": "Error",
+    "savedSuccessfully": "¡Lista de empaque guardada exitosamente!",
+    "saveFailed": "Error al guardar la lista de empaque",
+    "config": {
+      "title": "Configura Tu Equipaje",
+      "preset": "Preset de Aerolínea",
+      "weightLimit": "Límite de Peso",
+      "duration": "Duración del Viaje",
+      "day": "día",
+      "days": "días",
+      "tripType": {
+        "label": "Tipo de Viaje",
+        "business": "Negocios",
+        "leisure": "Ocio",
+        "adventure": "Aventura",
+        "beach": "Playa",
+        "ski": "Esquí",
+        "city": "Ciudad"
+      },
+      "climate": {
+        "label": "Clima",
+        "cold": "Frío",
+        "mild": "Templado",
+        "warm": "Cálido",
+        "hot": "Caluroso",
+        "mixed": "Mixto"
+      },
+      "gender": {
+        "label": "Estilo de Ropa",
+        "male": "Hombre",
+        "female": "Mujer",
+        "unisex": "Unisex"
+      },
+      "generate": "Generar Lista de Empaque",
+      "generating": "Generando..."
+    },
+    "tracker": {
+      "title": "Seguimiento de Peso",
+      "of": "de",
+      "remaining": "Restante",
+      "status": "Estado",
+      "overweight": "Sobrepeso",
+      "almostFull": "Casi Lleno",
+      "goodToGo": "Listo",
+      "overweightWarning": "Tu lista de empaque excede el límite de peso. Considera remover items no esenciales.",
+      "almostFullTip": "Estás cerca del límite. Empaca cuidadosamente para evitar cargos extra."
+    },
+    "list": {
+      "title": "Tu Lista de Empaque",
+      "save": "Guardar Lista",
+      "packingTips": "Consejos de Empaque",
+      "warnings": "Advertencias",
+      "packed": "Empacado"
+    },
+    "premium": {
+      "title": "Calculadora Inteligente de Equipaje",
+      "subtitle": "Sugerencias de empaque con IA",
+      "upgradeTitle": "Función Premium",
+      "upgradeDescription": "Obtén listas de empaque personalizadas con optimización de peso y sugerencias inteligentes con IA.",
+      "upgradeButton": "Actualizar a Premium",
+      "freeTrialInfo": "Prueba gratis de 7 días • Cancela cuando quieras",
+      "features": {
+        "title": "Funciones Premium",
+        "aiSuggestions": "Sugerencias de Empaque con IA",
+        "aiSuggestionsDescription": "Recomendaciones inteligentes de items basadas en tu tipo de viaje y clima",
+        "weightCalculation": "Cálculos Precisos de Peso",
+        "weightCalculationDescription": "Pesos reales para cada item para mantenerte bajo los límites de aerolíneas",
+        "airlinePresets": "Presets de Aerolíneas",
+        "airlinePresetsDescription": "Límites preconfigurados para Ryanair, equipaje de mano estándar y maletas facturadas",
+        "saveExport": "Guardar y Exportar Listas",
+        "saveExportDescription": "Guarda tus listas y exporta como checklist PDF"
+      },
+      "pricing": {
+        "title": "Acceso Premium",
+        "subtitle": "Desbloquea todas las funciones",
+        "perMonth": "por mes"
+      },
+      "useCase": {
+        "title": "Perfecto para viajeros que quieren:",
+        "description": "Empacar ligero solo con equipaje de mano • Evitar cargos por sobrepeso • Optimizar para viajes largos con paradas de lavandería • Empacar eficientemente para climas mixtos"
+      }
+    }
   }
 }
