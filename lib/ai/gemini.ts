@@ -14,10 +14,14 @@ export type PackingParams = {
   dimensions?: string; // "55x40x20"
   duration: number; // days
   tripType: 'business' | 'leisure' | 'adventure' | 'beach' | 'ski' | 'city';
-  climate: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
+  climate?: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed'; // Optional in advanced mode
   gender: 'male' | 'female' | 'unisex';
   activities?: string[];
   locale?: 'en' | 'es';
+  // Advanced mode fields
+  destination?: string; // "Santiago, Chile"
+  startDate?: string; // "2026-02-15"
+  endDate?: string; // "2026-02-22"
 };
 
 export type PackingItem = {
@@ -106,21 +110,47 @@ function buildPackingPrompt(params: PackingParams): string {
     ? 'IMPORTANTE: Toda la respuesta debe estar en ESPAÑOL. Los nombres de items, notas, consejos y advertencias deben estar en español.'
     : 'IMPORTANT: All responses must be in ENGLISH. Item names, notes, tips, and warnings must be in English.';
 
+  // Determine if using advanced mode (destination + dates)
+  const isAdvancedMode = params.destination && params.startDate && params.endDate;
+
+  let tripContextText = '';
+  if (isAdvancedMode) {
+    // Advanced mode: AI estimates climate based on destination + dates
+    tripContextText = `
+**DESTINATION & DATES:**
+- Destination: ${params.destination}
+- Travel dates: ${params.startDate} to ${params.endDate}
+- Duration: ${params.duration} days
+- Trip type: ${params.tripType}
+
+CRITICAL: Based on the destination "${params.destination}" and travel dates (${params.startDate} to ${params.endDate}):
+1. Estimate the expected weather and climate conditions for this specific location and time of year
+2. Consider seasonal variations, typical temperature ranges, and weather patterns
+3. Adjust clothing and gear recommendations accordingly
+4. Mention the estimated climate in your packing tips
+    `;
+  } else {
+    // Simple mode: User provides climate manually
+    tripContextText = `
+**TRIP DETAILS:**
+- Duration: ${params.duration} days
+- Type: ${params.tripType}
+- Climate: ${params.climate}${activitiesText}
+    `;
+  }
+
   return `You are a professional travel packing expert. Generate a detailed, realistic packing list for the following trip.
 
 **LANGUAGE: ${language}**
 ${languageInstruction}
 
+${tripContextText}
+
 **Luggage Constraints:**
 - Type: ${params.luggageType}
 - Weight limit: ${params.weightLimit}kg (${weightLimitGrams}g total)
 ${params.dimensions ? `- Dimensions: ${params.dimensions}cm` : ''}
-
-**Trip Details:**
-- Duration: ${params.duration} days
-- Type: ${params.tripType}
-- Climate: ${params.climate}
-- Gender preference: ${params.gender}${activitiesText}
+- Gender preference: ${params.gender}
 
 **Instructions:**
 1. Suggest specific clothing items with realistic weights in grams

@@ -9,10 +9,14 @@ const packingParamsSchema = z.object({
   dimensions: z.string().optional(),
   duration: z.number().min(1).max(30),
   tripType: z.enum(['business', 'leisure', 'adventure', 'beach', 'ski', 'city']),
-  climate: z.enum(['cold', 'mild', 'warm', 'hot', 'mixed']),
+  climate: z.enum(['cold', 'mild', 'warm', 'hot', 'mixed']).optional(), // Optional in advanced mode
   gender: z.enum(['male', 'female', 'unisex']),
   activities: z.array(z.string()).optional(),
   locale: z.enum(['en', 'es']).default('en'),
+  // Advanced mode fields
+  destination: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {

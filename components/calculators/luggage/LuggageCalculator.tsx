@@ -12,9 +12,13 @@ type PackingParams = {
   dimensions?: string;
   duration: number;
   tripType: 'business' | 'leisure' | 'adventure' | 'beach' | 'ski' | 'city';
-  climate: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
+  climate?: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
   gender: 'male' | 'female' | 'unisex';
   activities?: string[];
+  // Advanced mode fields
+  destination?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 type PackingListResponse = {

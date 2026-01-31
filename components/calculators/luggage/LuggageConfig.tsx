@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import CityAutocomplete from './CityAutocomplete';
+import DateRangePicker from './DateRangePicker';
 
 type PackingParams = {
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
@@ -9,13 +11,17 @@ type PackingParams = {
   dimensions?: string;
   duration: number;
   tripType: 'business' | 'leisure' | 'adventure' | 'beach' | 'ski' | 'city';
-  climate: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
+  climate?: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
   gender: 'male' | 'female' | 'unisex';
   activities?: string[];
+  // Advanced mode fields
+  destination?: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 type Props = {
-  onGenerate: (params: PackingParams) => void;
+  onGenerate: (params: PackingParams) => void | Promise<void>;
   loading: boolean;
   locale: string;
 };
@@ -34,14 +40,36 @@ const LUGGAGE_PRESETS = {
 export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
   const t = useTranslations('luggage.config');
 
+  // Mode toggle
+  const [advancedMode, setAdvancedMode] = useState(false);
+
+  // Common fields
   const [preset, setPreset] = useState('standard-carryon');
   const [luggageType, setLuggageType] = useState<PackingParams['luggageType']>('carry-on');
   const [weightLimit, setWeightLimit] = useState(7);
   const [dimensions, setDimensions] = useState('55x40x20');
-  const [duration, setDuration] = useState(5);
   const [tripType, setTripType] = useState<PackingParams['tripType']>('leisure');
-  const [climate, setClimate] = useState<PackingParams['climate']>('mild');
   const [gender, setGender] = useState<PackingParams['gender']>('unisex');
+
+  // Simple mode fields
+  const [duration, setDuration] = useState(5);
+  const [climate, setClimate] = useState<PackingParams['climate']>('mild');
+
+  // Advanced mode fields
+  const [destination, setDestination] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [calculatedDuration, setCalculatedDuration] = useState(0);
+
+  // Calculate duration when dates change
+  useEffect(() => {
+    if (startDate && endDate) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+      setCalculatedDuration(Math.max(1, diff));
+    }
+  }, [startDate, endDate]);
 
   const handlePresetChange = (presetKey: string) => {
     setPreset(presetKey);
@@ -54,21 +82,89 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const params: PackingParams = {
+    const baseParams = {
       luggageType,
       weightLimit,
       dimensions,
-      duration,
       tripType,
-      climate,
       gender,
     };
 
-    onGenerate(params);
+    if (advancedMode) {
+      // Advanced mode: use destination + dates
+      onGenerate({
+        ...baseParams,
+        destination: destination || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        duration: calculatedDuration || duration,
+        // Don't send climate in advanced mode - Gemini will estimate it
+      });
+    } else {
+      // Simple mode: use manual duration + climate
+      onGenerate({
+        ...baseParams,
+        duration,
+        climate,
+      });
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Mode Toggle */}
+      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+        <div>
+          <h3 className="font-semibold text-gray-900">
+            {advancedMode ? '🌍 ' + t('advancedMode') : '⚡ ' + t('simpleMode')}
+          </h3>
+          <p className="text-sm text-gray-600">
+            {advancedMode ? t('advancedModeDescription') : t('simpleModeDescription')}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setAdvancedMode(!advancedMode)}
+          className="px-4 py-2 bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 font-medium transition"
+        >
+          {advancedMode ? t('switchToSimple') : t('switchToAdvanced')}
+        </button>
+      </div>
+
+      {/* Advanced Mode Fields */}
+      {advancedMode && (
+        <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <CityAutocomplete
+            value={destination}
+            onChange={setDestination}
+            placeholder={t('destinationPlaceholder')}
+            label={t('destination')}
+          />
+
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            onStartDateChange={setStartDate}
+            onEndDateChange={setEndDate}
+            startLabel={t('startDate')}
+            endLabel={t('endDate')}
+          />
+
+          {startDate && endDate && calculatedDuration > 0 && (
+            <div className="p-3 bg-white rounded-lg border border-blue-300">
+              <p className="text-sm text-gray-600">
+                📊 {t('estimatedDuration')}: <span className="font-bold text-blue-600">{calculatedDuration} {calculatedDuration === 1 ? t('day') : t('days')}</span>
+              </p>
+              {destination && (
+                <p className="text-xs text-gray-500 mt-1">
+                  ✨ {t('aiWillEstimateClimate')}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Preset Selector */}
       <div>
         <label className="block text-sm font-medium text-gray-900 mb-2">
@@ -90,7 +186,7 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
         </select>
       </div>
 
-      {/* Custom Fields - Show only when custom is selected */}
+      {/* Custom Fields */}
       {preset === 'custom' && (
         <div className="grid grid-cols-2 gap-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div>
@@ -124,43 +220,26 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
         </div>
       )}
 
-      {/* Weight Limit */}
-      <div>
-        <label className="block text-sm font-medium text-gray-900 mb-2">
-          {t('weightLimit')}: <span className="font-bold text-blue-600">{weightLimit}kg</span>
-        </label>
-        <input
-          type="range"
-          min="3"
-          max="32"
-          value={weightLimit}
-          onChange={(e) => setWeightLimit(parseInt(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-        />
-        <div className="flex justify-between text-xs text-gray-600 mt-1">
-          <span>3kg</span>
-          <span>32kg</span>
+      {/* Simple Mode: Duration Slider */}
+      {!advancedMode && (
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            {t('duration')}: <span className="font-bold text-blue-600">{duration} {duration === 1 ? t('day') : t('days')}</span>
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="30"
+            value={duration}
+            onChange={(e) => setDuration(parseInt(e.target.value))}
+            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+          />
+          <div className="flex justify-between text-xs text-gray-600 mt-1">
+            <span>1 {t('day')}</span>
+            <span>30 {t('days')}</span>
+          </div>
         </div>
-      </div>
-
-      {/* Duration */}
-      <div>
-        <label className="block text-sm font-medium text-gray-900 mb-2">
-          {t('duration')}: <span className="font-bold text-blue-600">{duration} {t('days')}</span>
-        </label>
-        <input
-          type="range"
-          min="1"
-          max="30"
-          value={duration}
-          onChange={(e) => setDuration(parseInt(e.target.value))}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
-        />
-        <div className="flex justify-between text-xs text-gray-600 mt-1">
-          <span>1 {t('day')}</span>
-          <span>30 {t('days')}</span>
-        </div>
-      </div>
+      )}
 
       {/* Trip Type */}
       <div>
@@ -185,28 +264,30 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
         </div>
       </div>
 
-      {/* Climate */}
-      <div>
-        <label className="block text-sm font-medium text-gray-900 mb-2">
-          {t('climate.label')}
-        </label>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {(['cold', 'mild', 'warm', 'hot', 'mixed'] as const).map(clim => (
-            <button
-              key={clim}
-              type="button"
-              onClick={() => setClimate(clim)}
-              className={`px-4 py-3 border-2 rounded-lg font-medium transition ${
-                climate === clim
-                  ? 'bg-blue-600 text-white border-blue-600'
-                  : 'bg-white text-gray-900 border-gray-300 hover:border-blue-400'
-              }`}
-            >
-              {t(`climate.${clim}`)}
-            </button>
-          ))}
+      {/* Simple Mode: Climate Selector */}
+      {!advancedMode && (
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            {t('climate.label')}
+          </label>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {(['cold', 'mild', 'warm', 'hot', 'mixed'] as const).map(clim => (
+              <button
+                key={clim}
+                type="button"
+                onClick={() => setClimate(clim)}
+                className={`px-4 py-3 border-2 rounded-lg font-medium transition ${
+                  climate === clim
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-gray-900 border-gray-300 hover:border-blue-400'
+                }`}
+              >
+                {t(`climate.${clim}`)}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Gender */}
       <div>
@@ -234,7 +315,7 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || (advancedMode && (!startDate || !endDate))}
         className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition shadow-lg hover:shadow-xl"
       >
         {loading ? (
