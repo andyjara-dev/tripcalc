@@ -3,6 +3,7 @@ import { tokyo } from './tokyo';
 import { paris } from './paris';
 import { newYork } from './new-york';
 import { mexicoCity } from './mexico-city';
+import { santiago } from './santiago';
 import { CityData } from './types';
 
 export const cities: Record<string, CityData> = {
@@ -10,7 +11,8 @@ export const cities: Record<string, CityData> = {
   tokyo,
   paris,
   'new-york': newYork,
-  'mexico-city': mexicoCity
+  'mexico-city': mexicoCity,
+  santiago
 };
 
 export const getCityById = (id: string): CityData | undefined => {

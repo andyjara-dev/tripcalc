@@ -22,7 +22,8 @@
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset",
     "cities:verify": "tsx scripts/verify-city-data.ts",
-    "cities:migrate": "tsx scripts/migrate-city-data.ts"
+    "cities:migrate": "tsx scripts/migrate-city-data.ts",
+    "cities:clean": "tsx scripts/clean-duplicate-data.ts"
   },
   "author": "",
   "license": "MIT",

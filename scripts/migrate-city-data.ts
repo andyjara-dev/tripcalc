@@ -4,7 +4,7 @@
  */
 
 import { prisma } from '../lib/db';
-import * as cityFiles from '../data/cities';
+import { getAllCities } from '../data/cities';
 
 type LegacyCityData = {
   id: string;
@@ -23,9 +23,7 @@ type LegacyCityData = {
 async function migrateCityData() {
   console.log('🚀 Starting city data migration...\n');
 
-  const cities = Object.entries(cityFiles)
-    .filter(([key]) => key !== 'getCityById' && key !== 'default')
-    .map(([_, cityData]) => cityData as LegacyCityData);
+  const cities = getAllCities() as LegacyCityData[];
 
   console.log(`Found ${cities.length} cities to migrate\n`);
 
@@ -231,6 +229,24 @@ async function migrateCityData() {
         });
         stats.transport++;
         console.log('      - Airport Train: ✅');
+      }
+    }
+
+    // Colectivo (shared taxis - specific to some cities like Santiago)
+    if (cityData.transport.colectivo?.averageFare) {
+      if (!city.transport.some(t => t.type === 'other' && t.name.includes('Colectivo'))) {
+        await prisma.cityTransport.create({
+          data: {
+            cityId: city.id,
+            type: 'other',
+            name: 'Colectivo (Shared Taxi)',
+            price: Math.round(cityData.transport.colectivo.averageFare * 100),
+            priceNote: 'Average fare',
+            description: 'Shared taxi service, common in Santiago',
+          },
+        });
+        stats.transport++;
+        console.log('      - Colectivo: ✅');
       }
     }
 

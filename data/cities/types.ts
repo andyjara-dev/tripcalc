@@ -23,6 +23,9 @@ export interface TransportPrices {
   train?: {
     airportToCity?: number;
   };
+  colectivo?: {
+    averageFare: number;
+  };
 }
 
 export interface DailyCostEstimate {

@@ -55,6 +55,9 @@ README.md
 claude.md
 GETTING_STARTED.md
 
+# Scripts (only for local development/maintenance)
+scripts/
+
 # Testing
 coverage
 .nyc_output
