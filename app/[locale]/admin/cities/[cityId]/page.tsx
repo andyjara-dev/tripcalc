@@ -88,7 +88,7 @@ export default async function EditCityPage({ params }: Props) {
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               ✏️ Edit City: {city.name}
             </h1>
-            <p className="text-gray-600">Update city information and settings</p>
+            <p className="text-gray-900">Update city information and settings</p>
           </div>
 
           {/* City Form */}
@@ -96,69 +96,64 @@ export default async function EditCityPage({ params }: Props) {
 
           {/* Additional data management links */}
           <div className="mt-8 bg-white border border-gray-200 rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold mb-4">Additional Data</h2>
-            <p className="text-sm text-gray-600 mb-4">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Additional Data</h2>
+            <p className="text-sm text-gray-900 mb-4">
               Manage detailed city data like costs, transport options, and tips.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h3 className="font-medium mb-1">Daily Costs</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <h3 className="font-medium text-gray-900 mb-1">Daily Costs</h3>
+                <p className="text-sm text-gray-900 mb-2">
                   {city.dailyCosts?.length || 0} travel styles configured
                 </p>
-                <button
-                  disabled
-                  className="text-sm text-gray-400 cursor-not-allowed"
+                <a
+                  href={`/admin/cities/${city.id}/costs`}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  Manage Costs (coming soon)
-                </button>
+                  Manage Costs →
+                </a>
               </div>
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h3 className="font-medium mb-1">Transport Options</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <h3 className="font-medium text-gray-900 mb-1">Transport Options</h3>
+                <p className="text-sm text-gray-900 mb-2">
                   {city.transport?.length || 0} options available
                 </p>
-                <button
-                  disabled
-                  className="text-sm text-gray-400 cursor-not-allowed"
+                <a
+                  href={`/admin/cities/${city.id}/transport`}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  Manage Transport (coming soon)
-                </button>
+                  Manage Transport →
+                </a>
               </div>
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h3 className="font-medium mb-1">Tips & Advice</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <h3 className="font-medium text-gray-900 mb-1">Tips & Advice</h3>
+                <p className="text-sm text-gray-900 mb-2">
                   {city.tips?.length || 0} tips configured
                 </p>
-                <button
-                  disabled
-                  className="text-sm text-gray-400 cursor-not-allowed"
+                <a
+                  href={`/admin/cities/${city.id}/tips`}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  Manage Tips (coming soon)
-                </button>
+                  Manage Tips →
+                </a>
               </div>
 
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <h3 className="font-medium mb-1">Cash Info</h3>
-                <p className="text-sm text-gray-600 mb-2">
+                <h3 className="font-medium text-gray-900 mb-1">Cash Info</h3>
+                <p className="text-sm text-gray-900 mb-2">
                   {city.cashInfo ? 'Configured' : 'Not configured'}
                 </p>
-                <button
-                  disabled
-                  className="text-sm text-gray-400 cursor-not-allowed"
+                <a
+                  href={`/admin/cities/${city.id}/cash-info`}
+                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                 >
-                  Manage Cash Info (coming soon)
-                </button>
+                  Manage Cash Info →
+                </a>
               </div>
             </div>
-
-            <p className="text-xs text-gray-500 mt-4">
-              Note: For now, you can manage detailed data using Prisma Studio or directly in the database.
-              Future updates will add full UI for managing these relations.
-            </p>
           </div>
         </div>
       </div>

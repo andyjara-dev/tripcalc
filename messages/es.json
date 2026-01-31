@@ -280,6 +280,8 @@
     }
   },
   "auth": {
+    "adminUsers": "Adm. de usuarios",
+    "adminCities": "Adm. de ciudades",
     "signIn": "Iniciar Sesión",
     "signOut": "Cerrar Sesión",
     "signInTitle": "Bienvenido a TripCalc",
