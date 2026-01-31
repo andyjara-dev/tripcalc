@@ -58,26 +58,36 @@ export async function generatePackingList(
   const prompt = buildPackingPrompt(params);
 
   try {
+    console.log('🔵 Sending prompt to Gemini:', prompt.substring(0, 200) + '...');
+
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
 
-    // Extract JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    console.log('🟢 Gemini raw response:', text);
+    console.log('🟢 Response length:', text.length);
+
+    // Since we set responseMimeType to 'application/json', response should already be JSON
+    let packingList: PackingListResponse;
+
+    try {
+      packingList = JSON.parse(text) as PackingListResponse;
+    } catch (parseError) {
+      console.error('❌ JSON parse error:', parseError);
+      console.error('❌ Raw text:', text);
       throw new Error('No JSON found in AI response');
     }
 
-    const packingList = JSON.parse(jsonMatch[0]) as PackingListResponse;
-
     // Validate response
     if (!packingList.items || !Array.isArray(packingList.items)) {
+      console.error('❌ Invalid structure:', packingList);
       throw new Error('Invalid packing list structure');
     }
 
+    console.log('✅ Successfully parsed packing list with', packingList.items.length, 'items');
     return packingList;
   } catch (error) {
-    console.error('Gemini AI error:', error);
+    console.error('❌ Gemini AI error:', error);
     throw new Error('Failed to generate packing list with AI');
   }
 }

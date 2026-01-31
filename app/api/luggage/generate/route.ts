@@ -46,14 +46,19 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+    console.log('🔵 Received request body:', JSON.stringify(body, null, 2));
+
     const validation = packingParamsSchema.safeParse(body);
 
     if (!validation.success) {
+      console.error('❌ Validation failed:', validation.error);
       return NextResponse.json(
         { error: 'Invalid parameters', details: validation.error },
         { status: 400 }
       );
     }
+
+    console.log('✅ Validated params:', JSON.stringify(validation.data, null, 2));
 
     // Generate packing list with AI
     const packingList = await generatePackingList(validation.data);
