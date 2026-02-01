@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 type PackingItem = {
@@ -31,6 +32,7 @@ type Props = {
 };
 
 export default function PackingListCard({ packingList, locale, onDelete }: Props) {
+  const t = useTranslations('luggage.card');
   const [expanded, setExpanded] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -50,7 +52,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
 
   const handleDelete = async () => {
     if (!onDelete) return;
-    if (!confirm('¿Estás seguro de eliminar esta lista de equipaje?')) return;
+    if (!confirm(t('confirmDelete'))) return;
 
     setDeleting(true);
     try {
@@ -61,11 +63,11 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
       if (response.ok) {
         onDelete();
       } else {
-        alert('Error al eliminar la lista');
+        alert(t('deleteError'));
       }
     } catch (error) {
       console.error('Error deleting packing list:', error);
-      alert('Error al eliminar la lista');
+      alert(t('deleteError'));
     } finally {
       setDeleting(false);
     }
@@ -87,13 +89,13 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              🧳 Lista de Equipaje
+              🧳 {t('title')}
               <span className="text-sm font-normal text-gray-600">
                 ({packingList.luggageType})
               </span>
             </h3>
             <p className="text-sm text-gray-600 mt-1">
-              Creada: {new Date(packingList.createdAt).toLocaleDateString()}
+              {t('created')}: {new Date(packingList.createdAt).toLocaleDateString(locale)}
             </p>
           </div>
           <div className="flex gap-2">
@@ -101,7 +103,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
               href={`/${locale}/calculators/luggage?loadId=${packingList.id}`}
               className="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
             >
-              ✏️ Editar
+              ✏️ {t('edit')}
             </Link>
             {onDelete && (
               <button
@@ -109,7 +111,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
                 disabled={deleting}
                 className="px-3 py-1 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition disabled:opacity-50"
               >
-                🗑️ {deleting ? 'Eliminando...' : 'Eliminar'}
+                🗑️ {deleting ? t('deleting') : t('delete')}
               </button>
             )}
           </div>
@@ -140,7 +142,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
           onClick={() => setExpanded(!expanded)}
           className="mt-4 text-sm text-blue-600 hover:underline"
         >
-          {expanded ? '▼ Ver menos' : '▶ Ver detalles completos'}
+          {expanded ? `▼ ${t('viewLess')}` : `▶ ${t('viewMore')}`}
         </button>
       </div>
 
@@ -149,7 +151,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
         <div className="p-6 space-y-6">
           {/* Items by category */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-3">Items:</h4>
+            <h4 className="font-semibold text-gray-900 mb-3">{t('items')}</h4>
             <div className="space-y-4">
               {Object.entries(groupedItems).map(([category, items]) => (
                 <div key={category} className="border border-gray-200 rounded-lg p-3">
@@ -163,7 +165,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
                           {item.name} {item.quantity > 1 && `x${item.quantity}`}
                           {item.essential && (
                             <span className="ml-1 text-xs bg-red-100 text-red-800 px-1 rounded">
-                              Esencial
+                              {t('essential')}
                             </span>
                           )}
                         </span>
@@ -181,7 +183,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
                 <span className="mr-2">💡</span>
-                Consejos de Empaque
+                {t('packingTips')}
               </h4>
               <ul className="space-y-1 text-sm text-gray-900">
                 {packingList.tips.map((tip, idx) => (
@@ -199,7 +201,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
               <h4 className="font-semibold text-gray-900 mb-2 flex items-center">
                 <span className="mr-2">⚠️</span>
-                Advertencias
+                {t('warnings')}
               </h4>
               <ul className="space-y-1 text-sm text-gray-900">
                 {packingList.warnings.map((warning, idx) => (

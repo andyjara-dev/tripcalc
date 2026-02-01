@@ -818,6 +818,21 @@
         "title": "Perfect for travelers who want to:",
         "description": "Pack light with carry-on only • Avoid overweight baggage fees • Optimize for longer trips with laundry stops • Pack efficiently for mixed climates"
       }
+    },
+    "card": {
+      "title": "Packing List",
+      "created": "Created",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+      "viewLess": "View less",
+      "viewMore": "View full details",
+      "items": "Items:",
+      "essential": "Essential",
+      "packingTips": "Packing Tips",
+      "warnings": "Warnings",
+      "confirmDelete": "Are you sure you want to delete this packing list?",
+      "deleteError": "Error deleting list"
     }
   }
 }

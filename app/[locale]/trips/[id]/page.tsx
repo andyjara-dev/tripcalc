@@ -52,6 +52,7 @@ export default async function TripDetailPage({ params }: PageProps) {
   }
 
   // Check if user is premium or admin
+  // @ts-ignore
   const isPremiumUser = session.user.isPremium || session.user.isAdmin;
 
   const tNav = await getTranslations({ locale, namespace: 'nav' });

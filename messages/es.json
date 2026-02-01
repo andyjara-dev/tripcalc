@@ -814,6 +814,21 @@
       "each": "c/u",
       "saveReminder": "¡No olvides guardar tu progreso!"
     },
+    "card": {
+      "title": "Lista de Equipaje",
+      "created": "Creada",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "deleting": "Eliminando...",
+      "viewLess": "Ver menos",
+      "viewMore": "Ver detalles completos",
+      "items": "Items:",
+      "essential": "Esencial",
+      "packingTips": "Consejos de Empaque",
+      "warnings": "Advertencias",
+      "confirmDelete": "¿Estás seguro de eliminar esta lista de equipaje?",
+      "deleteError": "Error al eliminar la lista"
+    },
     "premium": {
       "title": "Calculadora Inteligente de Equipaje",
       "subtitle": "Sugerencias de empaque con IA",
