@@ -10,9 +10,14 @@ const savePackingListSchema = z.object({
   dimensions: z.string().optional(),
   duration: z.number(),
   tripType: z.string(),
-  climate: z.string(),
+  climate: z.string().optional(), // Optional in advanced mode
   gender: z.string(),
   activities: z.string().optional(),
+  // Advanced mode fields
+  destination: z.string().optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  // Packing list data
   items: z.any(), // JSON
   totalWeight: z.number(),
   tips: z.any(), // JSON

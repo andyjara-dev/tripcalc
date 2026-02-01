@@ -344,9 +344,14 @@ model PackingList {
   // Trip Context
   duration      Int      // days
   tripType      String   // "business", "leisure", "adventure", "beach", "ski", "city"
-  climate       String   // "cold", "mild", "warm", "hot", "mixed"
+  climate       String?  // "cold", "mild", "warm", "hot", "mixed" (optional in advanced mode)
   gender        String   // "male", "female", "unisex"
   activities    String?  // JSON array of activities
+
+  // Advanced Mode (optional)
+  destination   String?  // "Santiago, Chile"
+  startDate     String?  // "2026-02-15"
+  endDate       String?  // "2026-02-22"
 
   // AI Generated Response
   items         Json     // Array of packing items with weights
