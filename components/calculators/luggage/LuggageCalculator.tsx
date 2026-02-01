@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import LuggageConfig from './LuggageConfig';
 import PackingList from './PackingList';
+import Toast from '@/components/ui/Toast';
 
 type PackingParams = {
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
@@ -48,15 +49,17 @@ type SavedPackingListData = {
 type Props = {
   locale: string;
   initialData?: SavedPackingListData;
+  editingListId?: string;
 };
 
-export default function LuggageCalculator({ locale, initialData }: Props) {
+export default function LuggageCalculator({ locale, initialData, editingListId }: Props) {
   const t = useTranslations('luggage');
   const [loading, setLoading] = useState(false);
   const [packingList, setPackingList] = useState<PackingListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [params, setParams] = useState<PackingParams | null>(null);
   const [isLoadedList, setIsLoadedList] = useState(false);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
   // Pre-populate with saved data if available
   useEffect(() => {
@@ -112,7 +115,7 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
     }
   };
 
-  const handleSave = async (tripId?: string) => {
+  const handleSave = async (tripId?: string, updatedItems?: any[]) => {
     if (!packingList || !params) return;
 
     try {
@@ -122,7 +125,8 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
         body: JSON.stringify({
           ...params,
           tripId,
-          items: packingList.items,
+          listId: editingListId, // Include the ID if editing existing list
+          items: updatedItems || packingList.items, // Use updated items if provided
           totalWeight: packingList.totalWeight,
           tips: packingList.tips,
           warnings: packingList.warnings,
@@ -134,14 +138,16 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
       }
 
       const data = await response.json();
-      alert(t('savedSuccessfully'));
+      setToast({ message: t('savedSuccessfully'), type: 'success' });
 
       // Optionally redirect to trip page if tripId was provided
       if (tripId) {
-        window.location.href = `/${locale}/trips/${tripId}`;
+        setTimeout(() => {
+          window.location.href = `/${locale}/trips/${tripId}`;
+        }, 1500); // Wait for toast to be visible before redirecting
       }
     } catch (err) {
-      alert(t('saveFailed'));
+      setToast({ message: t('saveFailed'), type: 'error' });
       console.error('Error saving packing list:', err);
       throw err; // Re-throw so modal knows it failed
     }
@@ -193,6 +199,15 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
           weightLimit={params.weightLimit * 1000}
           onSave={handleSave}
           isLoadedList={isLoadedList}
+        />
+      )}
+
+      {/* Toast Notifications */}
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
         />
       )}
     </div>

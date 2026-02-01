@@ -12,6 +12,7 @@ type PackingItem = {
   totalWeight: number;
   essential: boolean;
   notes?: string;
+  packed?: boolean; // Track if item is packed/checked
 };
 
 type Props = {
@@ -22,7 +23,7 @@ type Props = {
   };
   currency: string;
   weightLimit: number; // grams
-  onSave?: (tripId?: string) => Promise<void>;
+  onSave?: (tripId?: string, updatedItems?: PackingItem[]) => Promise<void>;
   isLoadedList?: boolean; // Indicates if this is a saved list being loaded
 };
 
@@ -30,14 +31,17 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
   const t = useTranslations('luggage.list');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 
-  // When loading a saved list, mark all items as checked
+  // When loading a saved list, mark items that were packed
   useEffect(() => {
     if (isLoadedList && data.items.length > 0) {
-      const allItems = new Set<string>();
-      data.items.forEach((_, index) => {
-        allItems.add(`${index}`);
+      const packedItems = new Set<string>();
+      data.items.forEach((item, index) => {
+        // Mark as checked if item has packed=true, or if packed is undefined (backwards compatibility - mark all)
+        if (item.packed === true || item.packed === undefined) {
+          packedItems.add(`${index}`);
+        }
       });
-      setCheckedItems(allItems);
+      setCheckedItems(packedItems);
     }
   }, [isLoadedList, data.items]);
   const [showSaveModal, setShowSaveModal] = useState(false);
@@ -63,7 +67,13 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
 
     setSaving(true);
     try {
-      await onSave(tripId);
+      // Update items with packed status
+      const updatedItems = data.items.map((item, index) => ({
+        ...item,
+        packed: checkedItems.has(`${index}`),
+      }));
+
+      await onSave(tripId, updatedItems);
       setShowSaveModal(false);
     } catch (error) {
       console.error('Error saving:', error);

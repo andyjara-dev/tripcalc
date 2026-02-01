@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 const savePackingListSchema = z.object({
   tripId: z.string().optional(),
+  listId: z.string().optional(), // ID of existing list to update
   luggageType: z.string(),
   weightLimit: z.number(),
   dimensions: z.string().optional(),
@@ -42,7 +43,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { tripId, ...data } = validation.data;
+    const { tripId, listId, ...data } = validation.data;
 
     // Verify trip belongs to user if tripId provided
     if (tripId) {
@@ -59,14 +60,41 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Create packing list
-    const packingList = await prisma.packingList.create({
-      data: {
-        userId: session.user.id,
-        tripId: tripId || null,
-        ...data,
-      },
-    });
+    let packingList;
+
+    // If listId is provided, update existing list
+    if (listId) {
+      // Verify list belongs to user
+      const existingList = await prisma.packingList.findUnique({
+        where: { id: listId },
+        select: { userId: true },
+      });
+
+      if (!existingList || existingList.userId !== session.user.id) {
+        return NextResponse.json(
+          { error: 'Packing list not found or access denied' },
+          { status: 404 }
+        );
+      }
+
+      // Update existing packing list
+      packingList = await prisma.packingList.update({
+        where: { id: listId },
+        data: {
+          tripId: tripId || null,
+          ...data,
+        },
+      });
+    } else {
+      // Create new packing list
+      packingList = await prisma.packingList.create({
+        data: {
+          userId: session.user.id,
+          tripId: tripId || null,
+          ...data,
+        },
+      });
+    }
 
     return NextResponse.json({ packingList });
   } catch (error) {
