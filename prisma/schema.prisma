@@ -337,6 +337,7 @@ model PackingList {
   tripId    String?  // Optional: link to a trip
 
   // Luggage Configuration
+  preset        String?  // "ryanair-carryon", "standard-carryon", "copa-carryon", etc.
   luggageType   String   // "carry-on", "checked", "backpack", "custom"
   weightLimit   Int      // in grams
   dimensions    String?  // "55x40x20" (optional)

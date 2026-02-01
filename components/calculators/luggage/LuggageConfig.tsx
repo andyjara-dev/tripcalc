@@ -6,6 +6,7 @@ import CityAutocomplete from './CityAutocomplete';
 import DateRangePicker from './DateRangePicker';
 
 type PackingParams = {
+  preset?: string; // Luggage preset key
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
@@ -75,6 +76,7 @@ export default function LuggageConfig({ onGenerate, loading, locale, initialPara
   // Pre-populate form with initial params
   useEffect(() => {
     if (initialParams) {
+      if (initialParams.preset) setPreset(initialParams.preset);
       if (initialParams.luggageType) setLuggageType(initialParams.luggageType);
       if (initialParams.weightLimit) setWeightLimit(initialParams.weightLimit);
       if (initialParams.dimensions) setDimensions(initialParams.dimensions);
@@ -103,6 +105,7 @@ export default function LuggageConfig({ onGenerate, loading, locale, initialPara
     e.preventDefault();
 
     const baseParams = {
+      preset,
       luggageType,
       weightLimit,
       dimensions,

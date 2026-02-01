@@ -88,6 +88,7 @@ export default async function LuggageCalculatorPage({ params, searchParams }: Pr
               locale={locale}
               editingListId={loadId}
               initialData={savedPackingList ? {
+                preset: savedPackingList.preset || undefined,
                 luggageType: savedPackingList.luggageType as any,
                 weightLimit: savedPackingList.weightLimit,
                 dimensions: savedPackingList.dimensions || undefined,

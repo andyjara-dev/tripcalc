@@ -30,6 +30,7 @@ type PackingListResponse = {
 };
 
 type SavedPackingListData = {
+  preset?: string;
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
@@ -65,6 +66,7 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
   useEffect(() => {
     if (initialData) {
       setParams({
+        preset: initialData.preset,
         luggageType: initialData.luggageType,
         weightLimit: initialData.weightLimit,
         dimensions: initialData.dimensions,
