@@ -703,6 +703,19 @@
     "error": "Error",
     "savedSuccessfully": "Packing list saved successfully!",
     "saveFailed": "Failed to save packing list",
+    "save": {
+      "title": "Save Packing List",
+      "description": "Associate this packing list with a trip or save it independently.",
+      "loadingTrips": "Loading your trips...",
+      "noTrip": "Save without trip",
+      "noTripDescription": "Save as standalone packing list",
+      "selectTrip": "Or associate with an existing trip:",
+      "noTripsYet": "You don't have any trips yet",
+      "createFirstTrip": "Create your first trip",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "saveButton": "Save"
+    },
     "config": {
       "title": "Configure Your Luggage",
       "preset": "Airline Preset",

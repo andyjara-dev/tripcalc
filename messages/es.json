@@ -726,6 +726,19 @@
     "error": "Error",
     "savedSuccessfully": "¡Lista de empaque guardada exitosamente!",
     "saveFailed": "Error al guardar la lista de empaque",
+    "save": {
+      "title": "Guardar Lista de Empaque",
+      "description": "Asocia esta lista con un viaje o guárdala de forma independiente.",
+      "loadingTrips": "Cargando tus viajes...",
+      "noTrip": "Guardar sin viaje",
+      "noTripDescription": "Guardar como lista independiente",
+      "selectTrip": "O asociar con un viaje existente:",
+      "noTripsYet": "Aún no tienes viajes",
+      "createFirstTrip": "Crea tu primer viaje",
+      "cancel": "Cancelar",
+      "saving": "Guardando...",
+      "saveButton": "Guardar"
+    },
     "config": {
       "title": "Configura Tu Equipaje",
       "preset": "Preset de Aerolínea",

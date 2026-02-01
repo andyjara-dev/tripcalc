@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
+import SaveModal from './SaveModal';
 
 type PackingItem = {
   category: string;
@@ -21,12 +22,14 @@ type Props = {
   };
   currency: string;
   weightLimit: number; // grams
-  onSave?: () => void;
+  onSave?: (tripId?: string) => Promise<void>;
 };
 
 export default function PackingList({ data, currency, weightLimit, onSave }: Props) {
   const t = useTranslations('luggage.list');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const handleToggle = (index: number) => {
     const newChecked = new Set(checkedItems);
@@ -37,6 +40,24 @@ export default function PackingList({ data, currency, weightLimit, onSave }: Pro
       newChecked.add(key);
     }
     setCheckedItems(newChecked);
+  };
+
+  const handleSaveClick = () => {
+    setShowSaveModal(true);
+  };
+
+  const handleSaveConfirm = async (tripId?: string) => {
+    if (!onSave) return;
+
+    setSaving(true);
+    try {
+      await onSave(tripId);
+      setShowSaveModal(false);
+    } catch (error) {
+      console.error('Error saving:', error);
+    } finally {
+      setSaving(false);
+    }
   };
 
   // Calculate current packed weight
@@ -162,7 +183,7 @@ export default function PackingList({ data, currency, weightLimit, onSave }: Pro
           </div>
           {onSave && (
             <button
-              onClick={onSave}
+              onClick={handleSaveClick}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
             >
               💾 {t('save')}
@@ -288,12 +309,22 @@ export default function PackingList({ data, currency, weightLimit, onSave }: Pro
             💡 {t('saveReminder')}
           </p>
           <button
-            onClick={onSave}
+            onClick={handleSaveClick}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
           >
             💾 {t('save')}
           </button>
         </div>
+      )}
+
+      {/* Save Modal */}
+      {onSave && (
+        <SaveModal
+          isOpen={showSaveModal}
+          onClose={() => setShowSaveModal(false)}
+          onSave={handleSaveConfirm}
+          saving={saving}
+        />
       )}
     </div>
   );

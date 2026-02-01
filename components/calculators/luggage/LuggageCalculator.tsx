@@ -66,7 +66,7 @@ export default function LuggageCalculator({ locale }: Props) {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (tripId?: string) => {
     if (!packingList || !params) return;
 
     try {
@@ -75,6 +75,7 @@ export default function LuggageCalculator({ locale }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...params,
+          tripId,
           items: packingList.items,
           totalWeight: packingList.totalWeight,
           tips: packingList.tips,
@@ -86,10 +87,17 @@ export default function LuggageCalculator({ locale }: Props) {
         throw new Error('Failed to save packing list');
       }
 
+      const data = await response.json();
       alert(t('savedSuccessfully'));
+
+      // Optionally redirect to trip page if tripId was provided
+      if (tripId) {
+        window.location.href = `/${locale}/trips/${tripId}`;
+      }
     } catch (err) {
       alert(t('saveFailed'));
       console.error('Error saving packing list:', err);
+      throw err; // Re-throw so modal knows it failed
     }
   };
 
