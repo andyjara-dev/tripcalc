@@ -7,6 +7,7 @@ import PackingList from './PackingList';
 import Toast from '@/components/ui/Toast';
 
 type PackingParams = {
+  preset?: string; // Luggage preset key
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
