@@ -767,7 +767,16 @@
       "save": "Save List",
       "packingTips": "Packing Tips",
       "warnings": "Warnings",
-      "packed": "Packed"
+      "packed": "Packed",
+      "currentWeight": "Current Weight",
+      "currentWeightDescription": "Check items as you pack them",
+      "checkItemsDescription": "Mark items as packed to track your weight",
+      "of": "of",
+      "remaining": "Remaining",
+      "items": "items",
+      "essential": "Essential",
+      "each": "each",
+      "saveReminder": "Don't forget to save your progress!"
     },
     "premium": {
       "title": "Smart Luggage Calculator",

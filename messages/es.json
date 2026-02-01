@@ -790,7 +790,16 @@
       "save": "Guardar Lista",
       "packingTips": "Consejos de Empaque",
       "warnings": "Advertencias",
-      "packed": "Empacado"
+      "packed": "Empacado",
+      "currentWeight": "Peso Actual",
+      "currentWeightDescription": "Marca los items mientras los empacas",
+      "checkItemsDescription": "Marca los items empacados para seguir tu peso",
+      "of": "de",
+      "remaining": "Restante",
+      "items": "items",
+      "essential": "Esencial",
+      "each": "c/u",
+      "saveReminder": "¡No olvides guardar tu progreso!"
     },
     "premium": {
       "title": "Calculadora Inteligente de Equipaje",

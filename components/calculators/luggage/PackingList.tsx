@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 
 type PackingItem = {
@@ -20,10 +20,11 @@ type Props = {
     warnings: string[];
   };
   currency: string;
+  weightLimit: number; // grams
   onSave?: () => void;
 };
 
-export default function PackingList({ data, currency, onSave }: Props) {
+export default function PackingList({ data, currency, weightLimit, onSave }: Props) {
   const t = useTranslations('luggage.list');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
 
@@ -38,6 +39,41 @@ export default function PackingList({ data, currency, onSave }: Props) {
     setCheckedItems(newChecked);
   };
 
+  // Calculate current packed weight
+  const packedWeight = useMemo(() => {
+    let weight = 0;
+    checkedItems.forEach((key) => {
+      const index = parseInt(key);
+      if (data.items[index]) {
+        weight += data.items[index].totalWeight;
+      }
+    });
+    return weight;
+  }, [checkedItems, data.items]);
+
+  const remainingWeight = weightLimit - packedWeight;
+  const percentage = (packedWeight / weightLimit) * 100;
+  const isOverweight = packedWeight > weightLimit;
+  const isClose = percentage > 90 && !isOverweight;
+
+  // Color based on weight status
+  let barColor = 'bg-green-500';
+  let bgColor = 'bg-green-50';
+  let borderColor = 'border-green-200';
+  let textColor = 'text-green-800';
+
+  if (isOverweight) {
+    barColor = 'bg-red-500';
+    bgColor = 'bg-red-50';
+    borderColor = 'border-red-200';
+    textColor = 'text-red-800';
+  } else if (isClose) {
+    barColor = 'bg-yellow-500';
+    bgColor = 'bg-yellow-50';
+    borderColor = 'border-yellow-200';
+    textColor = 'text-yellow-800';
+  }
+
   // Group items by category
   const groupedItems = data.items.reduce((acc, item) => {
     if (!acc[item.category]) {
@@ -49,20 +85,81 @@ export default function PackingList({ data, currency, onSave }: Props) {
 
   const categoryIcons: Record<string, string> = {
     'Clothing': '👕',
+    'Ropa': '👕',
     'Shoes': '👟',
+    'Zapatos': '👟',
     'Accessories': '🎒',
+    'Accesorios': '🎒',
     'Toiletries': '🧴',
+    'Artículos de aseo': '🧴',
     'Electronics': '📱',
+    'Electrónicos': '📱',
     'Documents': '📄',
+    'Documentos': '📄',
     'Other': '📦',
+    'Otros': '📦',
   };
 
   return (
     <div className="space-y-6">
+      {/* Sticky Weight Tracker */}
+      <div className="sticky top-0 z-10 bg-gray-50 pb-4">
+        <div className={`${bgColor} border ${borderColor} rounded-lg p-6`}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t('currentWeight')} 🎒
+              </h3>
+              <p className="text-xs text-gray-600">{t('currentWeightDescription')}</p>
+            </div>
+            <div className="text-right">
+              <p className={`text-3xl font-bold ${textColor}`}>
+                {(packedWeight / 1000).toFixed(2)}kg
+              </p>
+              <p className="text-sm text-gray-600">
+                {t('of')} {(weightLimit / 1000).toFixed(0)}kg
+              </p>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="relative w-full bg-gray-200 rounded-full h-6 mb-4">
+            <div
+              className={`${barColor} h-6 rounded-full transition-all duration-500 flex items-center justify-center`}
+              style={{ width: `${Math.min(percentage, 100)}%` }}
+            >
+              {percentage > 10 && (
+                <span className="text-xs font-semibold text-white">
+                  {percentage.toFixed(0)}%
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <p className="text-gray-600">{t('remaining')}</p>
+              <p className={`font-semibold ${remainingWeight < 0 ? 'text-red-600' : 'text-gray-900'}`}>
+                {remainingWeight < 0 ? '-' : '+'}{Math.abs(remainingWeight / 1000).toFixed(2)}kg
+              </p>
+            </div>
+            <div className="text-right">
+              <p className="text-gray-600">{t('packed')}</p>
+              <p className="font-semibold text-gray-900">
+                {checkedItems.size} / {data.items.length} {t('items')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Packing List */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{t('title')}</h2>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">{t('title')}</h2>
+            <p className="text-sm text-gray-600 mt-1">{t('checkItemsDescription')}</p>
+          </div>
           {onSave && (
             <button
               onClick={onSave}
@@ -81,7 +178,7 @@ export default function PackingList({ data, currency, onSave }: Props) {
                 <span className="mr-2 text-2xl">{categoryIcons[category] || '📦'}</span>
                 {category}
                 <span className="ml-2 text-sm font-normal text-gray-600">
-                  ({items.length} items)
+                  ({items.length} {t('items')})
                 </span>
               </h3>
 
@@ -118,7 +215,7 @@ export default function PackingList({ data, currency, onSave }: Props) {
                               )}
                               {item.essential && (
                                 <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
-                                  Essential
+                                  {t('essential')}
                                 </span>
                               )}
                             </p>
@@ -133,7 +230,7 @@ export default function PackingList({ data, currency, onSave }: Props) {
                             </p>
                             {item.quantity > 1 && (
                               <p className="text-xs text-gray-600">
-                                ({item.weightPerItem}g each)
+                                ({item.weightPerItem}g {t('each')})
                               </p>
                             )}
                           </div>
@@ -184,23 +281,20 @@ export default function PackingList({ data, currency, onSave }: Props) {
         </div>
       )}
 
-      {/* Progress */}
-      <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-900">
-            {t('packed')}: {checkedItems.size} / {data.items.length}
-          </span>
-          <span className="text-gray-900 font-semibold">
-            {Math.round((checkedItems.size / data.items.length) * 100)}%
-          </span>
+      {/* Save reminder */}
+      {onSave && checkedItems.size > 0 && (
+        <div className="bg-gray-100 border border-gray-300 rounded-lg p-4 flex items-center justify-between">
+          <p className="text-gray-900">
+            💡 {t('saveReminder')}
+          </p>
+          <button
+            onClick={onSave}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+          >
+            💾 {t('save')}
+          </button>
         </div>
-        <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-          <div
-            className="bg-green-500 h-2 rounded-full transition-all duration-300"
-            style={{ width: `${(checkedItems.size / data.items.length) * 100}%` }}
-          ></div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

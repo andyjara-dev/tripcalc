@@ -52,9 +52,9 @@ export async function generatePackingList(
     model: 'gemini-2.5-flash',
     generationConfig: {
       temperature: 0.7,
-      topK: 40,
+      topK: 64,
       topP: 0.95,
-      maxOutputTokens: 8192,
+      maxOutputTokens: 16384,
       responseMimeType: 'application/json',
     },
   });

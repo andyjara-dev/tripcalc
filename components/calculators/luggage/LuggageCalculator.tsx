@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import LuggageConfig from './LuggageConfig';
 import PackingList from './PackingList';
-import WeightTracker from './WeightTracker';
 
 type PackingParams = {
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
@@ -129,21 +128,12 @@ export default function LuggageCalculator({ locale }: Props) {
 
       {/* Results */}
       {packingList && !loading && params && (
-        <>
-          {/* Weight Tracker */}
-          <WeightTracker
-            totalWeight={packingList.totalWeight}
-            weightLimit={params.weightLimit * 1000}
-            remainingWeight={packingList.remainingWeight}
-          />
-
-          {/* Packing List */}
-          <PackingList
-            data={packingList}
-            currency="g"
-            onSave={handleSave}
-          />
-        </>
+        <PackingList
+          data={packingList}
+          currency="g"
+          weightLimit={params.weightLimit * 1000}
+          onSave={handleSave}
+        />
       )}
     </div>
   );
