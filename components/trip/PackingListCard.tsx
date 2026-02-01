@@ -12,6 +12,7 @@ type PackingItem = {
   totalWeight: number;
   essential: boolean;
   notes?: string;
+  packed?: boolean; // Track if item is packed/checked
 };
 
 type PackingList = {
@@ -36,7 +37,19 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
   const [expanded, setExpanded] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
-  const percentage = (packingList.totalWeight / packingList.weightLimit) * 100;
+  // Calculate actual packed weight (only items with packed=true)
+  const packedWeight = packingList.items
+    .filter(item => item.packed === true || item.packed === undefined) // undefined for backwards compatibility
+    .reduce((sum, item) => sum + item.totalWeight, 0);
+
+  // Count packed items
+  const packedItemsCount = packingList.items
+    .filter(item => item.packed === true || item.packed === undefined)
+    .length;
+
+  // weightLimit is in kg, packedWeight is in grams, so convert to same unit
+  const weightLimitInGrams = packingList.weightLimit * 1000;
+  const percentage = (packedWeight / weightLimitInGrams) * 100;
   const isOverweight = percentage > 100;
   const isClose = percentage > 90 && !isOverweight;
 
@@ -120,9 +133,9 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
         {/* Weight Summary */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Peso total:</span>
+            <span className="text-gray-600">Peso empacado:</span>
             <span className={`font-bold ${statusColor}`}>
-              {(packingList.totalWeight / 1000).toFixed(2)}kg / {(packingList.weightLimit / 1000).toFixed(0)}kg
+              {(packedWeight / 1000).toFixed(2)}kg / {packingList.weightLimit.toFixed(0)}kg
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-3">
@@ -132,7 +145,7 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
             ></div>
           </div>
           <div className="flex items-center justify-between text-xs text-gray-600">
-            <span>{packingList.items.length} items</span>
+            <span>{packedItemsCount} / {packingList.items.length} items</span>
             <span>{percentage.toFixed(0)}%</span>
           </div>
         </div>
@@ -159,19 +172,27 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
                     {category} ({items.length})
                   </h5>
                   <ul className="space-y-1 text-sm">
-                    {items.map((item, idx) => (
-                      <li key={idx} className="flex justify-between text-gray-700">
-                        <span>
-                          {item.name} {item.quantity > 1 && `x${item.quantity}`}
-                          {item.essential && (
-                            <span className="ml-1 text-xs bg-red-100 text-red-800 px-1 rounded">
-                              {t('essential')}
+                    {items.map((item, idx) => {
+                      const isPacked = item.packed === true || item.packed === undefined;
+                      return (
+                        <li key={idx} className={`flex justify-between ${isPacked ? 'text-gray-700' : 'text-gray-400 opacity-60'}`}>
+                          <span className="flex items-center gap-2">
+                            <span className={`text-lg ${isPacked ? 'text-green-600' : 'text-gray-300'}`}>
+                              {isPacked ? '✓' : '○'}
                             </span>
-                          )}
-                        </span>
-                        <span className="text-gray-600">{item.totalWeight}g</span>
-                      </li>
-                    ))}
+                            <span className={isPacked ? '' : 'line-through'}>
+                              {item.name} {item.quantity > 1 && `x${item.quantity}`}
+                              {item.essential && (
+                                <span className="ml-1 text-xs bg-red-100 text-red-800 px-1 rounded">
+                                  {t('essential')}
+                                </span>
+                              )}
+                            </span>
+                          </span>
+                          <span className={isPacked ? 'text-gray-600' : 'text-gray-400'}>{item.totalWeight}g</span>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ))}
