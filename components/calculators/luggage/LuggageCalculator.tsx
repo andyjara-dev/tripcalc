@@ -56,6 +56,7 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
   const [packingList, setPackingList] = useState<PackingListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [params, setParams] = useState<PackingParams | null>(null);
+  const [isLoadedList, setIsLoadedList] = useState(false);
 
   // Pre-populate with saved data if available
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
         totalWeight: initialData.totalWeight,
         remainingWeight: (initialData.weightLimit * 1000) - initialData.totalWeight,
       });
+      setIsLoadedList(true);
     }
   }, [initialData]);
 
@@ -86,6 +88,7 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
     setLoading(true);
     setError(null);
     setParams(newParams);
+    setIsLoadedList(false); // Reset when generating a new list
 
     try {
       const response = await fetch('/api/luggage/generate', {
@@ -189,6 +192,7 @@ export default function LuggageCalculator({ locale, initialData }: Props) {
           currency="g"
           weightLimit={params.weightLimit * 1000}
           onSave={handleSave}
+          isLoadedList={isLoadedList}
         />
       )}
     </div>

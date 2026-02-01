@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import SaveModal from './SaveModal';
 
@@ -23,11 +23,23 @@ type Props = {
   currency: string;
   weightLimit: number; // grams
   onSave?: (tripId?: string) => Promise<void>;
+  isLoadedList?: boolean; // Indicates if this is a saved list being loaded
 };
 
-export default function PackingList({ data, currency, weightLimit, onSave }: Props) {
+export default function PackingList({ data, currency, weightLimit, onSave, isLoadedList }: Props) {
   const t = useTranslations('luggage.list');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+
+  // When loading a saved list, mark all items as checked
+  useEffect(() => {
+    if (isLoadedList && data.items.length > 0) {
+      const allItems = new Set<string>();
+      data.items.forEach((_, index) => {
+        allItems.add(`${index}`);
+      });
+      setCheckedItems(allItems);
+    }
+  }, [isLoadedList, data.items]);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
