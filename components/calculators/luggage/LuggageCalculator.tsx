@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import LuggageConfig from './LuggageConfig';
 import PackingList from './PackingList';
@@ -28,16 +28,59 @@ type PackingListResponse = {
   warnings: string[];
 };
 
-type Props = {
-  locale: string;
+type SavedPackingListData = {
+  luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
+  weightLimit: number;
+  dimensions?: string;
+  duration: number;
+  tripType: 'business' | 'leisure' | 'adventure' | 'beach' | 'ski' | 'city';
+  climate?: 'cold' | 'mild' | 'warm' | 'hot' | 'mixed';
+  gender: 'male' | 'female' | 'unisex';
+  destination?: string;
+  startDate?: string;
+  endDate?: string;
+  items: any[];
+  tips: string[];
+  warnings: string[];
+  totalWeight: number;
 };
 
-export default function LuggageCalculator({ locale }: Props) {
+type Props = {
+  locale: string;
+  initialData?: SavedPackingListData;
+};
+
+export default function LuggageCalculator({ locale, initialData }: Props) {
   const t = useTranslations('luggage');
   const [loading, setLoading] = useState(false);
   const [packingList, setPackingList] = useState<PackingListResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [params, setParams] = useState<PackingParams | null>(null);
+
+  // Pre-populate with saved data if available
+  useEffect(() => {
+    if (initialData) {
+      setParams({
+        luggageType: initialData.luggageType,
+        weightLimit: initialData.weightLimit,
+        dimensions: initialData.dimensions,
+        duration: initialData.duration,
+        tripType: initialData.tripType,
+        climate: initialData.climate,
+        gender: initialData.gender,
+        destination: initialData.destination,
+        startDate: initialData.startDate,
+        endDate: initialData.endDate,
+      });
+      setPackingList({
+        items: initialData.items,
+        tips: initialData.tips,
+        warnings: initialData.warnings,
+        totalWeight: initialData.totalWeight,
+        remainingWeight: (initialData.weightLimit * 1000) - initialData.totalWeight,
+      });
+    }
+  }, [initialData]);
 
   const handleGenerate = async (newParams: PackingParams) => {
     setLoading(true);
@@ -106,7 +149,12 @@ export default function LuggageCalculator({ locale }: Props) {
       {/* Configuration Form */}
       <div className="bg-white rounded-lg shadow p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('config.title')}</h2>
-        <LuggageConfig onGenerate={handleGenerate} loading={loading} locale={locale} />
+        <LuggageConfig
+          onGenerate={handleGenerate}
+          loading={loading}
+          locale={locale}
+          initialParams={params || undefined}
+        />
       </div>
 
       {/* Loading State */}

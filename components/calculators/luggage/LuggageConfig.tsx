@@ -24,6 +24,7 @@ type Props = {
   onGenerate: (params: PackingParams) => void | Promise<void>;
   loading: boolean;
   locale: string;
+  initialParams?: Partial<PackingParams>;
 };
 
 const LUGGAGE_PRESETS = {
@@ -37,7 +38,7 @@ const LUGGAGE_PRESETS = {
   'custom': { type: 'custom' as const, weight: 10, dimensions: '55x40x20' },
 };
 
-export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
+export default function LuggageConfig({ onGenerate, loading, locale, initialParams }: Props) {
   const t = useTranslations('luggage.config');
 
   // Mode toggle
@@ -70,6 +71,25 @@ export default function LuggageConfig({ onGenerate, loading, locale }: Props) {
       setCalculatedDuration(Math.max(1, diff));
     }
   }, [startDate, endDate]);
+
+  // Pre-populate form with initial params
+  useEffect(() => {
+    if (initialParams) {
+      if (initialParams.luggageType) setLuggageType(initialParams.luggageType);
+      if (initialParams.weightLimit) setWeightLimit(initialParams.weightLimit);
+      if (initialParams.dimensions) setDimensions(initialParams.dimensions);
+      if (initialParams.duration) setDuration(initialParams.duration);
+      if (initialParams.tripType) setTripType(initialParams.tripType);
+      if (initialParams.climate) setClimate(initialParams.climate);
+      if (initialParams.gender) setGender(initialParams.gender);
+      if (initialParams.destination) {
+        setDestination(initialParams.destination);
+        setAdvancedMode(true);
+      }
+      if (initialParams.startDate) setStartDate(initialParams.startDate);
+      if (initialParams.endDate) setEndDate(initialParams.endDate);
+    }
+  }, [initialParams]);
 
   const handlePresetChange = (presetKey: string) => {
     setPreset(presetKey);

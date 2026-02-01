@@ -4,6 +4,7 @@
 
 import { Metadata } from 'next';
 import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
 import Header from '@/components/Header';
 import LuggageCalculator from '@/components/calculators/luggage/LuggageCalculator';
@@ -12,6 +13,9 @@ import PremiumGate from '@/components/calculators/luggage/PremiumGate';
 type Props = {
   params: Promise<{
     locale: string;
+  }>;
+  searchParams: Promise<{
+    loadId?: string;
   }>;
 };
 
@@ -25,13 +29,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function LuggageCalculatorPage({ params }: Props) {
+export default async function LuggageCalculatorPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { loadId } = await searchParams;
   const session = await auth();
 
   // Check if user has premium access
   // @ts-ignore
   const hasPremium = session?.user?.isPremium || session?.user?.isAdmin;
+
+  // Load existing packing list if loadId is provided
+  let savedPackingList = null;
+  if (loadId && session?.user?.id) {
+    savedPackingList = await prisma.packingList.findUnique({
+      where: {
+        id: loadId,
+        userId: session.user.id, // Ensure user owns this list
+      },
+    });
+  }
 
   const tNav = await getTranslations({ locale, namespace: 'nav' });
   const tSite = await getTranslations({ locale, namespace: 'site' });
@@ -68,7 +84,25 @@ export default async function LuggageCalculatorPage({ params }: Props) {
           {!hasPremium ? (
             <PremiumGate locale={locale} />
           ) : (
-            <LuggageCalculator locale={locale} />
+            <LuggageCalculator
+              locale={locale}
+              initialData={savedPackingList ? {
+                luggageType: savedPackingList.luggageType as any,
+                weightLimit: savedPackingList.weightLimit,
+                dimensions: savedPackingList.dimensions || undefined,
+                duration: savedPackingList.duration,
+                tripType: savedPackingList.tripType as any,
+                climate: (savedPackingList.climate as any) || undefined,
+                gender: savedPackingList.gender as any,
+                destination: savedPackingList.destination || undefined,
+                startDate: savedPackingList.startDate || undefined,
+                endDate: savedPackingList.endDate || undefined,
+                items: savedPackingList.items as any[],
+                tips: savedPackingList.tips as string[],
+                warnings: (savedPackingList.warnings as string[]) || [],
+                totalWeight: savedPackingList.totalWeight,
+              } : undefined}
+            />
           )}
         </div>
       </div>

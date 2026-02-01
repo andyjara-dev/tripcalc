@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
 import Header from '@/components/Header';
 import TripView from '@/components/trips/TripView';
+import PackingListSection from '@/components/trip/PackingListSection';
 
 interface PageProps {
   params: Promise<{
@@ -37,12 +38,21 @@ export default async function TripDetailPage({ params }: PageProps) {
     },
     include: {
       customItems: true,
+      packingLists: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+        take: 1, // Only get the most recent packing list for this trip
+      },
     },
   });
 
   if (!trip) {
     notFound();
   }
+
+  // Check if user is premium or admin
+  const isPremiumUser = session.user.isPremium || session.user.isAdmin;
 
   const tNav = await getTranslations({ locale, namespace: 'nav' });
   const tSite = await getTranslations({ locale, namespace: 'site' });
@@ -64,8 +74,25 @@ export default async function TripDetailPage({ params }: PageProps) {
 
       {/* Main Content */}
       <div className="pt-24 pb-12">
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
           <TripView trip={trip} />
+
+          {/* Packing List Section (Premium only) */}
+          {isPremiumUser && trip.packingLists && trip.packingLists.length > 0 && (
+            <PackingListSection
+              packingList={{
+                id: trip.packingLists[0].id,
+                luggageType: trip.packingLists[0].luggageType,
+                weightLimit: trip.packingLists[0].weightLimit,
+                totalWeight: trip.packingLists[0].totalWeight,
+                items: trip.packingLists[0].items as any[],
+                tips: trip.packingLists[0].tips as string[],
+                warnings: (trip.packingLists[0].warnings as string[]) || [],
+                createdAt: trip.packingLists[0].createdAt.toISOString(),
+              }}
+              locale={locale}
+            />
+          )}
         </div>
       </div>
     </div>
