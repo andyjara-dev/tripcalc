@@ -90,6 +90,13 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
     }
   }, [initialData]);
 
+  const handlePresetChange = (preset: string) => {
+    // Update params with new preset when it changes in the form
+    if (params) {
+      setParams({ ...params, preset });
+    }
+  };
+
   const handleGenerate = async (newParams: PackingParams) => {
     setLoading(true);
     setError(null);
@@ -163,6 +170,7 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
         <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('config.title')}</h2>
         <LuggageConfig
           onGenerate={handleGenerate}
+          onPresetChange={handlePresetChange}
           loading={loading}
           locale={locale}
           initialParams={params || undefined}

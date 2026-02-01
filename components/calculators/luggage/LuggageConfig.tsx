@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import CityAutocomplete from './CityAutocomplete';
 import DateRangePicker from './DateRangePicker';
@@ -23,6 +23,7 @@ type PackingParams = {
 
 type Props = {
   onGenerate: (params: PackingParams) => void | Promise<void>;
+  onPresetChange?: (preset: string) => void; // Notify parent when preset changes
   loading: boolean;
   locale: string;
   initialParams?: Partial<PackingParams>;
@@ -39,8 +40,9 @@ const LUGGAGE_PRESETS = {
   'custom': { type: 'custom' as const, weight: 10, dimensions: '55x40x20' },
 };
 
-export default function LuggageConfig({ onGenerate, loading, locale, initialParams }: Props) {
+export default function LuggageConfig({ onGenerate, onPresetChange, loading, locale, initialParams }: Props) {
   const t = useTranslations('luggage.config');
+  const hasNotifiedInitialPreset = useRef(false);
 
   // Mode toggle
   const [advancedMode, setAdvancedMode] = useState(false);
@@ -76,7 +78,9 @@ export default function LuggageConfig({ onGenerate, loading, locale, initialPara
   // Pre-populate form with initial params
   useEffect(() => {
     if (initialParams) {
-      if (initialParams.preset) setPreset(initialParams.preset);
+      if (initialParams.preset) {
+        setPreset(initialParams.preset);
+      }
       if (initialParams.luggageType) setLuggageType(initialParams.luggageType);
       if (initialParams.weightLimit) setWeightLimit(initialParams.weightLimit);
       if (initialParams.dimensions) setDimensions(initialParams.dimensions);
@@ -93,12 +97,25 @@ export default function LuggageConfig({ onGenerate, loading, locale, initialPara
     }
   }, [initialParams]);
 
+  // Notify parent of preset on initial load if not set
+  useEffect(() => {
+    if (onPresetChange && initialParams && !initialParams.preset && !hasNotifiedInitialPreset.current) {
+      onPresetChange(preset);
+      hasNotifiedInitialPreset.current = true;
+    }
+  }, [onPresetChange, initialParams, preset]);
+
   const handlePresetChange = (presetKey: string) => {
     setPreset(presetKey);
     const presetData = LUGGAGE_PRESETS[presetKey as keyof typeof LUGGAGE_PRESETS];
     setLuggageType(presetData.type);
     setWeightLimit(presetData.weight);
     setDimensions(presetData.dimensions);
+
+    // Notify parent of preset change
+    if (onPresetChange) {
+      onPresetChange(presetKey);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
