@@ -17,6 +17,7 @@ type PackingItem = {
 
 type PackingList = {
   id: string;
+  name?: string;
   luggageType: string;
   weightLimit: number;
   totalWeight: number;
@@ -102,12 +103,19 @@ export default function PackingListCard({ packingList, locale, onDelete }: Props
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              🧳 {t('title')}
-              <span className="text-sm font-normal text-gray-600">
-                ({packingList.luggageType})
-              </span>
+              🧳 {packingList.name || t('title')}
+              {!packingList.name && (
+                <span className="text-sm font-normal text-gray-600">
+                  ({packingList.luggageType})
+                </span>
+              )}
             </h3>
             <p className="text-sm text-gray-600 mt-1">
+              {packingList.name && (
+                <span className="mr-2">
+                  {packingList.luggageType} • {packingList.weightLimit}kg
+                </span>
+              )}
               {t('created')}: {new Date(packingList.createdAt).toLocaleDateString(locale)}
             </p>
           </div>

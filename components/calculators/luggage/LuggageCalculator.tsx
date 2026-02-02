@@ -32,6 +32,7 @@ type PackingListResponse = {
 };
 
 type SavedPackingListData = {
+  name?: string;
   preset?: string;
   airlineId?: string;
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
@@ -128,7 +129,7 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
     }
   };
 
-  const handleSave = async (tripId?: string, updatedItems?: any[]) => {
+  const handleSave = async (tripId?: string, name?: string, updatedItems?: any[]) => {
     if (!packingList || !params) return;
 
     try {
@@ -138,6 +139,7 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
         body: JSON.stringify({
           ...params,
           tripId,
+          name,
           listId: editingListId, // Include the ID if editing existing list
           items: updatedItems || packingList.items, // Use updated items if provided
           totalWeight: packingList.totalWeight,
@@ -158,11 +160,43 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
         setTimeout(() => {
           window.location.href = `/${locale}/trips/${tripId}`;
         }, 1500); // Wait for toast to be visible before redirecting
+      } else if (!editingListId) {
+        // If creating a new list (not editing), offer to create another
+        setTimeout(() => {
+          if (confirm(t('createAnother') || '¿Deseas crear otra lista de equipaje? (ej: maleta de mano, facturada)')) {
+            window.location.reload();
+          }
+        }, 1500);
       }
     } catch (err) {
       setToast({ message: t('saveFailed'), type: 'error' });
       console.error('Error saving packing list:', err);
       throw err; // Re-throw so modal knows it failed
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!editingListId) return;
+
+    try {
+      const response = await fetch(`/api/luggage/${editingListId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete packing list');
+      }
+
+      setToast({ message: t('deletedSuccessfully') || 'Lista eliminada correctamente', type: 'success' });
+
+      // Redirect to calculator page after deletion
+      setTimeout(() => {
+        window.location.href = `/${locale}/calculators/luggage`;
+      }, 1500);
+    } catch (err) {
+      setToast({ message: t('deleteFailed') || 'Error al eliminar la lista', type: 'error' });
+      console.error('Error deleting packing list:', err);
+      throw err;
     }
   };
 
@@ -212,7 +246,9 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
           currency="g"
           weightLimit={params.weightLimit * 1000}
           onSave={handleSave}
+          onDelete={editingListId ? handleDelete : undefined}
           isLoadedList={isLoadedList}
+          initialName={initialData?.name}
         />
       )}
 

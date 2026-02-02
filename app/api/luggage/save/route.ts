@@ -6,6 +6,7 @@ import { z } from 'zod';
 const savePackingListSchema = z.object({
   tripId: z.string().optional(),
   listId: z.string().optional(), // ID of existing list to update
+  name: z.string().optional(), // User-defined name for the list
   preset: z.string().optional(), // Luggage preset selected
   airlineId: z.string().optional(), // Airline ID if using airline-specific rules
   luggageType: z.string(),

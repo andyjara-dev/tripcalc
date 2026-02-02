@@ -14,21 +14,24 @@ type Trip = {
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (tripId?: string) => void;
+  onSave: (tripId?: string, name?: string) => void;
   saving: boolean;
+  initialName?: string;
 };
 
-export default function SaveModal({ isOpen, onClose, onSave, saving }: Props) {
+export default function SaveModal({ isOpen, onClose, onSave, saving, initialName }: Props) {
   const t = useTranslations('luggage.save');
   const [trips, setTrips] = useState<Trip[]>([]);
   const [selectedTripId, setSelectedTripId] = useState<string>('');
+  const [listName, setListName] = useState<string>(initialName || '');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       fetchTrips();
+      setListName(initialName || '');
     }
-  }, [isOpen]);
+  }, [isOpen, initialName]);
 
   const fetchTrips = async () => {
     setLoading(true);
@@ -46,7 +49,7 @@ export default function SaveModal({ isOpen, onClose, onSave, saving }: Props) {
   };
 
   const handleSave = () => {
-    onSave(selectedTripId || undefined);
+    onSave(selectedTripId || undefined, listName || undefined);
   };
 
   if (!isOpen) return null;
@@ -68,6 +71,22 @@ export default function SaveModal({ isOpen, onClose, onSave, saving }: Props) {
         <p className="text-sm text-gray-600 mb-4">
           {t('description')}
         </p>
+
+        {/* List Name Input */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            {t('listName')} <span className="text-gray-500">({t('optional')})</span>
+          </label>
+          <input
+            type="text"
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            placeholder={t('listNamePlaceholder')}
+            disabled={saving}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white disabled:bg-gray-100"
+          />
+          <p className="text-xs text-gray-500 mt-1">{t('listNameHint')}</p>
+        </div>
 
         {loading ? (
           <div className="py-8 text-center">

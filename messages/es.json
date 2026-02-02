@@ -716,6 +716,14 @@
       "duration": "Duración",
       "day": "día",
       "days": "días"
+    },
+    "packingLists": {
+      "title": "Listas de Equipaje",
+      "totalWeight": "Peso total",
+      "addAnother": "Agregar Otra",
+      "noLists": "Aún no hay listas de equipaje",
+      "noListsDescription": "Crea listas de equipaje para tu maleta y rastrea tu peso",
+      "createFirst": "Crear Primera Lista de Equipaje"
     }
   },
   "luggage": {
@@ -726,9 +734,16 @@
     "error": "Error",
     "savedSuccessfully": "¡Lista de empaque guardada exitosamente!",
     "saveFailed": "Error al guardar la lista de empaque",
+    "deletedSuccessfully": "¡Lista de empaque eliminada exitosamente!",
+    "deleteFailed": "Error al eliminar la lista de empaque",
+    "createAnother": "¿Deseas crear otra lista de equipaje? (ej: artículo personal, maleta facturada)",
     "save": {
       "title": "Guardar Lista de Empaque",
       "description": "Asocia esta lista con un viaje o guárdala de forma independiente.",
+      "listName": "Nombre de la Lista",
+      "listNamePlaceholder": "ej: Artículo Personal, Maleta de Mano, Maleta Facturada",
+      "listNameHint": "Ayuda a distinguir entre múltiples maletas para el mismo viaje",
+      "optional": "opcional",
       "loadingTrips": "Cargando tus viajes...",
       "noTrip": "Guardar sin viaje",
       "noTripDescription": "Guardar como lista independiente",
@@ -801,6 +816,7 @@
     "list": {
       "title": "Tu Lista de Empaque",
       "save": "Guardar Lista",
+      "update": "Actualizar Lista",
       "packingTips": "Consejos de Empaque",
       "warnings": "Advertencias",
       "packed": "Empacado",
@@ -812,7 +828,9 @@
       "items": "items",
       "essential": "Esencial",
       "each": "c/u",
-      "saveReminder": "¡No olvides guardar tu progreso!"
+      "saveReminder": "¡No olvides guardar tu progreso!",
+      "confirmDelete": "¿Estás seguro de que quieres eliminar esta lista de equipaje?",
+      "deleteFailed": "Error al eliminar la lista de equipaje"
     },
     "card": {
       "title": "Lista de Equipaje",

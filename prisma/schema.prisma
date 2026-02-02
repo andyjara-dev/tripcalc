@@ -382,6 +382,7 @@ model PackingList {
   id        String   @id @default(cuid())
   userId    String
   tripId    String?  // Optional: link to a trip
+  name      String?  // User-defined name (e.g., "Personal Item", "Carry-on", "Checked Bag")
 
   // Luggage Configuration
   preset        String?  // "ryanair-carryon", "standard-carryon", "copa-carryon", etc.

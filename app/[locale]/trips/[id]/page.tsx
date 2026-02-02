@@ -5,7 +5,7 @@ import { prisma } from '@/lib/db';
 import { getTranslations } from 'next-intl/server';
 import Header from '@/components/Header';
 import TripView from '@/components/trips/TripView';
-import PackingListSection from '@/components/trip/PackingListSection';
+import PackingListsSection from '@/components/trip/PackingListsSection';
 
 interface PageProps {
   params: Promise<{
@@ -42,7 +42,6 @@ export default async function TripDetailPage({ params }: PageProps) {
         orderBy: {
           createdAt: 'desc',
         },
-        take: 1, // Only get the most recent packing list for this trip
       },
     },
   });
@@ -78,20 +77,22 @@ export default async function TripDetailPage({ params }: PageProps) {
         <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
           <TripView trip={trip} />
 
-          {/* Packing List Section (Premium only) */}
-          {isPremiumUser && trip.packingLists && trip.packingLists.length > 0 && (
-            <PackingListSection
-              packingList={{
-                id: trip.packingLists[0].id,
-                luggageType: trip.packingLists[0].luggageType,
-                weightLimit: trip.packingLists[0].weightLimit,
-                totalWeight: trip.packingLists[0].totalWeight,
-                items: trip.packingLists[0].items as any[],
-                tips: trip.packingLists[0].tips as string[],
-                warnings: (trip.packingLists[0].warnings as string[]) || [],
-                createdAt: trip.packingLists[0].createdAt.toISOString(),
-              }}
+          {/* Packing Lists Section (Premium only) */}
+          {isPremiumUser && (
+            <PackingListsSection
+              packingLists={trip.packingLists.map(list => ({
+                id: list.id,
+                name: list.name || undefined,
+                luggageType: list.luggageType,
+                weightLimit: list.weightLimit,
+                totalWeight: list.totalWeight,
+                items: list.items as any[],
+                tips: list.tips as string[],
+                warnings: (list.warnings as string[]) || [],
+                createdAt: list.createdAt.toISOString(),
+              }))}
               locale={locale}
+              tripId={trip.id}
             />
           )}
         </div>

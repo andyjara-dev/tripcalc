@@ -23,13 +23,16 @@ type Props = {
   };
   currency: string;
   weightLimit: number; // grams
-  onSave?: (tripId?: string, updatedItems?: PackingItem[]) => Promise<void>;
+  onSave?: (tripId?: string, name?: string, updatedItems?: PackingItem[]) => Promise<void>;
+  onDelete?: () => Promise<void>;
   isLoadedList?: boolean; // Indicates if this is a saved list being loaded
+  initialName?: string; // Initial name for the list
 };
 
-export default function PackingList({ data, currency, weightLimit, onSave, isLoadedList }: Props) {
+export default function PackingList({ data, currency, weightLimit, onSave, onDelete, isLoadedList, initialName }: Props) {
   const t = useTranslations('luggage.list');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
+  const [deleting, setDeleting] = useState(false);
 
   // When loading a saved list, mark items that were packed
   useEffect(() => {
@@ -62,7 +65,7 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
     setShowSaveModal(true);
   };
 
-  const handleSaveConfirm = async (tripId?: string) => {
+  const handleSaveConfirm = async (tripId?: string, name?: string) => {
     if (!onSave) return;
 
     setSaving(true);
@@ -73,12 +76,30 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
         packed: checkedItems.has(`${index}`),
       }));
 
-      await onSave(tripId, updatedItems);
+      await onSave(tripId, name, updatedItems);
       setShowSaveModal(false);
     } catch (error) {
       console.error('Error saving:', error);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteClick = async () => {
+    if (!onDelete) return;
+
+    if (!confirm(t('confirmDelete') || '¿Estás seguro de que quieres eliminar esta lista de equipaje?')) {
+      return;
+    }
+
+    setDeleting(true);
+    try {
+      await onDelete();
+    } catch (error) {
+      console.error('Error deleting:', error);
+      alert(t('deleteFailed') || 'Error al eliminar la lista de equipaje');
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -203,14 +224,25 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
             <h2 className="text-2xl font-bold text-gray-900">{t('title')}</h2>
             <p className="text-sm text-gray-600 mt-1">{t('checkItemsDescription')}</p>
           </div>
-          {onSave && (
-            <button
-              onClick={handleSaveClick}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
-            >
-              💾 {t('save')}
-            </button>
-          )}
+          <div className="flex gap-2">
+            {onDelete && isLoadedList && (
+              <button
+                onClick={handleDeleteClick}
+                disabled={deleting}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                {deleting ? '⏳ Eliminando...' : '🗑️ Eliminar'}
+              </button>
+            )}
+            {onSave && (
+              <button
+                onClick={handleSaveClick}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium transition"
+              >
+                💾 {isLoadedList ? t('update') || 'Actualizar' : t('save')}
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Items by Category */}
@@ -346,6 +378,7 @@ export default function PackingList({ data, currency, weightLimit, onSave, isLoa
           onClose={() => setShowSaveModal(false)}
           onSave={handleSaveConfirm}
           saving={saving}
+          initialName={initialName}
         />
       )}
     </div>
