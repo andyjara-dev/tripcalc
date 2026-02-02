@@ -97,20 +97,34 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
         const data = await response.json();
         setAirlineLuggageRules(data.luggageRules || []);
 
-        // Auto-select first rule if available
+        // Try to find matching rule based on initial params, or select first rule
         if (data.luggageRules && data.luggageRules.length > 0) {
-          const firstRule = data.luggageRules[0];
-          setSelectedAirlineLuggageType(firstRule.id);
+          let selectedRule = data.luggageRules[0];
 
-          // Update luggage settings
-          const luggageTypeMap: Record<string, 'carry-on' | 'checked' | 'backpack'> = {
-            'carry-on': 'carry-on',
-            'checked': 'checked',
-            'personal': 'backpack',
-          };
-          setLuggageType(luggageTypeMap[firstRule.type] || 'carry-on');
-          setWeightLimit(firstRule.weightKg);
-          setDimensions(firstRule.dimensions);
+          // If we have initial params, try to find matching rule
+          if (initialParams?.weightLimit && initialParams?.dimensions) {
+            const matchingRule = data.luggageRules.find((rule: any) =>
+              rule.weightKg === initialParams.weightLimit &&
+              rule.dimensions === initialParams.dimensions
+            );
+            if (matchingRule) {
+              selectedRule = matchingRule;
+            }
+          }
+
+          setSelectedAirlineLuggageType(selectedRule.id);
+
+          // Only update luggage settings if not already set from initialParams
+          if (!initialParams) {
+            const luggageTypeMap: Record<string, 'carry-on' | 'checked' | 'backpack'> = {
+              'carry-on': 'carry-on',
+              'checked': 'checked',
+              'personal': 'backpack',
+            };
+            setLuggageType(luggageTypeMap[selectedRule.type] || 'carry-on');
+            setWeightLimit(selectedRule.weightKg);
+            setDimensions(selectedRule.dimensions);
+          }
         }
       } catch (error) {
         console.error('Error loading airline luggage rules:', error);
@@ -118,14 +132,20 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
     }
 
     loadAirlineLuggage();
-  }, [selectedAirlineId]);
+  }, [selectedAirlineId, initialParams]);
 
   // Pre-populate form with initial params
   useEffect(() => {
     if (initialParams) {
-      if (initialParams.preset) {
+      // Handle airline-specific mode
+      if (initialParams.airlineId) {
+        setUseAirline(true);
+        setSelectedAirlineId(initialParams.airlineId);
+      } else if (initialParams.preset) {
+        setUseAirline(false);
         setPreset(initialParams.preset);
       }
+
       if (initialParams.luggageType) setLuggageType(initialParams.luggageType);
       if (initialParams.weightLimit) setWeightLimit(initialParams.weightLimit);
       if (initialParams.dimensions) setDimensions(initialParams.dimensions);
