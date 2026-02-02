@@ -8,6 +8,7 @@ import Toast from '@/components/ui/Toast';
 
 type PackingParams = {
   preset?: string; // Luggage preset key
+  airlineId?: string; // Airline ID if using airline-specific rules
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
@@ -32,6 +33,7 @@ type PackingListResponse = {
 
 type SavedPackingListData = {
   preset?: string;
+  airlineId?: string;
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
@@ -68,6 +70,7 @@ export default function LuggageCalculator({ locale, initialData, editingListId }
     if (initialData) {
       setParams({
         preset: initialData.preset,
+        airlineId: initialData.airlineId,
         luggageType: initialData.luggageType,
         weightLimit: initialData.weightLimit,
         dimensions: initialData.dimensions,

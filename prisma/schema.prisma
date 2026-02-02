@@ -330,6 +330,53 @@ model CityPriceHistory {
   @@index([changedAt])
 }
 
+// Airlines Database
+model Airline {
+  id        String   @id @default(cuid())
+  name      String   @unique // "LATAM Airlines", "Copa Airlines"
+  code      String?  @unique // "LA", "CM" (IATA code)
+  country   String?  // "Chile", "Panama"
+  region    String?  // "Latin America", "North America", "Europe"
+  logoUrl   String?  // URL to airline logo
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  luggageRules AirlineLuggage[]
+
+  @@index([name])
+  @@index([region])
+}
+
+model AirlineLuggage {
+  id          String   @id @default(cuid())
+  airlineId   String
+
+  type        String   // "checked", "carry-on", "personal"
+
+  // Dimensions
+  dimensions  String   // "55x35x25" or "158 lineales"
+
+  // Weight limits
+  weightKg    Float    // Weight in kg
+
+  // Additional info
+  notes       String?  @db.Text
+
+  // Validity
+  validFrom   DateTime @default(now())
+  validUntil  DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  airline Airline @relation(fields: [airlineId], references: [id], onDelete: Cascade)
+
+  @@index([airlineId])
+  @@index([type])
+}
+
 // Luggage Calculator (Premium Feature)
 model PackingList {
   id        String   @id @default(cuid())
@@ -338,6 +385,7 @@ model PackingList {
 
   // Luggage Configuration
   preset        String?  // "ryanair-carryon", "standard-carryon", "copa-carryon", etc.
+  airlineId     String?  // Reference to Airline if using airline-specific rules
   luggageType   String   // "carry-on", "checked", "backpack", "custom"
   weightLimit   Int      // in grams
   dimensions    String?  // "55x40x20" (optional)

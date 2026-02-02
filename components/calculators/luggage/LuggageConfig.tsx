@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import CityAutocomplete from './CityAutocomplete';
 import DateRangePicker from './DateRangePicker';
+import AirlineAutocomplete from './AirlineAutocomplete';
 
 type PackingParams = {
   preset?: string; // Luggage preset key
+  airlineId?: string; // Airline ID if using airline-specific rules
   luggageType: 'carry-on' | 'checked' | 'backpack' | 'custom';
   weightLimit: number;
   dimensions?: string;
@@ -47,6 +49,13 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
   // Mode toggle
   const [advancedMode, setAdvancedMode] = useState(false);
 
+  // Airline mode
+  const [useAirline, setUseAirline] = useState(false);
+  const [selectedAirlineId, setSelectedAirlineId] = useState('');
+  const [selectedAirlineName, setSelectedAirlineName] = useState('');
+  const [airlineLuggageRules, setAirlineLuggageRules] = useState<any[]>([]);
+  const [selectedAirlineLuggageType, setSelectedAirlineLuggageType] = useState('');
+
   // Common fields
   const [preset, setPreset] = useState('standard-carryon');
   const [luggageType, setLuggageType] = useState<PackingParams['luggageType']>('carry-on');
@@ -74,6 +83,42 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
       setCalculatedDuration(Math.max(1, diff));
     }
   }, [startDate, endDate]);
+
+  // Load airline luggage rules when airline is selected
+  useEffect(() => {
+    async function loadAirlineLuggage() {
+      if (!selectedAirlineId) {
+        setAirlineLuggageRules([]);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/airlines/${selectedAirlineId}/luggage`);
+        const data = await response.json();
+        setAirlineLuggageRules(data.luggageRules || []);
+
+        // Auto-select first rule if available
+        if (data.luggageRules && data.luggageRules.length > 0) {
+          const firstRule = data.luggageRules[0];
+          setSelectedAirlineLuggageType(firstRule.id);
+
+          // Update luggage settings
+          const luggageTypeMap: Record<string, 'carry-on' | 'checked' | 'backpack'> = {
+            'carry-on': 'carry-on',
+            'checked': 'checked',
+            'personal': 'backpack',
+          };
+          setLuggageType(luggageTypeMap[firstRule.type] || 'carry-on');
+          setWeightLimit(firstRule.weightKg);
+          setDimensions(firstRule.dimensions);
+        }
+      } catch (error) {
+        console.error('Error loading airline luggage rules:', error);
+      }
+    }
+
+    loadAirlineLuggage();
+  }, [selectedAirlineId]);
 
   // Pre-populate form with initial params
   useEffect(() => {
@@ -118,11 +163,27 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
     }
   };
 
+  const handleAirlineLuggageChange = (ruleId: string) => {
+    setSelectedAirlineLuggageType(ruleId);
+    const rule = airlineLuggageRules.find(r => r.id === ruleId);
+    if (rule) {
+      const luggageTypeMap: Record<string, 'carry-on' | 'checked' | 'backpack'> = {
+        'carry-on': 'carry-on',
+        'checked': 'checked',
+        'personal': 'backpack',
+      };
+      setLuggageType(luggageTypeMap[rule.type] || 'carry-on');
+      setWeightLimit(rule.weightKg);
+      setDimensions(rule.dimensions);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const baseParams = {
-      preset,
+      preset: useAirline ? undefined : preset, // Don't send preset if using airline
+      airlineId: useAirline ? selectedAirlineId : undefined,
       luggageType,
       weightLimit,
       dimensions,
@@ -171,6 +232,77 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
         </button>
       </div>
 
+      {/* Airline Selector Toggle */}
+      <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+        <div>
+          <h3 className="font-semibold text-gray-900">
+            {useAirline ? '✈️ Aerolínea específica' : '📦 Medidas genéricas'}
+          </h3>
+          <p className="text-sm text-gray-600">
+            {useAirline ? 'Selecciona tu aerolínea para usar sus medidas exactas' : 'Usa medidas genéricas o presets comunes'}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setUseAirline(!useAirline)}
+          className="px-4 py-2 bg-white border-2 border-green-600 text-green-600 rounded-lg hover:bg-green-50 font-medium transition"
+        >
+          {useAirline ? '📦 Usar genéricos' : '✈️ Usar aerolínea'}
+        </button>
+      </div>
+
+      {/* Airline-Specific Fields */}
+      {useAirline && (
+        <div className="space-y-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+          <AirlineAutocomplete
+            value={selectedAirlineId}
+            onChange={(id, name) => {
+              setSelectedAirlineId(id);
+              setSelectedAirlineName(name);
+            }}
+            label="Selecciona tu aerolínea"
+            placeholder="Buscar aerolínea..."
+          />
+
+          {airlineLuggageRules.length > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-900 mb-2">
+                Tipo de equipaje 🧳
+              </label>
+              <div className="grid grid-cols-1 gap-3">
+                {airlineLuggageRules.map((rule) => (
+                  <button
+                    key={rule.id}
+                    type="button"
+                    onClick={() => handleAirlineLuggageChange(rule.id)}
+                    className={`p-4 border-2 rounded-lg text-left transition ${
+                      selectedAirlineLuggageType === rule.id
+                        ? 'bg-green-600 text-white border-green-600'
+                        : 'bg-white text-gray-900 border-gray-300 hover:border-green-400'
+                    }`}
+                  >
+                    <div className="font-medium">
+                      {rule.type === 'checked' && '🛄 Maleta facturada'}
+                      {rule.type === 'carry-on' && '🧳 Maleta de mano'}
+                      {rule.type === 'personal' && '🎒 Artículo personal'}
+                    </div>
+                    <div className="text-sm mt-1 opacity-90">
+                      {rule.dimensions} • {rule.weightKg}kg
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {selectedAirlineId && airlineLuggageRules.length === 0 && (
+            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg text-sm text-yellow-800">
+              ⚠️ No se encontraron reglas de equipaje para esta aerolínea
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Advanced Mode Fields */}
       {advancedMode && (
         <div className="space-y-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
@@ -205,29 +337,31 @@ export default function LuggageConfig({ onGenerate, onPresetChange, loading, loc
         </div>
       )}
 
-      {/* Preset Selector */}
-      <div>
-        <label className="block text-sm font-medium text-gray-900 mb-2">
-          {t('preset')} ✈️
-        </label>
-        <select
-          value={preset}
-          onChange={(e) => handlePresetChange(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
-        >
-          <option value="ryanair-carryon">🧳 Ryanair Carry-on (10kg, 40x20x25cm)</option>
-          <option value="standard-carryon">✈️ Standard Carry-on (7kg, 55x40x20cm)</option>
-          <option value="copa-carryon">🛫 Copa Airlines Carry-on (10kg, 56x36x26cm)</option>
-          <option value="latam-carryon">🛬 LATAM Airlines Carry-on (8kg, 55x35x25cm)</option>
-          <option value="checked-20kg">🛄 Checked Baggage 20kg (75x50x30cm)</option>
-          <option value="checked-23kg">🛄 Checked Baggage 23kg (80x55x35cm)</option>
-          <option value="backpack-small">🎒 Small Backpack (8kg, 45x35x20cm)</option>
-          <option value="custom">⚙️ {t('custom')}</option>
-        </select>
-      </div>
+      {/* Preset Selector - Only show when NOT using airline */}
+      {!useAirline && (
+        <div>
+          <label className="block text-sm font-medium text-gray-900 mb-2">
+            {t('preset')} ✈️
+          </label>
+          <select
+            value={preset}
+            onChange={(e) => handlePresetChange(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-gray-900 bg-white"
+          >
+            <option value="ryanair-carryon">🧳 Ryanair Carry-on (10kg, 40x20x25cm)</option>
+            <option value="standard-carryon">✈️ Standard Carry-on (7kg, 55x40x20cm)</option>
+            <option value="copa-carryon">🛫 Copa Airlines Carry-on (10kg, 56x36x26cm)</option>
+            <option value="latam-carryon">🛬 LATAM Airlines Carry-on (8kg, 55x35x25cm)</option>
+            <option value="checked-20kg">🛄 Checked Baggage 20kg (75x50x30cm)</option>
+            <option value="checked-23kg">🛄 Checked Baggage 23kg (80x55x35cm)</option>
+            <option value="backpack-small">🎒 Small Backpack (8kg, 45x35x20cm)</option>
+            <option value="custom">⚙️ {t('custom')}</option>
+          </select>
+        </div>
+      )}
 
       {/* Custom Fields */}
-      {preset === 'custom' && (
+      {!useAirline && preset === 'custom' && (
         <div className="grid grid-cols-2 gap-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div>
             <label className="block text-sm font-medium text-gray-900 mb-2">
