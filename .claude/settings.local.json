@@ -35,7 +35,8 @@
       "WebSearch",
       "Bash(node -e:*)",
       "Bash(python3:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm audit:*)"
     ]
   }
 }
