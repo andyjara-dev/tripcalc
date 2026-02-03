@@ -379,7 +379,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+              className="flex-1 px-4 py-2 border border-neutral-300 text-gray-900 rounded-lg hover:bg-neutral-100 transition-colors"
             >
               {t('addItemButton')}
             </button>
