@@ -127,13 +127,21 @@ Example for "Sunglasses":
   "notes": "Typical lightweight travel sunglasses"
 }`;
 
-  const result = await model.generateContent({
-    contents: [{ role: 'user', parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature: 0.2, // Low temperature for consistent estimates
-      maxOutputTokens: 200,
-    },
-  });
+  // Add timeout to prevent zombie processes
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('Gemini API timeout (30s)')), 30000)
+  );
+
+  const result = await Promise.race([
+    model.generateContent({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.2, // Low temperature for consistent estimates
+        maxOutputTokens: 200,
+      },
+    }),
+    timeoutPromise
+  ]) as any;
 
   const response = result.response;
   const text = response.text();

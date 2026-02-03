@@ -67,7 +67,16 @@ export async function generatePackingList(
   try {
     console.log('🔵 Sending prompt to Gemini:', prompt.substring(0, 200) + '...');
 
-    const result = await model.generateContent(prompt);
+    // Add timeout to prevent zombie processes
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Gemini API timeout (30s)')), 30000)
+    );
+
+    const result = await Promise.race([
+      model.generateContent(prompt),
+      timeoutPromise
+    ]) as any;
+
     const response = await result.response;
     const text = response.text();
 
