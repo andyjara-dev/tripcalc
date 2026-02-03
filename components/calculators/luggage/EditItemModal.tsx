@@ -169,7 +169,7 @@ export function EditItemModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {/* Item Name */}
           <div>
-            <label htmlFor="editItemName" className="block text-sm font-medium text-neutral-700 mb-1">
+            <label htmlFor="editItemName" className="block text-sm font-medium text-gray-900 mb-1">
               {t('itemName')}
             </label>
             <input
@@ -178,7 +178,7 @@ export function EditItemModal({
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
               placeholder={t('itemNamePlaceholder')}
-              className={`w-full px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+              className={`w-full px-4 py-2 border rounded-lg text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                 errors.itemName ? 'border-red-500' : 'border-neutral-300'
               }`}
             />
@@ -187,7 +187,7 @@ export function EditItemModal({
 
           {/* Category Selection */}
           <div>
-            <label htmlFor="editCategory" className="block text-sm font-medium text-neutral-700 mb-1">
+            <label htmlFor="editCategory" className="block text-sm font-medium text-gray-900 mb-1">
               {t('category')}
             </label>
             <div className="flex gap-2">
@@ -222,7 +222,7 @@ export function EditItemModal({
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 placeholder={t('newCategoryPlaceholder')}
-                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             )}
             {errors.category && <p className="text-sm text-red-600 mt-1">{errors.category}</p>}
@@ -231,7 +231,7 @@ export function EditItemModal({
           {/* Quantity and Weight */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label htmlFor="editQuantity" className="block text-sm font-medium text-neutral-700 mb-1">
+              <label htmlFor="editQuantity" className="block text-sm font-medium text-gray-900 mb-1">
                 {t('quantity')}
               </label>
               <input
@@ -247,7 +247,7 @@ export function EditItemModal({
               {errors.quantity && <p className="text-sm text-red-600 mt-1">{errors.quantity}</p>}
             </div>
             <div>
-              <label htmlFor="editWeight" className="block text-sm font-medium text-neutral-700 mb-1">
+              <label htmlFor="editWeight" className="block text-sm font-medium text-gray-900 mb-1">
                 {t('weightPerItem')}
               </label>
               <div className="flex gap-2">
@@ -259,7 +259,7 @@ export function EditItemModal({
                   placeholder={t('weightPlaceholder')}
                   min="10"
                   max="50000"
-                  className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                  className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                     errors.weight ? 'border-red-500' : 'border-neutral-300'
                   }`}
                 />
@@ -291,7 +291,7 @@ export function EditItemModal({
 
           {/* Notes */}
           <div>
-            <label htmlFor="editNotes" className="block text-sm font-medium text-neutral-700 mb-1">
+            <label htmlFor="editNotes" className="block text-sm font-medium text-gray-900 mb-1">
               {t('notes')}
             </label>
             <textarea
@@ -300,7 +300,7 @@ export function EditItemModal({
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('notesPlaceholder')}
               rows={2}
-              className="w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -313,7 +313,7 @@ export function EditItemModal({
               onChange={(e) => setEssential(e.target.checked)}
               className="w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500"
             />
-            <label htmlFor="editEssential" className="ml-2 text-sm text-neutral-700">
+            <label htmlFor="editEssential" className="ml-2 text-sm text-gray-900">
               {t('essential')}
             </label>
           </div>
