@@ -179,9 +179,9 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-4 bg-neutral-50 hover:bg-neutral-100 rounded-lg transition-colors"
       >
-        <span className="font-medium text-neutral-900">{t('addItem')}</span>
+        <span className="font-medium text-gray-900">{t('addItem')}</span>
         <svg
-          className={`w-5 h-5 text-neutral-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -205,7 +205,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
               onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
               onFocus={() => itemName.length >= 2 && setShowSuggestions(suggestions.length > 0)}
               placeholder={t('itemNamePlaceholder')}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+              className={`w-full px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                 errors.itemName ? 'border-red-500' : 'border-neutral-300'
               }`}
             />
@@ -253,7 +253,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
                     setCategory(e.target.value);
                   }
                 }}
-                className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.category ? 'border-red-500' : 'border-neutral-300'
                 }`}
               >
@@ -272,7 +272,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 placeholder={t('newCategoryPlaceholder')}
-                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             )}
             {errors.category && <p className="text-sm text-red-600 mt-1">{errors.category}</p>}
@@ -290,7 +290,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                 min="1"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.quantity ? 'border-red-500' : 'border-neutral-300'
                 }`}
               />
@@ -309,7 +309,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
                   placeholder={t('weightPlaceholder')}
                   min="10"
                   max="50000"
-                  className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                  className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                     errors.weight ? 'border-red-500' : 'border-neutral-300'
                   }`}
                 />
@@ -350,7 +350,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('notesPlaceholder')}
               rows={2}
-              className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -373,7 +373,7 @@ export function AddItemForm({ existingCategories, onAdd }: AddItemFormProps) {
             <button
               type="button"
               onClick={handleCancel}
-              className="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-100 transition-colors"
+              className="flex-1 px-4 py-2 border border-neutral-300 text-gray-900 rounded-lg hover:bg-neutral-100 transition-colors"
             >
               {t('cancel')}
             </button>

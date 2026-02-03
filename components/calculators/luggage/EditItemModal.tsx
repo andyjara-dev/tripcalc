@@ -178,7 +178,7 @@ export function EditItemModal({
               value={itemName}
               onChange={(e) => setItemName(e.target.value)}
               placeholder={t('itemNamePlaceholder')}
-              className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+              className={`w-full px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                 errors.itemName ? 'border-red-500' : 'border-neutral-300'
               }`}
             />
@@ -203,7 +203,7 @@ export function EditItemModal({
                     setCategory(e.target.value);
                   }
                 }}
-                className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.category ? 'border-red-500' : 'border-neutral-300'
                 }`}
               >
@@ -222,7 +222,7 @@ export function EditItemModal({
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
                 placeholder={t('newCategoryPlaceholder')}
-                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="mt-2 w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             )}
             {errors.category && <p className="text-sm text-red-600 mt-1">{errors.category}</p>}
@@ -240,7 +240,7 @@ export function EditItemModal({
                 value={quantity}
                 onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
                 min="1"
-                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.quantity ? 'border-red-500' : 'border-neutral-300'
                 }`}
               />
@@ -259,7 +259,7 @@ export function EditItemModal({
                   placeholder={t('weightPlaceholder')}
                   min="10"
                   max="50000"
-                  className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                  className={`flex-1 px-4 py-2 border rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                     errors.weight ? 'border-red-500' : 'border-neutral-300'
                   }`}
                 />
@@ -300,7 +300,7 @@ export function EditItemModal({
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('notesPlaceholder')}
               rows={2}
-              className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-neutral-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -335,7 +335,7 @@ export function EditItemModal({
             <button
               type="button"
               onClick={onCancel}
-              className="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-100 transition-colors"
+              className="px-4 py-2 border border-neutral-300 text-gray-900 rounded-lg hover:bg-neutral-100 transition-colors"
             >
               {t('cancel')}
             </button>
