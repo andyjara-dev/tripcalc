@@ -67,9 +67,9 @@ export async function generatePackingList(
   try {
     console.log('🔵 Sending prompt to Gemini:', prompt.substring(0, 200) + '...');
 
-    // Add timeout to prevent zombie processes
+    // Add timeout to prevent zombie processes (60s for complex packing lists)
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Gemini API timeout (30s)')), 30000)
+      setTimeout(() => reject(new Error('Gemini API timeout (60s)')), 60000)
     );
 
     const result = await Promise.race([

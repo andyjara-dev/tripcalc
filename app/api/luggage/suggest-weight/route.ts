@@ -127,7 +127,7 @@ Example for "Sunglasses":
   "notes": "Typical lightweight travel sunglasses"
 }`;
 
-  // Add timeout to prevent zombie processes
+  // Add timeout to prevent zombie processes (30s for weight suggestions)
   const timeoutPromise = new Promise((_, reject) =>
     setTimeout(() => reject(new Error('Gemini API timeout (30s)')), 30000)
   );
