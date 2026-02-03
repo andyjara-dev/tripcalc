@@ -21,20 +21,27 @@ services:
         max-size: "10m"
         max-file: "3"
 
-    # Resource limits (optional but recommended)
+    # Resource limits (CRITICAL: prevent server collapse)
     deploy:
       resources:
         limits:
           cpus: '1.0'
-          memory: 1G
+          memory: 512M         # Reduced from 1G (was using 773MB at collapse)
         reservations:
           cpus: '0.5'
-          memory: 512M
+          memory: 256M
 
     # Health check
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
+
+    # Process limits (CRITICAL: prevent zombie processes)
+    ulimits:
+      nproc: 512              # Maximum 512 processes (prevents fork bombs)
+      nofile:
+        soft: 1024
+        hard: 2048
