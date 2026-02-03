@@ -2,10 +2,10 @@ services:
   tripcalc:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.debian
     container_name: tripcalc-prod
     ports:
-      - "3000:3000"  # Use nginx as reverse proxy for port 80/443
+      - "3020:3000"  # Use nginx as reverse proxy for port 80/443
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_SITE_URL=https://tripcalc.site
