@@ -460,7 +460,15 @@
     "generatedBy": "Generado por",
     "city": "Ciudad",
     "dates": "Fechas",
-    "style": "Estilo"
+    "style": "Estilo",
+    "packingLists": {
+      "title": "Listas de Equipaje",
+      "totalWeight": "Peso total",
+      "addAnother": "Agregar Otra",
+      "noLists": "Aún no hay listas de equipaje",
+      "noListsDescription": "Crea listas de equipaje para tu maleta y rastrea tu peso",
+      "createFirst": "Crear Primera Lista de Equipaje"
+    }
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",
@@ -716,14 +724,6 @@
       "duration": "Duración",
       "day": "día",
       "days": "días"
-    },
-    "packingLists": {
-      "title": "Listas de Equipaje",
-      "totalWeight": "Peso total",
-      "addAnother": "Agregar Otra",
-      "noLists": "Aún no hay listas de equipaje",
-      "noListsDescription": "Crea listas de equipaje para tu maleta y rastrea tu peso",
-      "createFirst": "Crear Primera Lista de Equipaje"
     }
   },
   "luggage": {
