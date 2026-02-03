@@ -3,17 +3,10 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import SaveModal from './SaveModal';
-
-type PackingItem = {
-  category: string;
-  name: string;
-  quantity: number;
-  weightPerItem: number;
-  totalWeight: number;
-  essential: boolean;
-  notes?: string;
-  packed?: boolean; // Track if item is packed/checked
-};
+import { AddItemForm } from './AddItemForm';
+import { EditItemModal } from './EditItemModal';
+import { normalizePackingItems, getUniqueCategories } from '@/lib/utils/packing-helpers';
+import type { PackingItem } from '@/lib/types/packing';
 
 type Props = {
   data: {
@@ -31,33 +24,63 @@ type Props = {
 
 export default function PackingList({ data, currency, weightLimit, onSave, onDelete, isLoadedList, initialName }: Props) {
   const t = useTranslations('luggage.list');
+
+  // Normalize items on load (backward compatibility)
+  const [items, setItems] = useState<PackingItem[]>(() => normalizePackingItems(data.items as any));
   const [checkedItems, setCheckedItems] = useState<Set<string>>(new Set());
   const [deleting, setDeleting] = useState(false);
+  const [editingItem, setEditingItem] = useState<PackingItem | null>(null);
+
+  // Update items when data changes
+  useEffect(() => {
+    setItems(normalizePackingItems(data.items as any));
+  }, [data.items]);
 
   // When loading a saved list, mark items that were packed
   useEffect(() => {
-    if (isLoadedList && data.items.length > 0) {
+    if (isLoadedList && items.length > 0) {
       const packedItems = new Set<string>();
-      data.items.forEach((item, index) => {
-        // Mark as checked if item has packed=true, or if packed is undefined (backwards compatibility - mark all)
-        if (item.packed === true || item.packed === undefined) {
-          packedItems.add(`${index}`);
+      items.forEach((item) => {
+        // Mark as checked if item has packed=true
+        if (item.packed === true) {
+          packedItems.add(item.id);
         }
       });
       setCheckedItems(packedItems);
     }
-  }, [isLoadedList, data.items]);
+  }, [isLoadedList, items]);
+
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const handleToggle = (index: number) => {
+  const handleToggle = (itemId: string) => {
     const newChecked = new Set(checkedItems);
-    const key = `${index}`;
-    if (newChecked.has(key)) {
-      newChecked.delete(key);
+    if (newChecked.has(itemId)) {
+      newChecked.delete(itemId);
     } else {
-      newChecked.add(key);
+      newChecked.add(itemId);
     }
+    setCheckedItems(newChecked);
+  };
+
+  // Add new item
+  const handleAddItem = (newItem: PackingItem) => {
+    setItems([...items, newItem]);
+  };
+
+  // Update existing item
+  const handleUpdateItem = (updatedItem: PackingItem) => {
+    setItems(items.map((item) => (item.id === updatedItem.id ? updatedItem : item)));
+    setEditingItem(null);
+  };
+
+  // Delete item
+  const handleDeleteItem = (itemId: string) => {
+    setItems(items.filter((item) => item.id !== itemId));
+    setEditingItem(null);
+    // Remove from checked items if present
+    const newChecked = new Set(checkedItems);
+    newChecked.delete(itemId);
     setCheckedItems(newChecked);
   };
 
@@ -71,12 +94,12 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
     setSaving(true);
     try {
       // Update items with packed status
-      const updatedItems = data.items.map((item, index) => ({
+      const updatedItems = items.map((item) => ({
         ...item,
-        packed: checkedItems.has(`${index}`),
+        packed: checkedItems.has(item.id),
       }));
 
-      await onSave(tripId, name, updatedItems);
+      await onSave(tripId, name, updatedItems as any);
       setShowSaveModal(false);
     } catch (error) {
       console.error('Error saving:', error);
@@ -106,14 +129,17 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
   // Calculate current packed weight
   const packedWeight = useMemo(() => {
     let weight = 0;
-    checkedItems.forEach((key) => {
-      const index = parseInt(key);
-      if (data.items[index]) {
-        weight += data.items[index].totalWeight;
+    checkedItems.forEach((itemId) => {
+      const item = items.find((i) => i.id === itemId);
+      if (item) {
+        weight += item.totalWeight;
       }
     });
     return weight;
-  }, [checkedItems, data.items]);
+  }, [checkedItems, items]);
+
+  // Get unique categories for the form
+  const uniqueCategories = useMemo(() => getUniqueCategories(items), [items]);
 
   const remainingWeight = weightLimit - packedWeight;
   const percentage = (packedWeight / weightLimit) * 100;
@@ -139,7 +165,7 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
   }
 
   // Group items by category
-  const groupedItems = data.items.reduce((acc, item) => {
+  const groupedItems = items.reduce((acc, item) => {
     if (!acc[item.category]) {
       acc[item.category] = [];
     }
@@ -210,7 +236,7 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
             <div className="text-right">
               <p className="text-gray-600">{t('packed')}</p>
               <p className="font-semibold text-gray-900">
-                {checkedItems.size} / {data.items.length} {t('items')}
+                {checkedItems.size} / {items.length} {t('items')}
               </p>
             </div>
           </div>
@@ -258,13 +284,12 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
               </h3>
 
               <div className="space-y-2">
-                {items.map((item, index) => {
-                  const globalIndex = data.items.indexOf(item);
-                  const isChecked = checkedItems.has(`${globalIndex}`);
+                {items.map((item) => {
+                  const isChecked = checkedItems.has(item.id);
 
                   return (
                     <div
-                      key={globalIndex}
+                      key={item.id}
                       className={`flex items-start p-3 rounded-lg border transition ${
                         isChecked
                           ? 'bg-green-50 border-green-200'
@@ -274,40 +299,60 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
                       <input
                         type="checkbox"
                         checked={isChecked}
-                        onChange={() => handleToggle(globalIndex)}
+                        onChange={() => handleToggle(item.id)}
                         className="mt-1 mr-3 w-5 h-5 text-green-600 rounded focus:ring-2 focus:ring-green-500"
                       />
 
                       <div className="flex-1">
                         <div className="flex items-start justify-between">
-                          <div>
-                            <p className={`font-medium ${isChecked ? 'line-through text-gray-600' : 'text-gray-900'}`}>
-                              {item.name}
-                              {item.quantity > 1 && (
-                                <span className="ml-2 text-sm text-gray-600">
-                                  x{item.quantity}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <p className={`font-medium ${isChecked ? 'line-through text-gray-600' : 'text-gray-900'}`}>
+                                {item.name}
+                                {item.quantity > 1 && (
+                                  <span className="ml-2 text-sm text-gray-600">
+                                    x{item.quantity}
+                                  </span>
+                                )}
+                                {item.essential && (
+                                  <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
+                                    {t('essential')}
+                                  </span>
+                                )}
+                              </p>
+                              {/* Source badge */}
+                              {item.source === 'manual' && (
+                                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded">
+                                  ✏️
                                 </span>
                               )}
-                              {item.essential && (
-                                <span className="ml-2 text-xs bg-red-100 text-red-800 px-2 py-1 rounded">
-                                  {t('essential')}
-                                </span>
-                              )}
-                            </p>
+                            </div>
                             {item.notes && (
                               <p className="text-sm text-gray-600 mt-1">💡 {item.notes}</p>
                             )}
                           </div>
 
-                          <div className="text-right ml-4">
-                            <p className="text-sm font-semibold text-gray-900">
-                              {item.totalWeight}g
-                            </p>
-                            {item.quantity > 1 && (
-                              <p className="text-xs text-gray-600">
-                                ({item.weightPerItem}g {t('each')})
+                          <div className="flex items-center gap-3 ml-4">
+                            <div className="text-right">
+                              <p className="text-sm font-semibold text-gray-900">
+                                {item.totalWeight}g
                               </p>
-                            )}
+                              {item.quantity > 1 && (
+                                <p className="text-xs text-gray-600">
+                                  ({item.weightPerItem}g {t('each')})
+                                </p>
+                              )}
+                            </div>
+                            {/* Edit button */}
+                            <button
+                              onClick={() => setEditingItem(item)}
+                              className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                              title="Edit item"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                              </svg>
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -318,7 +363,21 @@ export default function PackingList({ data, currency, weightLimit, onSave, onDel
             </div>
           ))}
         </div>
+
+        {/* Add Item Form */}
+        <AddItemForm existingCategories={uniqueCategories} onAdd={handleAddItem} />
       </div>
+
+      {/* Edit Item Modal */}
+      {editingItem && (
+        <EditItemModal
+          item={editingItem}
+          existingCategories={uniqueCategories}
+          onSave={handleUpdateItem}
+          onDelete={handleDeleteItem}
+          onCancel={() => setEditingItem(null)}
+        />
+      )}
 
       {/* Tips */}
       {data.tips.length > 0 && (

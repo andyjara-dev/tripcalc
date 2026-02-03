@@ -31,7 +31,11 @@
       "Bash(npx tsc:*)",
       "Bash(/mnt/c/andy/trabajos/andysoft/tripcalc/scripts/deploy.sh:*)",
       "Bash(npx tsx:*)",
-      "Bash(npm run db:generate:*)"
+      "Bash(npm run db:generate:*)",
+      "WebSearch",
+      "Bash(node -e:*)",
+      "Bash(python3:*)",
+      "Bash(curl:*)"
     ]
   }
 }

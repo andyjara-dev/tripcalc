@@ -4,6 +4,38 @@ Scripts de utilidad para deployment y mantenimiento de TripCalc en producción.
 
 ## Scripts Disponibles
 
+### 🏙️ City Data Migration Scripts
+
+#### verify-city-data.ts
+Verifica qué ciudades están en la base de datos y si tienen todos sus datos adicionales completos.
+
+```bash
+npm run cities:verify
+```
+
+**Verifica:**
+- Daily Costs (Budget, Mid-range, Luxury)
+- Transport Options (Metro, Bus, Taxi, etc.)
+- Tips & Advice
+- Cash Info
+
+#### migrate-city-data.ts
+Migra los datos adicionales desde archivos TypeScript estáticos a la base de datos.
+
+```bash
+npm run cities:migrate
+```
+
+**Migra:**
+- Daily costs para 3 travel styles
+- Opciones de transporte (8+ por ciudad)
+- Tips categorizados
+- Información de efectivo y pagos
+
+Ver documentación completa de migración al final de este documento.
+
+---
+
 ### 🚀 deploy.sh
 Script principal de deployment.
 
@@ -271,6 +303,67 @@ docker system prune -a
 - Audit de seguridad
 - Update de imágenes Docker
 - Review de configuración nginx
+
+---
+
+## 🏙️ City Data Migration - Guía Completa
+
+### Verificar Estado de Ciudades
+
+```bash
+npm run cities:verify
+```
+
+**Salida de ejemplo:**
+```
+📍 Barcelona (barcelona)
+   Country: Spain
+   Currency: €EUR
+   Published: ✅
+   Additional Data:
+      Daily Costs: 3 travel styles ✅
+      Transport: 8 options ✅
+      Tips: 4 tips ✅
+      Cash Info: ✅
+
+📊 Summary:
+   Cities with Daily Costs: 5/5
+   Cities with Transport: 5/5
+   Cities with Tips: 5/5
+   Cities with Cash Info: 5/5
+```
+
+### Migrar Datos de Ciudades
+
+```bash
+npm run cities:migrate
+```
+
+Este script:
+- ✅ Lee datos de `/data/cities/*.ts`
+- ✅ Convierte formato antiguo al nuevo schema
+- ✅ No duplica datos existentes
+- ✅ Safe to re-run
+
+**Conversiones:**
+- Daily costs: Budget, Mid-range, Luxury
+- Transport: Metro, Bus, Taxi, Uber, Train
+- Tips: Por categoría (food, transport, general)
+- Cash info: Nivel de efectivo, ATMs, tarjetas
+
+### Workflow Recomendado
+
+1. **Verificar:** `npm run cities:verify`
+2. **Migrar (si faltan datos):** `npm run cities:migrate`
+3. **Verificar de nuevo:** `npm run cities:verify`
+4. **Ver en Prisma Studio:** `npm run db:studio`
+
+### Notas Importantes
+
+- 💰 Precios almacenados en centavos (×100)
+- 🔄 Safe to re-run (no duplica)
+- 🏷️ Travel styles: `budget`, `midRange`, `luxury`
+- 🚇 Transport types: `metro`, `bus`, `taxi`, `uber`, `train`
 
 ---
 

@@ -4,6 +4,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { nanoid } from 'nanoid';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
@@ -25,6 +26,7 @@ export type PackingParams = {
 };
 
 export type PackingItem = {
+  id: string; // Unique identifier (nanoid)
   category: string; // "Clothing", "Accessories", "Toiletries", "Electronics"
   name: string;
   quantity: number;
@@ -32,6 +34,7 @@ export type PackingItem = {
   totalWeight: number; // grams
   essential: boolean;
   notes?: string;
+  source: 'ai' | 'manual'; // Origin tracking
 };
 
 export type PackingListResponse = {
@@ -87,6 +90,13 @@ export async function generatePackingList(
       console.error('❌ Invalid structure:', packingList);
       throw new Error('Invalid packing list structure');
     }
+
+    // Post-process items to ensure they have id and source fields
+    packingList.items = packingList.items.map((item) => ({
+      ...item,
+      id: nanoid(), // Always generate new ID
+      source: 'ai' as const, // Mark as AI-generated
+    }));
 
     console.log('✅ Successfully parsed packing list with', packingList.items.length, 'items');
     return packingList;
