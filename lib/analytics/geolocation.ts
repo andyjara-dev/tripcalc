@@ -63,9 +63,22 @@ export async function getGeolocationFromHeaders(headers: Headers): Promise<Geolo
  */
 export async function getGeolocationFromIP(ip: string): Promise<GeolocationData> {
   try {
-    const response = await fetch(`https://ipapi.co/${ip}/json/`, {
-      next: { revalidate: 86400 }, // Cache for 24 hours
-    });
+    // Timeout de 20 segundos
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    let response;
+    try {
+      response = await fetch(`https://ipapi.co/${ip}/json/`, {
+        signal: controller.signal,
+        next: { revalidate: 86400 }, // Cache for 24 hours
+      });
+      clearTimeout(timeoutId);
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      console.error('Geolocation fetch error:', fetchError);
+      throw fetchError;
+    }
 
     if (!response.ok) {
       throw new Error('Geolocation API error');

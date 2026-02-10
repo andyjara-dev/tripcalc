@@ -99,10 +99,21 @@ export async function fetchWeather(
       timezone: 'auto',
     });
 
-    // Make API request
-    const response = await fetch(`${baseUrl}?${params}`, {
-      next: { revalidate: 3600 }, // Cache for 1 hour
-    });
+    // Make API request with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    let response;
+    try {
+      response = await fetch(`${baseUrl}?${params}`, {
+        signal: controller.signal,
+        next: { revalidate: 3600 }, // Cache for 1 hour
+      });
+      clearTimeout(timeoutId);
+    } catch (error) {
+      clearTimeout(timeoutId);
+      throw error;
+    }
 
     if (!response.ok) {
       throw new Error(`Open-Meteo API error: ${response.status}`);
