@@ -230,6 +230,8 @@ function convertDbCityToCityData(city: any): CityData {
     currency: city.currency,
     currencySymbol: city.currencySymbol,
     language: city.language,
+    latitude: city.latitude,
+    longitude: city.longitude,
     transport,
     dailyCosts,
     tips,

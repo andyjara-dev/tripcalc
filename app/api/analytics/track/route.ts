@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { Prisma } from '@prisma/client';
+import { auth } from '@/lib/auth';
 import {
   getGeolocationFromHeaders,
   getUserAgent,
@@ -15,7 +15,7 @@ import { sanitizeEventData, type AnalyticsEventType } from '@/lib/analytics/even
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const body = await request.json();
 
     const { eventType, eventData, page, referrer, sessionId, anonymousId } = body;
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
         anonymousId: session?.user?.id ? null : anonymousId,
         userId: session?.user?.id || null,
         eventType: eventType as AnalyticsEventType,
-        eventData: sanitizedData,
+        eventData: (sanitizedData || undefined) as Prisma.InputJsonValue,
         page: page || null,
         referrer: referrer || null,
         country: geo.country,
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     const body = await request.json();
 
     const { path, title, referrer, sessionId, timeOnPage, loadTime } = body;

@@ -67,6 +67,11 @@ export async function TripMetrics({ dateRange }: TripMetricsProps) {
         lte: dateRange.to,
       },
     },
+    orderBy: {
+      _count: {
+        eventData: 'desc',
+      },
+    },
     take: 10,
   });
 

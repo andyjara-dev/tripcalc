@@ -39,6 +39,7 @@ if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  // @ts-expect-error - Type incompatibility between next-auth beta and @auth/prisma-adapter versions
   adapter: PrismaAdapter(prisma),
   providers,
   pages: {
