@@ -25,7 +25,7 @@ export function WeatherCard({ cityId, startDate, endDate }: WeatherCardProps) {
   const [alerts, setAlerts] = useState<WeatherAlert[]>([]);
   const [showAlertModal, setShowAlertModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Don't fetch if dates are missing
@@ -37,7 +37,7 @@ export function WeatherCard({ cityId, startDate, endDate }: WeatherCardProps) {
     const fetchWeatherData = async () => {
       try {
         setLoading(true);
-        setError(false);
+        setError(null);
 
         // Format dates as YYYY-MM-DD
         const start = startDate.toISOString().split('T')[0];
@@ -53,7 +53,8 @@ export function WeatherCard({ cityId, startDate, endDate }: WeatherCardProps) {
         const response = await fetch(`/api/weather?${params}`);
 
         if (!response.ok) {
-          throw new Error(`Weather API error: ${response.status}`);
+          const errorData = await response.json();
+          throw new Error(errorData.message || `Weather API error: ${response.status}`);
         }
 
         const data = await response.json();
@@ -82,7 +83,7 @@ export function WeatherCard({ cityId, startDate, endDate }: WeatherCardProps) {
         }
       } catch (err) {
         console.error('Failed to fetch weather:', err);
-        setError(true);
+        setError(err instanceof Error ? err.message : 'Failed to load weather data');
       } finally {
         setLoading(false);
       }
@@ -96,9 +97,23 @@ export function WeatherCard({ cityId, startDate, endDate }: WeatherCardProps) {
     return null;
   }
 
-  // Don't render if error (graceful degradation)
+  // Show error message if weather fetch failed
   if (error) {
-    return null;
+    return (
+      <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-lg">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">⚠️</span>
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-yellow-800 mb-1">
+              {t('errorTitle') || 'Weather Forecast Unavailable'}
+            </h3>
+            <p className="text-sm text-yellow-700">
+              {error}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // Loading state

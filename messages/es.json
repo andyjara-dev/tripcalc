@@ -929,6 +929,7 @@
   },
   "weather": {
     "title": "Pronóstico del Tiempo",
+    "errorTitle": "Pronóstico del Tiempo No Disponible",
     "tempRange": "Temperatura",
     "precipitation": "Probabilidad de lluvia",
     "poweredBy": "Powered by",

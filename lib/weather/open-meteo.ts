@@ -84,6 +84,22 @@ export async function fetchWeather(
     const isHistorical = startDate < today;
     const isForecast = endDate > today;
 
+    // Validate forecast range (Open-Meteo allows max 16 days in future)
+    const maxForecastDate = new Date();
+    maxForecastDate.setDate(maxForecastDate.getDate() + 16);
+    const maxForecastDateStr = maxForecastDate.toISOString().split('T')[0];
+
+    // If dates are too far in the future, throw a descriptive error
+    if (startDate > maxForecastDateStr) {
+      throw new Error(
+        `Weather forecast is only available up to 16 days in the future (until ${maxForecastDateStr}). ` +
+        `Your trip starts on ${startDate}.`
+      );
+    }
+
+    // Adjust end date if it's beyond the forecast limit
+    const adjustedEndDate = endDate > maxForecastDateStr ? maxForecastDateStr : endDate;
+
     // Open-Meteo API endpoint
     const baseUrl = isHistorical && !isForecast
       ? 'https://archive-api.open-meteo.com/v1/archive'
@@ -94,7 +110,7 @@ export async function fetchWeather(
       latitude: latitude.toString(),
       longitude: longitude.toString(),
       start_date: startDate,
-      end_date: endDate,
+      end_date: adjustedEndDate,
       daily: 'temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code',
       timezone: 'auto',
     });

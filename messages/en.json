@@ -906,6 +906,7 @@
   },
   "weather": {
     "title": "Weather Forecast",
+    "errorTitle": "Weather Forecast Unavailable",
     "tempRange": "Temperature",
     "precipitation": "Rain probability",
     "poweredBy": "Powered by",
