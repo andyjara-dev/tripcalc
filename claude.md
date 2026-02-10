@@ -586,21 +586,54 @@ Access: `/admin/analytics` (admin users only)
 
 ## Roadmap & Next Steps
 
+### Recent Fixes Completed (2026-02-10)
+
+✅ **Docker Build & Deployment Issues**
+   - Fixed NextAuth v5 API compatibility (auth() vs getServerSession)
+   - Fixed Prisma type casting for JSON fields
+   - Fixed TypeScript compilation errors for production build
+   - Added DNS configuration (8.8.8.8, 8.8.4.4) for external API access
+   - Successfully building and deploying on VPS with Docker
+
+✅ **UI/UX Improvements**
+   - Fixed text contrast issues in analytics dashboard (removed dark: classes)
+   - Fixed invisible text in trip views
+   - All text now properly visible on light backgrounds
+
+✅ **Weather API Enhancements**
+   - Implemented date range validation (16-day forecast limit)
+   - Added automatic date adjustment when beyond forecast range
+   - Improved error handling with descriptive user-facing messages
+   - Added visual error display (yellow warning card) instead of silent failure
+   - Added translations for error messages (EN + ES)
+
+✅ **Geolocation & Analytics**
+   - Implemented ipapi.co fallback for Docker/VPS environments
+   - Added country flag utilities
+   - Enhanced analytics dashboard with country statistics
+   - Fixed geolocation for non-Vercel deployments (nginx proxy manager support)
+
 ### Immediate Priorities
 
-1. **Add More Tracking Events** (1-2h)
+1. **Fix Remaining Console Errors** (1-2h) 🔴 HIGH PRIORITY
+   - Fix "useAnalytics must be used within AnalyticsProvider" errors
+   - Fix "INVALID_MESSAGE" next-intl translation errors
+   - Verify Nginx Proxy Manager headers (X-Real-IP, X-Forwarded-For)
+   - Remove debug console.logs from production code
+
+2. **Add More Tracking Events** (1-2h)
    - TripView: edit, delete, day added/removed
    - Auth pages: signup success, login success
    - Calculators: all calculator interactions
    - Packing: list generated, saved, edited
 
-2. **Enhanced Analytics** (2-3h)
+3. **Enhanced Analytics** (2-3h)
    - Funnel analysis (calculator → trip saved → expenses tracked)
    - Cohort analysis (retention over time)
    - Export analytics data (CSV/JSON)
    - Real-time dashboard updates
 
-3. **Weather Enhancements** (2-3h)
+4. **Weather Enhancements** (2-3h)
    - Email notifications for severe alerts (opt-in)
    - Push notifications (PWA)
    - Historical weather data display
@@ -668,20 +701,36 @@ Access: `/admin/analytics` (admin users only)
 
 ## Known Issues & Limitations
 
-1. **Analytics**:
+### 🔴 Active Issues (Need Attention)
+
+1. **Console Errors in Production**:
+   - "useAnalytics must be used within AnalyticsProvider" - Some components trying to use analytics outside provider context
+   - "INVALID_MESSAGE" - Missing next-intl translation keys
+   - Geolocation API occasionally timing out on first request
+   - Some components still have debug console.log statements
+
+2. **Nginx Proxy Manager Configuration**:
+   - Headers (X-Real-IP, X-Forwarded-For) need verification for accurate geolocation
+   - May need custom Advanced configuration for proper IP forwarding
+
+### ⚠️ Feature Limitations (By Design)
+
+3. **Analytics**:
    - No real-time updates (requires page refresh)
    - No user journey visualization yet
    - Limited to 30-day date ranges (performance)
 
-2. **Weather**:
+4. **Weather**:
    - Only shows forecast/historical (no current conditions)
-   - Alert thresholds are conservative (may need tuning)
+   - 16-day forecast limit (Open-Meteo API constraint)
+   - Alert thresholds are conservative (may need tuning based on user feedback)
    - No wind speed data
 
-3. **General**:
-   - No offline support yet
-   - Limited to 6 cities currently
-   - No mobile app
+5. **General**:
+   - No offline support yet (PWA not implemented)
+   - Limited to 6 cities currently (Barcelona, Tokyo, New York, London, Paris, Mexico City)
+   - No mobile app (web-only)
+   - Single currency per city (no automatic conversion)
 
 ## Quick Commands
 
@@ -720,6 +769,21 @@ docker stats tripcalc-prod
 
 ---
 
-**Last Updated**: 2026-02-10
-**Project Status**: Production ready + User system + Weather + Analytics (Phase 2)
-**Current**: 6 cities, 3 calculators, user auth & database, weather integration with alerts, complete analytics system with admin dashboard, Docker deployment configured
+**Last Updated**: 2026-02-10 (Evening)
+**Project Status**: Production ready + User system + Weather + Analytics (Phase 2) + Recent bug fixes
+**Current State**:
+- 6 cities with full data (Barcelona, Tokyo, New York, London, Paris, Mexico City)
+- 3 calculators (Daily Cost, Luggage Planner, Transport Comparison)
+- Complete user auth system (NextAuth v5 + Supabase)
+- Weather integration with 3-level alerts and error handling
+- Analytics system with geolocation (VPS/Docker compatible)
+- Docker deployment on VPS with Nginx Proxy Manager
+- All production build errors resolved
+
+**Recent Session Summary (2026-02-10)**:
+- Fixed Docker compilation errors (NextAuth v5, Prisma types)
+- Fixed UI contrast issues (analytics dashboard, trip views)
+- Implemented Weather API date validation and error handling
+- Added DNS configuration for external API access
+- Enhanced geolocation with ipapi.co fallback for VPS environments
+- Improved error messages and user feedback
