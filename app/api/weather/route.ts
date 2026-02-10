@@ -59,6 +59,16 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Log params for debugging
+    console.log('Weather API request:', {
+      cityId,
+      cityName: city.name,
+      latitude: city.latitude,
+      longitude: city.longitude,
+      startDate,
+      endDate,
+    });
+
     // Fetch weather data
     const weatherData = await fetchWeather(
       city.latitude,
