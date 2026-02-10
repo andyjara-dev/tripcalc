@@ -7,6 +7,8 @@ export const tokyo: CityData = {
   currency: 'JPY',
   currencySymbol: '¥',
   language: 'Japanese',
+  latitude: 35.6762,
+  longitude: 139.6503,
   transport: {
     metro: {
       singleTicket: 180,

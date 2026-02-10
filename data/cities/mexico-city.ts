@@ -7,6 +7,8 @@ export const mexicoCity: CityData = {
   currency: 'MXN',
   currencySymbol: '$',
   language: 'Spanish',
+  latitude: 19.4326,
+  longitude: -99.1332,
   transport: {
     metro: {
       singleTicket: 5,

@@ -7,6 +7,8 @@ export const newYork: CityData = {
   currency: 'USD',
   currencySymbol: '$',
   language: 'English',
+  latitude: 40.7128,
+  longitude: -74.0060,
   transport: {
     metro: {
       singleTicket: 3.00,  // Tarifa básica MTA 2026 (efectiva desde enero 4, 2026)[web:2][web:3][web:8]

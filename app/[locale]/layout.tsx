@@ -5,6 +5,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { locales } from '@/i18n/config';
 import { SessionProvider } from '@/components/auth/SessionProvider';
+import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
 import { auth } from '@/lib/auth';
 import Footer from '@/components/Footer';
 import "./globals.css";
@@ -35,12 +36,14 @@ export default async function RootLayout({
     <html lang={locale}>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <SessionProvider session={session}>
-          <NextIntlClientProvider messages={messages} locale={locale}>
-            <div className="flex-grow">
-              {children}
-            </div>
-            <Footer />
-          </NextIntlClientProvider>
+          <AnalyticsProvider>
+            <NextIntlClientProvider messages={messages} locale={locale}>
+              <div className="flex-grow">
+                {children}
+              </div>
+              <Footer />
+            </NextIntlClientProvider>
+          </AnalyticsProvider>
         </SessionProvider>
       </body>
     </html>

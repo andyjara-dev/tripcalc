@@ -419,3 +419,69 @@ model PackingList {
   @@index([tripId])
   @@index([createdAt])
 }
+
+// Analytics Models
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+
+  // Session tracking
+  sessionId    String   // Cookie persistente (30 días)
+  anonymousId  String?  // Si no está logged in
+  userId       String?  // Si está logged in
+
+  // Event details
+  eventType    String   // "trip_created", "calculator_used", etc.
+  eventData    Json?    // Payload específico del evento
+
+  // Context
+  page         String?  // URL de la página
+  referrer     String?
+
+  // User context
+  country      String?  // Geolocalización
+  city         String?
+  region       String?
+  userAgent    String?
+  locale       String?  // "en", "es"
+
+  // Technical
+  ipHash       String?  // SHA256 hash of IP (privacy)
+  timestamp    DateTime @default(now())
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([eventType])
+  @@index([timestamp])
+  @@index([country])
+  @@index([eventType, timestamp])
+}
+
+model AnalyticsPageview {
+  id        String   @id @default(cuid())
+
+  sessionId String
+  userId    String?
+
+  path      String   // "/en/cities/barcelona"
+  title     String?
+  referrer  String?
+
+  // Timing
+  timeOnPage Int?    // Seconds
+  loadTime   Int?    // Milliseconds
+
+  // Context
+  country    String?
+  city       String?
+  userAgent  String?
+  locale     String?
+
+  timestamp DateTime @default(now())
+
+  @@index([userId])
+  @@index([sessionId])
+  @@index([path])
+  @@index([timestamp])
+  @@index([path, timestamp])
+}

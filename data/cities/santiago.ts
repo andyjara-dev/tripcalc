@@ -7,6 +7,8 @@ export const santiago: CityData = {
   currency: 'CLP',
   currencySymbol: '$',
   language: 'Spanish',
+  latitude: -33.4489,
+  longitude: -70.6693,
   transport: {
     metro: {
       singleTicket: 800,

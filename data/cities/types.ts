@@ -69,6 +69,8 @@ export interface CityData {
   currency: string;
   currencySymbol: string;
   language: string;
+  latitude: number;
+  longitude: number;
   transport: TransportPrices;
   dailyCosts: DailyCosts;
   tips: TipsInfo;

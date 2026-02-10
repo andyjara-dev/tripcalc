@@ -7,6 +7,8 @@ export const paris: CityData = {
   currency: 'EUR',
   currencySymbol: '€',
   language: 'French',
+  latitude: 48.8566,
+  longitude: 2.3522,
   transport: {
     metro: {
       singleTicket: 2.10,

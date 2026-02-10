@@ -7,6 +7,8 @@ export const barcelona: CityData = {
   currency: 'EUR',
   currencySymbol: '€',
   language: 'Spanish/Catalan',
+  latitude: 41.3874,
+  longitude: 2.1686,
   transport: {
     metro: {
       singleTicket: 2.55,

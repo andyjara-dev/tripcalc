@@ -14,6 +14,14 @@ import CustomizeCostsModal from './CustomizeCostsModal';
 import ShareTripModal from './ShareTripModal';
 import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
+import { WeatherCard } from './WeatherCard';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '../ui/DropdownMenu';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
 import { exportTripToPDF } from '@/lib/utils/pdf-export';
@@ -435,47 +443,53 @@ export default function TripView({ trip }: TripViewProps) {
             </div>
           </div>
           <div className="flex gap-2">
-            <button
-              onClick={() => setShowEditModal(true)}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium"
-            >
-              {tTrips('edit')}
-            </button>
-            <button
-              onClick={() => setShowShareModal(true)}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2"
-            >
-              <span>{trip.isPublic ? '🌐' : '🔒'}</span>
-              <span>{tTrips('share')}</span>
-            </button>
-            <button
-              onClick={handleExportPDF}
-              disabled={isExporting}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2 disabled:opacity-50"
-            >
-              <span>📄</span>
-              <span>{isExporting ? tTrips('generatingPDF') : tTrips('exportPDF')}</span>
-            </button>
-            <button
-              onClick={handleExportCalendar}
-              disabled={isExportingCalendar || !trip.startDate}
-              className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-medium flex items-center gap-2 disabled:opacity-50"
-              title={!trip.startDate ? 'Please set a start date first' : ''}
-            >
-              <span>📅</span>
-              <span>{isExportingCalendar ? tTrips('exportingCalendar') : tTrips('addToCalendar')}</span>
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <span>⋮</span>
+                <span>{tTrips('actions')}</span>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setShowEditModal(true)}>
+                  <span>✏️</span>
+                  <span>{tTrips('edit')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setShowShareModal(true)}>
+                  <span>{trip.isPublic ? '🌐' : '🔒'}</span>
+                  <span>{tTrips('share')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleExportPDF} disabled={isExporting}>
+                  <span>📄</span>
+                  <span>{isExporting ? tTrips('generatingPDF') : tTrips('exportPDF')}</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleExportCalendar}
+                  disabled={isExportingCalendar || !trip.startDate}
+                >
+                  <span>📅</span>
+                  <span>{isExportingCalendar ? tTrips('exportingCalendar') : tTrips('addToCalendar')}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <button
               onClick={handleSaveChanges}
               disabled={isSaving}
               className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors flex items-center gap-2"
             >
               <span>💾</span>
-              <span>{isSaving ? 'Saving...' : 'Save Changes'}</span>
+              <span>{isSaving ? 'Saving...' : tTrips('saveChanges')}</span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* Weather Card */}
+      <WeatherCard
+        cityId={trip.cityId}
+        startDate={trip.startDate}
+        endDate={trip.endDate}
+      />
 
       {/* Customize Costs Button */}
       <div className="mb-6">
@@ -539,71 +553,80 @@ export default function TripView({ trip }: TripViewProps) {
         </div>
       </div>
 
-      {/* Day Tabs */}
-      <div className="mb-6">
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {days.map(day => {
-            const dayCost = calculateDayCost(day, costs);
-            return (
+      {/* Daily Planning Accordion */}
+      <details open className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <span>📅</span>
+          <span>{tTrips('dailyPlanning')}</span>
+        </summary>
+        <div className="mt-4 space-y-4">
+          {/* Day Tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {days.map(day => {
+              const dayCost = calculateDayCost(day, costs);
+              return (
+                <button
+                  key={day.dayNumber}
+                  onClick={() => setActiveDay(day.dayNumber)}
+                  className={`px-4 py-3 rounded-lg flex-shrink-0 transition-all ${
+                    activeDay === day.dayNumber
+                      ? 'bg-gray-900 text-white shadow-lg'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                >
+                  <div className="font-semibold text-sm">
+                    {day.date || `Day ${day.dayNumber}`}
+                  </div>
+                  <div className={`text-xs mt-1 ${
+                    activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    {city.currencySymbol}{dayCost.toFixed(0)}
+                  </div>
+                </button>
+              );
+            })}
+            {days.length < 30 && (
               <button
-                key={day.dayNumber}
-                onClick={() => setActiveDay(day.dayNumber)}
-                className={`px-4 py-3 rounded-lg flex-shrink-0 transition-all ${
-                  activeDay === day.dayNumber
-                    ? 'bg-gray-900 text-white shadow-lg'
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                }`}
+                onClick={addDay}
+                className="px-4 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex-shrink-0 font-semibold text-sm"
               >
-                <div className="font-semibold text-sm">
-                  {day.date || `Day ${day.dayNumber}`}
-                </div>
-                <div className={`text-xs mt-1 ${
-                  activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
-                }`}>
-                  {city.currencySymbol}{dayCost.toFixed(0)}
-                </div>
+                + Add Day
               </button>
-            );
-          })}
-          {days.length < 30 && (
-            <button
-              onClick={addDay}
-              className="px-4 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex-shrink-0 font-semibold text-sm"
-            >
-              + Add Day
-            </button>
+            )}
+          </div>
+
+          {/* Active Day Content */}
+          {activeD && (
+            <DayPlanCard
+              day={activeD}
+              city={city}
+              costs={costs}
+              tripStyle={tripStyle}
+              totalDays={days.length}
+              onUpdate={updates => updateDay(activeD.dayNumber, updates)}
+              onRemove={() => removeDay(activeD.dayNumber)}
+              onDuplicate={() => duplicateDay(activeD.dayNumber)}
+            />
           )}
         </div>
-      </div>
+      </details>
 
-      {/* Active Day Content */}
-      {activeD && (
-        <DayPlanCard
-          day={activeD}
-          city={city}
-          costs={costs}
-          tripStyle={tripStyle}
-          totalDays={days.length}
-          onUpdate={updates => updateDay(activeD.dayNumber, updates)}
-          onRemove={() => removeDay(activeD.dayNumber)}
-          onDuplicate={() => duplicateDay(activeD.dayNumber)}
-        />
-      )}
-
-      {/* Expenses & Budget Tracking */}
-      <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Expenses List */}
-        <div>
+      {/* Expenses & Tracking Accordion */}
+      <details className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <span>💰</span>
+          <span>{tTrips('expensesTracking')}</span>
+        </summary>
+        <div className="mt-4 space-y-6">
+          {/* Expenses List */}
           <ExpensesList
             tripId={trip.id}
             expenses={expenses}
             currencySymbol={city.currencySymbol}
             onExpenseAdded={handleRefreshExpenses}
           />
-        </div>
 
-        {/* Budget vs Actual */}
-        <div>
+          {/* Budget vs Actual */}
           {!expensesLoading && (
             <BudgetVsActual
               budget={costs}
@@ -613,53 +636,57 @@ export default function TripView({ trip }: TripViewProps) {
             />
           )}
         </div>
-      </div>
+      </details>
 
-      {/* Trip Summary */}
-      <div className="mt-8 bg-gray-50 rounded-xl p-6 space-y-4">
-        <h3 className="text-xl font-bold text-gray-900">Trip Summary</h3>
+      {/* Trip Summary Accordion */}
+      <details className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+          <span>📊</span>
+          <span>{tTrips('tripSummary')}</span>
+        </summary>
+        <div className="mt-4 space-y-4">
+          {/* Breakdown per day */}
+          <div className="space-y-2">
+            {days.map(day => {
+              const dayCost = calculateDayCost(day, costs);
+              return (
+                <div
+                  key={day.dayNumber}
+                  className="flex justify-between items-center text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+                  onClick={() => setActiveDay(day.dayNumber)}
+                >
+                  <span className="text-gray-700 dark:text-gray-300">
+                    {day.date || `Day ${day.dayNumber}`}
+                    {day.dayName && <span className="text-gray-500 dark:text-gray-500 ml-2">• {day.dayName}</span>}
+                  </span>
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    {city.currencySymbol}{dayCost.toFixed(2)}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
 
-        {/* Breakdown per day */}
-        <div className="space-y-2">
-          {days.map(day => {
-            const dayCost = calculateDayCost(day, costs);
-            return (
-              <div
-                key={day.dayNumber}
-                className="flex justify-between items-center text-sm cursor-pointer hover:bg-gray-100 p-2 rounded"
-                onClick={() => setActiveDay(day.dayNumber)}
-              >
-                <span className="text-gray-700">
-                  {day.date || `Day ${day.dayNumber}`}
-                  {day.dayName && <span className="text-gray-500 ml-2">• {day.dayName}</span>}
-                </span>
-                <span className="font-semibold text-gray-900">
-                  {city.currencySymbol}{dayCost.toFixed(2)}
-                </span>
-              </div>
-            );
-          })}
+          {/* Total */}
+          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center">
+            <span className="text-lg font-medium text-gray-700 dark:text-gray-300">
+              {tTrips('totalTrip')} ({days.length} {days.length === 1 ? tTrips('day') : tTrips('days')}):
+            </span>
+            <span
+              className={`text-3xl font-bold transition-all duration-300 ${
+                animateTotal ? 'scale-110 text-blue-600' : 'scale-100 text-gray-900 dark:text-white'
+              }`}
+            >
+              {city.currencySymbol}{tripTotal.toFixed(2)}
+            </span>
+          </div>
+
+          {/* Average per day */}
+          <div className="text-sm text-gray-600 dark:text-gray-400 text-right">
+            {tTrips('averagePerDay')}: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
+          </div>
         </div>
-
-        {/* Total */}
-        <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
-          <span className="text-lg font-medium text-gray-700">
-            Total Trip ({days.length} {days.length === 1 ? 'day' : 'days'}):
-          </span>
-          <span
-            className={`text-3xl font-bold transition-all duration-300 ${
-              animateTotal ? 'scale-110 text-blue-600' : 'scale-100 text-gray-900'
-            }`}
-          >
-            {city.currencySymbol}{tripTotal.toFixed(2)}
-          </span>
-        </div>
-
-        {/* Average per day */}
-        <div className="text-sm text-gray-600 text-right">
-          Average per day: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
-        </div>
-      </div>
+      </details>
 
       {/* Edit Modal */}
       <SaveTripModal

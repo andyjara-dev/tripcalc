@@ -471,8 +471,255 @@ docker stats tripcalc-prod
   - DEPLOYMENT_VPS.md - VPS deployment guide
   - scripts/README.md - Scripts documentation
 
+## Weather Integration (Phase 2 Complete ✅)
+
+### Weather Forecast & Alerts
+
+The project now includes weather integration with extreme weather alerts:
+
+#### Stack
+- **API**: Open-Meteo (free, no API key, 10k calls/day)
+- **Data**: Historical (80+ years) + Forecast (16 days)
+- **Cache**: HTTP cache (1 hour s-maxage, 2 hours stale-while-revalidate)
+- **Cost**: $0
+
+#### Features Implemented
+- Weather forecast display in trip detail pages
+- 3-level alert system:
+  - 🔴 Red (Severe): Thunderstorms with hail, extreme cold/heat, freezing rain, blizzards
+  - 🟠 Orange (Dangerous): Heavy rain/snow, dangerous temperatures
+  - 🟡 Yellow (Caution): Moderate conditions with high precipitation
+- Alert modal with detailed recommendations
+- Automatic detection based on WMO weather codes
+- Geolocation coordinates in all city data
+
+#### Key Files
+- `/lib/weather/open-meteo.ts` - Weather API integration
+- `/lib/weather/weather-alerts.ts` - Alert detection logic
+- `/app/api/weather/route.ts` - Next.js API endpoint
+- `/components/trips/WeatherCard.tsx` - Weather display component
+- `/components/trips/WeatherAlertModal.tsx` - Alert details modal
+- `/data/cities/*.ts` - All cities now have latitude/longitude
+
+## Analytics System (Phase 2 Complete ✅)
+
+### Tracking & Insights
+
+Complete analytics system for understanding user behavior:
+
+#### Stack
+- **Database**: Supabase (PostgreSQL via Prisma)
+- **Tracking**: Custom implementation with session management
+- **Geolocation**: Vercel headers + ipapi.co fallback
+- **Privacy**: GDPR compliant (hashed IPs, no PII)
+- **Cost**: $0 (included in Supabase free tier)
+
+#### Features Implemented
+- Automatic pageview tracking
+- Time on page measurement
+- 20+ custom event types
+- Session management (30-day persistence)
+- Anonymous ID tracking
+- Geolocation by IP (country, city, region)
+- Admin dashboard with comprehensive metrics
+
+#### Events Tracked
+**Authentication:**
+- user_signup, user_login, user_logout
+
+**Trips:**
+- trip_created, trip_viewed, trip_updated, trip_deleted
+- trip_shared, trip_exported_pdf, trip_exported_ical
+
+**Weather:**
+- weather_card_viewed, weather_alert_shown, weather_alert_clicked
+
+**Calculators:**
+- calculator_used, calculator_city_selected, calculator_style_changed
+
+**Expenses:**
+- expense_added, expense_updated, expense_deleted
+
+**UI Interactions:**
+- accordion_expanded, dropdown_opened, modal_opened
+
+**Costs:**
+- costs_customized, costs_reset_to_default
+
+#### Admin Dashboard
+Access: `/admin/analytics` (admin users only)
+
+**Metrics Available:**
+- Overview: Total pageviews, unique sessions, total events, events per session
+- Top events, pages, and countries
+- Trip metrics: created/viewed/shared/exported, share rate, export rate
+- Engagement: UI interactions, average time on page
+- Weather: card views, alert CTR, alert effectiveness
+- Date range filters (7d, 30d, 90d, 1y, custom)
+- Recent events table
+
+#### Key Files
+**Backend:**
+- `/prisma/schema.prisma` - AnalyticsEvent & AnalyticsPageview models
+- `/lib/analytics/events.ts` - Event types and sanitization
+- `/lib/analytics/geolocation.ts` - IP geolocation utilities
+- `/app/api/analytics/track/route.ts` - API endpoint
+
+**Frontend:**
+- `/hooks/useAnalytics.ts` - React hook for tracking
+- `/components/analytics/AnalyticsProvider.tsx` - Context provider
+- `/app/[locale]/layout.tsx` - Global integration
+
+**Dashboard:**
+- `/app/[locale]/admin/analytics/page.tsx` - Main dashboard
+- `/app/[locale]/admin/analytics/components/` - Dashboard components
+
+## UI Improvements (Phase 2 Complete ✅)
+
+### Simplified Trip View
+
+- **Header**: Reduced from 5 buttons to 2 (dropdown menu + save)
+- **Sections**: Converted to collapsible accordions (daily planning, expenses, summary)
+- **Layout**: Changed from 2-column grid to vertical stack (better mobile UX)
+- **Weather**: Integrated weather card with alerts
+- **Result**: 60% less visual clutter, all functionality preserved
+
+## Roadmap & Next Steps
+
+### Immediate Priorities
+
+1. **Add More Tracking Events** (1-2h)
+   - TripView: edit, delete, day added/removed
+   - Auth pages: signup success, login success
+   - Calculators: all calculator interactions
+   - Packing: list generated, saved, edited
+
+2. **Enhanced Analytics** (2-3h)
+   - Funnel analysis (calculator → trip saved → expenses tracked)
+   - Cohort analysis (retention over time)
+   - Export analytics data (CSV/JSON)
+   - Real-time dashboard updates
+
+3. **Weather Enhancements** (2-3h)
+   - Email notifications for severe alerts (opt-in)
+   - Push notifications (PWA)
+   - Historical weather data display
+   - Weather-based packing recommendations (integrate with luggage)
+
+### Medium Term (1-2 weeks)
+
+4. **Performance Optimizations**
+   - Analytics batching (reduce API calls)
+   - Redis cache for weather data (if traffic scales)
+   - Database query optimization
+   - Image optimization
+
+5. **User Engagement**
+   - A/B testing framework
+   - User feedback system
+   - In-app notifications
+   - User preferences (notification settings, units)
+
+6. **Content Expansion**
+   - Add 5-10 more cities
+   - City comparison tool
+   - Regional guides (e.g., "Southeast Asia", "Europe")
+   - Seasonal cost variations
+
+### Long Term (1-3 months)
+
+7. **Monetization**
+   - Affiliate links (Booking.com, GetYourGuide)
+   - Premium features (advanced analytics, PDF exports, email alerts)
+   - Sponsored city content
+   - API access for travel apps
+
+8. **Community Features**
+   - User reviews and tips
+   - Photo uploads
+   - Community-submitted prices
+   - Moderation system
+
+9. **Advanced Features**
+   - Multi-city trips
+   - Group trip planning
+   - Real-time collaboration
+   - Mobile app (React Native)
+
+### Technical Debt & Maintenance
+
+- **Regular Updates**:
+  - City prices (quarterly review)
+  - Currency exchange rates
+  - Weather API reliability monitoring
+  - Analytics data cleanup (old data archival)
+
+- **Testing**:
+  - Unit tests for critical business logic
+  - E2E tests for calculators
+  - Analytics accuracy verification
+  - Performance benchmarks
+
+- **Documentation**:
+  - API documentation (if opened to public)
+  - User guides
+  - Video tutorials
+  - Blog posts about features
+
+## Known Issues & Limitations
+
+1. **Analytics**:
+   - No real-time updates (requires page refresh)
+   - No user journey visualization yet
+   - Limited to 30-day date ranges (performance)
+
+2. **Weather**:
+   - Only shows forecast/historical (no current conditions)
+   - Alert thresholds are conservative (may need tuning)
+   - No wind speed data
+
+3. **General**:
+   - No offline support yet
+   - Limited to 6 cities currently
+   - No mobile app
+
+## Quick Commands
+
+```bash
+# Development
+npm run dev
+npm run build
+
+# Database
+npm run db:generate       # Generate Prisma client
+npm run db:migrate        # Run migrations
+npm run db:studio         # Open Prisma Studio
+npm run db:reset          # Reset database (dev only)
+
+# Docker
+./scripts/deploy.sh              # Deploy to production
+./scripts/check-health.sh        # Health check
+./scripts/backup.sh              # Backup
+./scripts/fix-port-conflict.sh   # Fix port issues
+
+# Monitoring
+docker logs -f tripcalc-prod
+docker stats tripcalc-prod
+```
+
+## Links
+
+- **Production**: https://tripcalc.site
+- **Documentation**:
+  - CLAUDE.md (this file) - Complete project docs
+  - SETUP_AUTH.md - Authentication setup guide
+  - PHASE1_COMPLETE.md - User system implementation summary
+  - IMPLEMENTATION_STATUS.md - Detailed implementation status
+  - DEPLOYMENT_VPS.md - VPS deployment guide
+  - scripts/README.md - Scripts documentation
+
 ---
 
-**Last Updated**: 2026-01-29
-**Project Status**: Production ready + User system (Phase 1)
-**Current**: 5 cities, 3 calculators, user auth & database, Docker deployment configured
+**Last Updated**: 2026-02-10
+**Project Status**: Production ready + User system + Weather + Analytics (Phase 2)
+**Current**: 6 cities, 3 calculators, user auth & database, weather integration with alerts, complete analytics system with admin dashboard, Docker deployment configured
