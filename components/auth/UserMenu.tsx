@@ -90,6 +90,16 @@ export function UserMenu() {
                       >
                         🌍 {t('adminCities')}
                       </Link>
+                      <Link
+                        href={`/${locale}/admin/analytics`}
+                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        onClick={() => {
+                          setAdminSubmenuOpen(false)
+                          setIsOpen(false)
+                        }}
+                      >
+                        📊 {t('adminAnalytics')}
+                      </Link>
                     </div>
                   )}
                 </div>

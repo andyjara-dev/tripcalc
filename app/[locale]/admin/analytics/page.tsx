@@ -1,6 +1,9 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import Header from '@/components/Header';
 import { OverviewStats } from './components/OverviewStats';
 import { TripMetrics } from './components/TripMetrics';
 import { EngagementMetrics } from './components/EngagementMetrics';
@@ -8,25 +11,32 @@ import { WeatherMetrics } from './components/WeatherMetrics';
 import { DateRangeSelector } from './components/DateRangeSelector';
 
 interface AnalyticsPageProps {
+  params: Promise<{
+    locale: string;
+  }>;
   searchParams: Promise<{
     from?: string;
     to?: string;
   }>;
 }
 
-export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps) {
+export default async function AnalyticsPage({ params, searchParams }: AnalyticsPageProps) {
+  const { locale } = await params;
   const session = await auth();
-  const params = await searchParams;
+  const searchParamsData = await searchParams;
 
   // Only admins can access
   if (!session?.user || !session.user.isAdmin) {
     redirect('/');
   }
 
+  const tNav = await getTranslations({ locale, namespace: 'nav' });
+  const tSite = await getTranslations({ locale, namespace: 'site' });
+
   // Date range (default: last 30 days)
-  const to = params.to ? new Date(params.to) : new Date();
-  const from = params.from
-    ? new Date(params.from)
+  const to = searchParamsData.to ? new Date(searchParamsData.to) : new Date();
+  const from = searchParamsData.from
+    ? new Date(searchParamsData.from)
     : new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
   // Fetch analytics data
@@ -149,17 +159,38 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
   ]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            📊 Analytics Dashboard
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Analytics overview for TripCalc
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <Header
+        locale={locale}
+        activeSection="cities"
+        translations={{
+          home: tNav('home'),
+          cities: tNav('cities'),
+          calculators: tNav('calculators'),
+          about: tNav('about'),
+          logoAlt: tSite('name') + ' - ' + tSite('tagline')
+        }}
+      />
+
+      {/* Main Content */}
+      <div className="pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Header with back link */}
+          <div className="mb-8">
+            <Link
+              href={`/${locale}/admin/cities`}
+              className="text-blue-600 hover:text-blue-700 text-sm mb-4 inline-block"
+            >
+              ← Back to Admin
+            </Link>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              📊 Analytics Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Analytics overview for TripCalc
+            </p>
+          </div>
 
         {/* Date Range Selector */}
         <DateRangeSelector from={from} to={to} />
@@ -175,20 +206,20 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
         {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Top Events */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               Top Events
             </h2>
             <div className="space-y-3">
               {topEvents.map((event) => (
                 <div
                   key={event.eventType}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded"
                 >
-                  <span className="text-sm text-gray-900 dark:text-white font-medium">
+                  <span className="text-sm text-gray-900 font-medium">
                     {event.eventType}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-gray-600">
                     {event._count.eventType.toLocaleString()}
                   </span>
                 </div>
@@ -197,20 +228,20 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
           </div>
 
           {/* Top Pages */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+          <div className="bg-white bg-white rounded-lg shadow p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               Top Pages
             </h2>
             <div className="space-y-3">
               {topPages.map((page) => (
                 <div
                   key={page.path}
-                  className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded"
+                  className="flex items-center justify-between p-3 bg-gray-50 rounded"
                 >
-                  <span className="text-sm text-gray-900 dark:text-white font-medium truncate">
+                  <span className="text-sm text-gray-900 font-medium truncate">
                     {page.path}
                   </span>
-                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-sm text-gray-600">
                     {page._count.path.toLocaleString()}
                   </span>
                 </div>
@@ -220,18 +251,18 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
         </div>
 
         {/* Top Countries */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="bg-white bg-white rounded-lg shadow p-6 mb-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
             Top Countries
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {topCountries.map((country) => (
               <div
                 key={country.country}
-                className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded"
+                className="text-center p-4 bg-gray-50 rounded"
               >
                 <div className="text-2xl mb-2">{country.country}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-gray-600">
                   {country._count.country.toLocaleString()} views
                 </div>
               </div>
@@ -249,24 +280,24 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
         <WeatherMetrics dateRange={{ from, to }} />
 
         {/* Recent Events */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="bg-white bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-4">
             Recent Events
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                <tr className="border-b border-gray-200">
+                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                     Time
                   </th>
-                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                     Event
                   </th>
-                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                     Country
                   </th>
-                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <th className="text-left py-2 px-4 text-sm font-medium text-gray-600">
                     Page
                   </th>
                 </tr>
@@ -275,18 +306,18 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
                 {recentEvents.map((event) => (
                   <tr
                     key={event.id}
-                    className="border-b border-gray-100 dark:border-gray-700/50"
+                    className="border-b border-gray-100/50"
                   >
-                    <td className="py-2 px-4 text-sm text-gray-900 dark:text-white">
+                    <td className="py-2 px-4 text-sm text-gray-900">
                       {new Date(event.timestamp).toLocaleTimeString()}
                     </td>
-                    <td className="py-2 px-4 text-sm text-gray-900 dark:text-white">
+                    <td className="py-2 px-4 text-sm text-gray-900">
                       {event.eventType}
                     </td>
-                    <td className="py-2 px-4 text-sm text-gray-600 dark:text-gray-400">
+                    <td className="py-2 px-4 text-sm text-gray-600">
                       {event.country || '-'}
                     </td>
-                    <td className="py-2 px-4 text-sm text-gray-600 dark:text-gray-400 truncate max-w-xs">
+                    <td className="py-2 px-4 text-sm text-gray-600 truncate max-w-xs">
                       {event.page || '-'}
                     </td>
                   </tr>
@@ -295,6 +326,7 @@ export default async function AnalyticsPage({ searchParams }: AnalyticsPageProps
             </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

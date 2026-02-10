@@ -40,8 +40,8 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
   ];
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+    <div className="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 className="text-lg font-semibold text-gray-900 mb-4">
         Date Range
       </h2>
 
@@ -51,7 +51,7 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
           <button
             key={preset.days}
             onClick={() => handlePresetClick(preset.days)}
-            className="px-4 py-2 text-sm bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="px-4 py-2 text-sm bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
           >
             {preset.label}
           </button>
@@ -68,7 +68,7 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
             type="date"
             value={formatDate(from)}
             onChange={(e) => handleCustomChange('from', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white text-gray-900"
           />
         </div>
         <div>
@@ -79,7 +79,7 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
             type="date"
             value={formatDate(to)}
             onChange={(e) => handleCustomChange('to', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white text-gray-900"
           />
         </div>
       </div>

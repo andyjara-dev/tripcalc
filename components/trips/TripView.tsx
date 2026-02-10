@@ -520,7 +520,7 @@ export default function TripView({ trip }: TripViewProps) {
             }`}
           >
             <div className="font-semibold text-sm">{t('budget')}</div>
-            <div className={`text-xs ${tripStyle === 'budget' ? 'text-gray-200' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'budget' ? 'text-gray-300' : 'text-gray-700'}`}>
               {t('basic')}
             </div>
           </button>
@@ -533,7 +533,7 @@ export default function TripView({ trip }: TripViewProps) {
             }`}
           >
             <div className="font-semibold text-sm">{t('midRange')}</div>
-            <div className={`text-xs ${tripStyle === 'midRange' ? 'text-gray-200' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'midRange' ? 'text-gray-300' : 'text-gray-700'}`}>
               {t('comfortable')}
             </div>
           </button>
@@ -546,7 +546,7 @@ export default function TripView({ trip }: TripViewProps) {
             }`}
           >
             <div className="font-semibold text-sm">{t('luxury')}</div>
-            <div className={`text-xs ${tripStyle === 'luxury' ? 'text-gray-200' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'luxury' ? 'text-gray-300' : 'text-gray-700'}`}>
               {t('premium')}
             </div>
           </button>
@@ -554,8 +554,8 @@ export default function TripView({ trip }: TripViewProps) {
       </div>
 
       {/* Daily Planning Accordion */}
-      <details open className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
-        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+      <details open className="border border-gray-200 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
           <span>📅</span>
           <span>{tTrips('dailyPlanning')}</span>
         </summary>
@@ -612,8 +612,8 @@ export default function TripView({ trip }: TripViewProps) {
       </details>
 
       {/* Expenses & Tracking Accordion */}
-      <details className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
-        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+      <details className="border border-gray-200 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
           <span>💰</span>
           <span>{tTrips('expensesTracking')}</span>
         </summary>
@@ -639,8 +639,8 @@ export default function TripView({ trip }: TripViewProps) {
       </details>
 
       {/* Trip Summary Accordion */}
-      <details className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-6">
-        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+      <details className="border border-gray-200 rounded-lg p-4 mb-6">
+        <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
           <span>📊</span>
           <span>{tTrips('tripSummary')}</span>
         </summary>
@@ -652,14 +652,14 @@ export default function TripView({ trip }: TripViewProps) {
               return (
                 <div
                   key={day.dayNumber}
-                  className="flex justify-between items-center text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded transition-colors"
+                  className="flex justify-between items-center text-sm cursor-pointer hover:bg-gray-100 p-2 rounded transition-colors"
                   onClick={() => setActiveDay(day.dayNumber)}
                 >
-                  <span className="text-gray-700 dark:text-gray-300">
+                  <span className="text-gray-700">
                     {day.date || `Day ${day.dayNumber}`}
-                    {day.dayName && <span className="text-gray-500 dark:text-gray-500 ml-2">• {day.dayName}</span>}
+                    {day.dayName && <span className="text-gray-500 ml-2">• {day.dayName}</span>}
                   </span>
-                  <span className="font-semibold text-gray-900 dark:text-white">
+                  <span className="font-semibold text-gray-900">
                     {city.currencySymbol}{dayCost.toFixed(2)}
                   </span>
                 </div>
@@ -668,13 +668,13 @@ export default function TripView({ trip }: TripViewProps) {
           </div>
 
           {/* Total */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 flex justify-between items-center">
-            <span className="text-lg font-medium text-gray-700 dark:text-gray-300">
+          <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
+            <span className="text-lg font-medium text-gray-700">
               {tTrips('totalTrip')} ({days.length} {days.length === 1 ? tTrips('day') : tTrips('days')}):
             </span>
             <span
               className={`text-3xl font-bold transition-all duration-300 ${
-                animateTotal ? 'scale-110 text-blue-600' : 'scale-100 text-gray-900 dark:text-white'
+                animateTotal ? 'scale-110 text-blue-600' : 'scale-100 text-gray-900'
               }`}
             >
               {city.currencySymbol}{tripTotal.toFixed(2)}
@@ -682,7 +682,7 @@ export default function TripView({ trip }: TripViewProps) {
           </div>
 
           {/* Average per day */}
-          <div className="text-sm text-gray-600 dark:text-gray-400 text-right">
+          <div className="text-sm text-gray-600 text-right">
             {tTrips('averagePerDay')}: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
           </div>
         </div>

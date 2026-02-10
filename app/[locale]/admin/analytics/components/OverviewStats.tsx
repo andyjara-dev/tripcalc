@@ -35,14 +35,14 @@ export function OverviewStats({
       value: totalEvents.toLocaleString(),
       subtext: `${(totalEvents / days).toFixed(1)} per day`,
       icon: '⚡',
-      color: 'bg-purple-50 dark:bg-purple-900/20 border-purple-200 dark:border-purple-800',
+      color: 'bg-purple-50 border-purple-200',
     },
     {
       label: 'Events per Session',
       value: uniqueSessions > 0 ? (totalEvents / uniqueSessions).toFixed(1) : '0',
       subtext: 'Average engagement',
       icon: '📊',
-      color: 'bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800',
+      color: 'bg-orange-50 border-orange-200',
     },
   ];
 
@@ -56,13 +56,13 @@ export function OverviewStats({
           <div className="flex items-center justify-between mb-2">
             <span className="text-3xl">{stat.icon}</span>
           </div>
-          <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+          <div className="text-3xl font-bold text-gray-900 mb-1">
             {stat.value}
           </div>
           <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             {stat.label}
           </div>
-          <div className="text-xs text-gray-600 dark:text-gray-400">{stat.subtext}</div>
+          <div className="text-xs text-gray-600">{stat.subtext}</div>
         </div>
       ))}
     </div>

@@ -259,6 +259,7 @@
   "auth": {
     "adminUsers": "Users admin",
     "adminCities": "Cities admin",
+    "adminAnalytics": "Analytics",
     "signIn": "Sign In",
     "signOut": "Sign Out",
     "signInTitle": "Welcome to TripCalc",
