@@ -51,7 +51,7 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
           <button
             key={preset.days}
             onClick={() => handlePresetClick(preset.days)}
-            className="px-4 py-2 text-sm bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            className="px-4 py-2 text-sm bg-gray-100 text-gray-900 rounded-lg hover:bg-gray-200 transition-colors"
           >
             {preset.label}
           </button>
@@ -61,25 +61,25 @@ export function DateRangeSelector({ from, to }: DateRangeSelectorProps) {
       {/* Custom date range */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             From
           </label>
           <input
             type="date"
             value={formatDate(from)}
             onChange={(e) => handleCustomChange('from', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white text-gray-900"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             To
           </label>
           <input
             type="date"
             value={formatDate(to)}
             onChange={(e) => handleCustomChange('to', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white text-gray-900"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-900"
           />
         </div>
       </div>

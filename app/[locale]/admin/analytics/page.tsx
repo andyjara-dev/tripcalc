@@ -9,6 +9,7 @@ import { TripMetrics } from './components/TripMetrics';
 import { EngagementMetrics } from './components/EngagementMetrics';
 import { WeatherMetrics } from './components/WeatherMetrics';
 import { DateRangeSelector } from './components/DateRangeSelector';
+import { getCountryInfo } from '@/lib/utils/country-flags';
 
 interface AnalyticsPageProps {
   params: Promise<{
@@ -251,23 +252,42 @@ export default async function AnalyticsPage({ params, searchParams }: AnalyticsP
         </div>
 
         {/* Top Countries */}
-        <div className="bg-white bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4">
-            Top Countries
+            🌍 Top Countries
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {topCountries.map((country) => (
-              <div
-                key={country.country}
-                className="text-center p-4 bg-gray-50 rounded"
-              >
-                <div className="text-2xl mb-2">{country.country}</div>
-                <div className="text-sm text-gray-600">
-                  {country._count.country.toLocaleString()} views
-                </div>
-              </div>
-            ))}
-          </div>
+          {topCountries.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              <p className="mb-2">No country data yet</p>
+              <p className="text-sm">Geolocation will be captured as users visit your site</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {topCountries.map((country) => {
+                const countryInfo = getCountryInfo(country.country || 'UNKNOWN');
+                return (
+                  <div
+                    key={country.country}
+                    className="flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-3xl">{countryInfo.flag}</span>
+                      <div>
+                        <div className="font-medium text-gray-900">{countryInfo.name}</div>
+                        <div className="text-xs text-gray-500">{countryInfo.code}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-lg font-bold text-blue-600">
+                        {country._count.country.toLocaleString()}
+                      </div>
+                      <div className="text-xs text-gray-500">views</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Trip Metrics */}

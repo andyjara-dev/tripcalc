@@ -117,11 +117,11 @@ export async function WeatherMetrics({ dateRange }: WeatherMetricsProps) {
           </div>
         </div>
 
-        <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded border border-red-200 dark:border-red-800">
+        <div className="p-4 bg-red-50 rounded border border-red-200">
           <div className="flex items-center justify-between">
             <div>
               <div className="text-sm text-gray-600 mb-1">Alert Rate</div>
-              <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+              <div className="text-2xl font-bold text-red-600">
                 {alertRate}%
               </div>
               <div className="text-xs text-gray-500 mt-1">
@@ -134,7 +134,7 @@ export async function WeatherMetrics({ dateRange }: WeatherMetricsProps) {
       </div>
 
       {weatherAlertShown > 0 && (
-        <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded border border-yellow-200 dark:border-yellow-800">
+        <div className="mt-4 p-4 bg-yellow-50 rounded border border-yellow-200">
           <div className="flex items-center gap-2">
             <span className="text-2xl">💡</span>
             <div className="flex-1">

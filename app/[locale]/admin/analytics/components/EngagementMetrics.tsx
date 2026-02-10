@@ -98,13 +98,13 @@ export async function EngagementMetrics({ dateRange }: EngagementMetricsProps) {
         ))}
       </div>
 
-      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+      <div className="p-4 bg-blue-50 rounded border border-blue-200">
         <div className="flex items-center justify-between">
           <div>
             <div className="text-sm text-gray-600 mb-1">
               Average Time on Page
             </div>
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div className="text-2xl font-bold text-blue-600">
               {minutes}m {seconds}s
             </div>
           </div>

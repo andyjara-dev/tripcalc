@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Get geolocation and context from headers
-    const geo = getGeolocationFromHeaders(request.headers);
+    const geo = await getGeolocationFromHeaders(request.headers);
     const userAgent = getUserAgent(request.headers);
     const locale = getLocaleFromRequest(request.headers, page);
 
@@ -83,7 +83,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Get geolocation and context
-    const geo = getGeolocationFromHeaders(request.headers);
+    const geo = await getGeolocationFromHeaders(request.headers);
     const userAgent = getUserAgent(request.headers);
     const locale = getLocaleFromRequest(request.headers, path);
 

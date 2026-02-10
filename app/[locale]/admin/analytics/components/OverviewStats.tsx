@@ -21,14 +21,14 @@ export function OverviewStats({
       value: totalPageviews.toLocaleString(),
       subtext: `${(totalPageviews / days).toFixed(1)} per day`,
       icon: '📄',
-      color: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800',
+      color: 'bg-blue-50 border-blue-200',
     },
     {
       label: 'Unique Sessions',
       value: uniqueSessions.toLocaleString(),
       subtext: `${(uniqueSessions / days).toFixed(1)} per day`,
       icon: '👥',
-      color: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
+      color: 'bg-green-50 border-green-200',
     },
     {
       label: 'Total Events',
@@ -59,7 +59,7 @@ export function OverviewStats({
           <div className="text-3xl font-bold text-gray-900 mb-1">
             {stat.value}
           </div>
-          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <div className="text-sm font-medium text-gray-700 mb-1">
             {stat.label}
           </div>
           <div className="text-xs text-gray-600">{stat.subtext}</div>

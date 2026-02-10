@@ -20,20 +20,40 @@ export function hashIP(ip: string): string {
 }
 
 /**
- * Get geolocation from request headers (Vercel)
- * Vercel provides these headers automatically
+ * Get geolocation from request headers
+ * Tries Vercel headers first, then standard headers
  */
-export function getGeolocationFromHeaders(headers: Headers): GeolocationData {
-  const country = headers.get('x-vercel-ip-country') || undefined;
-  const city = headers.get('x-vercel-ip-city') || undefined;
-  const region = headers.get('x-vercel-ip-country-region') || undefined;
-  const ip = headers.get('x-forwarded-for')?.split(',')[0] || headers.get('x-real-ip');
+export async function getGeolocationFromHeaders(headers: Headers): Promise<GeolocationData> {
+  // Try Vercel headers first (if deployed on Vercel)
+  let country = headers.get('x-vercel-ip-country') || undefined;
+  let city = headers.get('x-vercel-ip-city') || undefined;
+  let region = headers.get('x-vercel-ip-country-region') || undefined;
+
+  // Get IP from headers (works with Docker/nginx reverse proxy)
+  const ip = headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || headers.get('x-real-ip')
+    || headers.get('cf-connecting-ip'); // CloudFlare
+
+  // If no Vercel headers and we have an IP, use ipapi.co
+  if (!country && ip && ip !== '::1' && ip !== '127.0.0.1' && !ip.startsWith('192.168.')) {
+    try {
+      const geoData = await getGeolocationFromIP(ip);
+      return geoData;
+    } catch (error) {
+      console.error('Failed to get geolocation:', error);
+    }
+  }
+
+  // Fallback for localhost/development
+  if (!country) {
+    country = 'LOCAL';
+  }
 
   return {
     country,
     city,
     region,
-    ipHash: ip ? hashIP(ip) : undefined,
+    ipHash: ip ? hashIP(ip) : 'localhost',
   };
 }
 
