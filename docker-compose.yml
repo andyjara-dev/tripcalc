@@ -2,13 +2,14 @@ services:
   tripcalc:
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: tripcalc
+      dockerfile: Dockerfile.debian
+    container_name: tripcalc-prod
     ports:
-      - "3000:3000"
+      - "3020:3000"  # Use nginx as reverse proxy for port 80/443
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_SITE_URL=https://tripcalc.site  # ← Actualizado a tu dominio real
+      - NEXT_PUBLIC_SITE_URL=https://tripcalc.site
+      - NEXT_TELEMETRY_DISABLED=1
     restart: unless-stopped
     env_file:
       - .env.production
@@ -18,19 +19,26 @@ services:
       - 8.8.8.8
       - 8.8.4.4
 
-    # Si usas NPM en Docker, descomenta estas líneas:
+    # Si usas NPM en Docker, descomenta:
     # networks:
     #   - npm-network
 
-    # Resource limits to prevent server collapse
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # Resource limits (CRITICAL: prevent server collapse)
     deploy:
       resources:
         limits:
-          cpus: '1.0'          # Maximum 1 CPU core
-          memory: 512M         # Maximum 512MB RAM
+          cpus: '1.0'
+          memory: 512M         # Reduced from 1G (was using 773MB at collapse)
         reservations:
-          cpus: '0.5'          # Minimum 0.5 CPU core
-          memory: 256M         # Minimum 256MB RAM
+          cpus: '0.5'
+          memory: 256M
 
     # Health check
     healthcheck:
@@ -40,34 +48,15 @@ services:
       retries: 3
       start_period: 40s
 
-    # Process limits
+    # Process limits (CRITICAL: prevent zombie processes)
     ulimits:
-      nproc: 512              # Maximum 512 processes
+      nproc: 512              # Maximum 512 processes (prevents fork bombs)
       nofile:
         soft: 1024
         hard: 2048
 
-  # Development service (optional)
-  tripcalc-dev:
-    image: node:20-alpine
-    container_name: tripcalc-dev
-    working_dir: /app
-    volumes:
-      - .:/app
-      - /app/node_modules
-    ports:
-      - "3001:3000"
-    command: sh -c "npm install && npm run dev"
-    environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_SITE_URL=http://localhost:3001
-    profiles:
-      - dev
-
 # Redes (solo si NPM está en Docker)
-# Descomenta si Nginx Proxy Manager está en un contenedor Docker
 # networks:
 #   npm-network:
 #     external: true
-#     name: npm_default  # Cambia esto al nombre real de la red de NPM
-#                        # Verifica con: docker network ls | grep npm
+#     name: npm_default
