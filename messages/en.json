@@ -996,6 +996,15 @@
     "cancel": "Cancel",
     "gettingAddress": "Getting address",
     "reverseGeocodingFailed": "Could not get address from location. Please try again.",
+    "routing": {
+      "walking": "Walking",
+      "transit": "Transit",
+      "driving": "Driving",
+      "bicycling": "Bicycling",
+      "minutes": "min",
+      "viewRoute": "View Route",
+      "straightLineNote": "Distance shown is straight-line. Google Maps will show actual route."
+    },
     "premium": {
       "title": "Day-by-Day Itinerary Planner",
       "subtitle": "Plan your days with timeline, maps, and smart suggestions",

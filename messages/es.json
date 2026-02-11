@@ -1019,6 +1019,15 @@
     "cancel": "Cancelar",
     "gettingAddress": "Obteniendo dirección",
     "reverseGeocodingFailed": "No se pudo obtener la dirección de esta ubicación. Por favor intenta de nuevo.",
+    "routing": {
+      "walking": "Caminando",
+      "transit": "Transporte",
+      "driving": "Auto",
+      "bicycling": "Bicicleta",
+      "minutes": "min",
+      "viewRoute": "Ver Ruta",
+      "straightLineNote": "La distancia mostrada es en línea recta. Google Maps mostrará la ruta real."
+    },
     "premium": {
       "title": "Planificador de Itinerario Día por Día",
       "subtitle": "Planifica tus días con cronograma, mapas y sugerencias inteligentes",

@@ -12,6 +12,7 @@ import type { ItineraryItem } from '@/lib/types/itinerary';
 import { sortItemsByTime } from '@/lib/types/itinerary';
 import type { CityBounds } from '@/lib/services/geocoding';
 import ActivityCard from './ActivityCard';
+import RoutingSegment from './RoutingSegment';
 
 interface TimelineViewProps {
   items: ItineraryItem[];
@@ -159,17 +160,27 @@ export default function TimelineView({
       ) : (
         <div className="relative">
           {sortedItems.map((item, index) => (
-            <ActivityCard
-              key={item.id}
-              item={item}
-              number={index + 1}
-              currencySymbol={currencySymbol}
-              cityBounds={cityBounds}
-              onUpdate={(updates) => updateActivity(item.id, updates)}
-              onDelete={() => deleteActivity(item.id)}
-              isHighlighted={item.id === highlightedItemId}
-              onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
-            />
+            <div key={item.id}>
+              {/* Activity card */}
+              <ActivityCard
+                item={item}
+                number={index + 1}
+                currencySymbol={currencySymbol}
+                cityBounds={cityBounds}
+                onUpdate={(updates) => updateActivity(item.id, updates)}
+                onDelete={() => deleteActivity(item.id)}
+                isHighlighted={item.id === highlightedItemId}
+                onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
+              />
+
+              {/* Routing segment to next activity (if both have locations) */}
+              {index < sortedItems.length - 1 && (
+                <RoutingSegment
+                  from={item}
+                  to={sortedItems[index + 1]}
+                />
+              )}
+            </div>
           ))}
 
           {/* End of timeline marker */}
