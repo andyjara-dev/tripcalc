@@ -8,6 +8,7 @@ import { useLocale } from 'next-intl';
 import { nanoid } from 'nanoid';
 import type { DayPlan, TripStyle, CustomCosts } from '@/types/trip-planner';
 import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/trip-planner';
+import type { DayItinerary } from '@/lib/types/itinerary';
 import DayPlanCard from '../calculators/DayPlanCard';
 import SaveTripModal from './SaveTripModal';
 import CustomizeCostsModal from './CustomizeCostsModal';
@@ -15,6 +16,8 @@ import ShareTripModal from './ShareTripModal';
 import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { WeatherCard } from './WeatherCard';
+import ItineraryView from '../itinerary/ItineraryView';
+import ItineraryPremiumGate from '../premium/ItineraryPremiumGate';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -50,9 +53,12 @@ interface TripViewProps {
     createdAt: Date;
     updatedAt: Date;
   };
+  isPremium?: boolean;
 }
 
-export default function TripView({ trip }: TripViewProps) {
+type ViewTab = 'planning' | 'itinerary';
+
+export default function TripView({ trip, isPremium = false }: TripViewProps) {
   const t = useTranslations('calculator');
   const tTrips = useTranslations('trips');
   const locale = useLocale();
@@ -80,6 +86,7 @@ export default function TripView({ trip }: TripViewProps) {
   const [isExportingCalendar, setIsExportingCalendar] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
   const [expensesLoading, setExpensesLoading] = useState(true);
+  const [viewTab, setViewTab] = useState<ViewTab>('planning');
 
   // Get city data
   const city = getCityById(trip.cityId);
@@ -553,8 +560,42 @@ export default function TripView({ trip }: TripViewProps) {
         </div>
       </div>
 
-      {/* Daily Planning Accordion */}
-      <details open className="border border-gray-200 rounded-lg p-4 mb-6">
+      {/* View Tabs */}
+      <div className="mb-6 border-b border-gray-200">
+        <div className="flex gap-1">
+          <button
+            onClick={() => setViewTab('planning')}
+            className={`px-6 py-3 font-medium transition-all relative ${
+              viewTab === 'planning'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            📅 {tTrips('planningView')}
+          </button>
+          <button
+            onClick={() => setViewTab('itinerary')}
+            className={`px-6 py-3 font-medium transition-all relative flex items-center gap-2 ${
+              viewTab === 'itinerary'
+                ? 'text-blue-600 border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <span>🗺️ {tTrips('itineraryView')}</span>
+            {!isPremium && (
+              <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full font-semibold">
+                Premium
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Planning View (default) */}
+      {viewTab === 'planning' && (
+        <>
+          {/* Daily Planning Accordion */}
+          <details open className="border border-gray-200 rounded-lg p-4 mb-6">
         <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
           <span>📅</span>
           <span>{tTrips('dailyPlanning')}</span>
@@ -687,6 +728,34 @@ export default function TripView({ trip }: TripViewProps) {
           </div>
         </div>
       </details>
+        </>
+      )}
+
+      {/* Itinerary View (Premium) */}
+      {viewTab === 'itinerary' && (
+        <>
+          {isPremium ? (
+            <ItineraryView
+              days={days as DayItinerary[]}
+              activeDay={activeDay}
+              cityId={trip.cityId}
+              cityName={trip.cityName}
+              cityCenter={[city.latitude, city.longitude]}
+              cityBounds={{
+                north: city.latitude + 0.1,
+                south: city.latitude - 0.1,
+                east: city.longitude + 0.1,
+                west: city.longitude - 0.1,
+              }}
+              currencySymbol={city.currencySymbol}
+              onDaysChange={(newDays) => setDays(newDays)}
+              onActiveDayChange={setActiveDay}
+            />
+          ) : (
+            <ItineraryPremiumGate locale={locale} />
+          )}
+        </>
+      )}
 
       {/* Edit Modal */}
       <SaveTripModal

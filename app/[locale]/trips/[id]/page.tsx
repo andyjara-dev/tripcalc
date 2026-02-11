@@ -75,7 +75,7 @@ export default async function TripDetailPage({ params }: PageProps) {
       {/* Main Content */}
       <div className="pt-24 pb-12">
         <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-          <TripView trip={trip} />
+          <TripView trip={trip} isPremium={isPremiumUser} />
 
           {/* Packing Lists Section (Premium only) */}
           {isPremiumUser && (

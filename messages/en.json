@@ -951,5 +951,93 @@
     "thunderstormSlightHail": "Thunderstorm with slight hail",
     "thunderstormHeavyHail": "Thunderstorm with heavy hail",
     "unknown": "Unknown"
+  },
+  "itinerary": {
+    "title": "Itinerary View",
+    "day": "Day",
+    "timeline": "Timeline",
+    "activities": "activities",
+    "map": "Map",
+    "locations": "locations",
+    "legend": "Legend",
+    "activityNumber": "Activity number",
+    "clickMarkerToHighlight": "Click marker to highlight activity",
+    "noActivitiesYet": "No activities yet",
+    "clickAddActivityToStart": "Click 'Add Activity' to start planning your day",
+    "addActivity": "Add Activity",
+    "addMeal": "Add Meal",
+    "addAttraction": "Add Attraction",
+    "addTransport": "Add Transport",
+    "addShopping": "Add Shopping",
+    "addOther": "Add Other",
+    "confirmDeleteActivity": "Are you sure you want to delete this activity?",
+    "deleteActivity": "Delete activity",
+    "totalDayCost": "Total day cost",
+    "withLocation": "with location",
+    "withTime": "with time",
+    "noLocationsYet": "No locations added yet",
+    "addAddressesToSeeMap": "Add addresses to activities to see them on the map",
+    "itineraryFor": "Itinerary for",
+    "itineraryHelpText": "Add activities with times and addresses. They'll appear on the map.",
+    "mobileMapHint": "Tip: On mobile, you can collapse the map to see more of the timeline",
+    "dayNotFound": "Day not found",
+    "enterAddress": "Enter address",
+    "locationFound": "Location found",
+    "addressNotFound": "Address not found. Please try a different address.",
+    "rateLimitExceeded": "Too many requests. Please wait and try again.",
+    "geocodingFailed": "Failed to geocode address. Please try again.",
+    "aiSuggestion": "AI Suggestion",
+    "premium": {
+      "title": "Day-by-Day Itinerary Planner",
+      "subtitle": "Plan your days with timeline, maps, and smart suggestions",
+      "upgradeTitle": "Premium Feature",
+      "upgradeDescription": "Create detailed itineraries with timeline view, interactive maps, route calculations, and AI-powered activity suggestions.",
+      "upgradeButton": "Upgrade to Premium - $4.99/mo",
+      "priceInfo": "Cancel anytime • All premium features included",
+      "features": {
+        "title": "Premium Features",
+        "timeline": "Visual Timeline with Times",
+        "timelineDescription": "Plan your day hour by hour with a visual timeline of all your activities",
+        "maps": "Interactive Maps",
+        "mapsDescription": "See all your activities on a map with numbered markers and click to highlight",
+        "routes": "Smart Route Calculations",
+        "routesDescription": "Calculate walking/transit times and distances between activities (Phase 2)",
+        "ai": "AI-Powered Suggestions",
+        "aiDescription": "Get smart restaurant and activity recommendations based on your preferences and weather (Phase 3)"
+      },
+      "pricing": {
+        "title": "Premium Access",
+        "subtitle": "Unlock all planning features",
+        "perMonth": "per month"
+      },
+      "useCase": {
+        "title": "Perfect for travelers who want to:",
+        "description": "Maximize their time • Plan efficient routes • Discover local spots • Never miss a reservation • Keep track of addresses"
+      }
+    }
+  },
+  "activity": {
+    "activityName": "Activity name",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "location": "Location",
+    "enterAddress": "Enter address",
+    "cost": "Cost",
+    "visits": "Visits",
+    "category": "Category",
+    "notes": "Notes",
+    "addNotes": "Add optional notes",
+    "bookingRequired": "Booking required",
+    "bookingUrl": "Booking URL",
+    "food": "Food",
+    "activities": "Activities",
+    "transport": "Transport",
+    "accommodation": "Accommodation",
+    "shopping": "Shopping",
+    "other": "Other"
+  },
+  "trips": {
+    "planningView": "Planning",
+    "itineraryView": "Itinerary"
   }
 }

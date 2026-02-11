@@ -100,7 +100,7 @@ const airlinesData = [
     luggage: [
       { type: 'checked', dimensions: '158 lineales', weightKg: 23 },
       { type: 'carry-on', dimensions: '56x36x26', weightKg: 10 },
-      { type: 'personal', dimensions: '36x30x20', weightKg: 5 },
+      { type: 'personal', dimensions: '43x25x22', weightKg: 5 },
     ],
   },
   {

@@ -974,5 +974,93 @@
     "thunderstormSlightHail": "Tormenta con granizo ligero",
     "thunderstormHeavyHail": "Tormenta con granizo fuerte",
     "unknown": "Desconocido"
+  },
+  "itinerary": {
+    "title": "Vista de Itinerario",
+    "day": "Día",
+    "timeline": "Cronograma",
+    "activities": "actividades",
+    "map": "Mapa",
+    "locations": "ubicaciones",
+    "legend": "Leyenda",
+    "activityNumber": "Número de actividad",
+    "clickMarkerToHighlight": "Haz clic en el marcador para resaltar la actividad",
+    "noActivitiesYet": "Aún no hay actividades",
+    "clickAddActivityToStart": "Haz clic en 'Agregar Actividad' para comenzar a planificar tu día",
+    "addActivity": "Agregar Actividad",
+    "addMeal": "Agregar Comida",
+    "addAttraction": "Agregar Atracción",
+    "addTransport": "Agregar Transporte",
+    "addShopping": "Agregar Compras",
+    "addOther": "Agregar Otro",
+    "confirmDeleteActivity": "¿Estás seguro de que quieres eliminar esta actividad?",
+    "deleteActivity": "Eliminar actividad",
+    "totalDayCost": "Costo total del día",
+    "withLocation": "con ubicación",
+    "withTime": "con hora",
+    "noLocationsYet": "Aún no se han agregado ubicaciones",
+    "addAddressesToSeeMap": "Agrega direcciones a las actividades para verlas en el mapa",
+    "itineraryFor": "Itinerario para",
+    "itineraryHelpText": "Agrega actividades con horarios y direcciones. Aparecerán en el mapa.",
+    "mobileMapHint": "Consejo: En móvil, puedes colapsar el mapa para ver más del cronograma",
+    "dayNotFound": "Día no encontrado",
+    "enterAddress": "Ingresa dirección",
+    "locationFound": "Ubicación encontrada",
+    "addressNotFound": "Dirección no encontrada. Por favor intenta con otra dirección.",
+    "rateLimitExceeded": "Demasiadas solicitudes. Por favor espera e intenta de nuevo.",
+    "geocodingFailed": "Error al geocodificar la dirección. Por favor intenta de nuevo.",
+    "aiSuggestion": "Sugerencia de IA",
+    "premium": {
+      "title": "Planificador de Itinerario Día por Día",
+      "subtitle": "Planifica tus días con cronograma, mapas y sugerencias inteligentes",
+      "upgradeTitle": "Función Premium",
+      "upgradeDescription": "Crea itinerarios detallados con vista de cronograma, mapas interactivos, cálculo de rutas y sugerencias de actividades con IA.",
+      "upgradeButton": "Actualizar a Premium - $4.99/mes",
+      "priceInfo": "Cancela cuando quieras • Todas las funciones premium incluidas",
+      "features": {
+        "title": "Funciones Premium",
+        "timeline": "Cronograma Visual con Horarios",
+        "timelineDescription": "Planifica tu día hora por hora con un cronograma visual de todas tus actividades",
+        "maps": "Mapas Interactivos",
+        "mapsDescription": "Ve todas tus actividades en un mapa con marcadores numerados y haz clic para resaltar",
+        "routes": "Cálculo Inteligente de Rutas",
+        "routesDescription": "Calcula tiempos y distancias caminando/en transporte entre actividades (Fase 2)",
+        "ai": "Sugerencias con IA",
+        "aiDescription": "Obtén recomendaciones inteligentes de restaurantes y actividades basadas en tus preferencias y el clima (Fase 3)"
+      },
+      "pricing": {
+        "title": "Acceso Premium",
+        "subtitle": "Desbloquea todas las funciones de planificación",
+        "perMonth": "por mes"
+      },
+      "useCase": {
+        "title": "Perfecto para viajeros que quieren:",
+        "description": "Maximizar su tiempo • Planificar rutas eficientes • Descubrir lugares locales • Nunca perderse una reserva • Llevar control de direcciones"
+      }
+    }
+  },
+  "activity": {
+    "activityName": "Nombre de actividad",
+    "startTime": "Hora de inicio",
+    "endTime": "Hora de fin",
+    "location": "Ubicación",
+    "enterAddress": "Ingresa dirección",
+    "cost": "Costo",
+    "visits": "Visitas",
+    "category": "Categoría",
+    "notes": "Notas",
+    "addNotes": "Agregar notas opcionales",
+    "bookingRequired": "Reserva requerida",
+    "bookingUrl": "URL de reserva",
+    "food": "Comida",
+    "activities": "Actividades",
+    "transport": "Transporte",
+    "accommodation": "Alojamiento",
+    "shopping": "Compras",
+    "other": "Otro"
+  },
+  "trips": {
+    "planningView": "Planificación",
+    "itineraryView": "Itinerario"
   }
 }

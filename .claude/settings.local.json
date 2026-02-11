@@ -41,7 +41,9 @@
       "Bash(git push)",
       "WebFetch(domain:www.visualcrossing.com)",
       "WebFetch(domain:open-meteo.com)",
-      "Bash(node --check:*)"
+      "Bash(node --check:*)",
+      "Bash(npm run:*)",
+      "Bash(xargs:*)"
     ]
   }
 }

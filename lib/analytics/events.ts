@@ -40,6 +40,14 @@ export type AnalyticsEventType =
   // Costs
   | 'costs_customized'
   | 'costs_reset_to_default'
+  // Itinerary
+  | 'itinerary_viewed'
+  | 'itinerary_activity_added'
+  | 'itinerary_activity_updated'
+  | 'itinerary_activity_deleted'
+  | 'itinerary_address_geocoded'
+  | 'itinerary_geocoding_failed'
+  | 'itinerary_tab_opened'
   // Page views
   | 'page_view';
 
@@ -126,6 +134,47 @@ export interface PageViewData {
   timeOnPage?: number;
 }
 
+export interface ItineraryViewedData {
+  tripId: string;
+  cityId: string;
+  dayNumber: number;
+  activitiesCount: number;
+}
+
+export interface ItineraryActivityAddedData {
+  tripId: string;
+  category: string;
+  hasTime: boolean;
+  hasLocation: boolean;
+}
+
+export interface ItineraryActivityUpdatedData {
+  tripId: string;
+  fields: string[]; // ['timeSlot', 'location', 'cost']
+}
+
+export interface ItineraryActivityDeletedData {
+  tripId: string;
+  hadTime: boolean;
+  hadLocation: boolean;
+}
+
+export interface ItineraryAddressGeocodedData {
+  tripId: string;
+  success: boolean;
+  cached?: boolean;
+}
+
+export interface ItineraryGeocodingFailedData {
+  tripId: string;
+  errorType: string; // 'NOT_FOUND' | 'RATE_LIMIT' | 'TIMEOUT' | 'OTHER'
+}
+
+export interface ItineraryTabOpenedData {
+  tripId: string;
+  isPremium: boolean;
+}
+
 // Union type for all event data
 export type AnalyticsEventData =
   | UserSignupData
@@ -142,6 +191,13 @@ export type AnalyticsEventData =
   | ModalOpenedData
   | CostsCustomizedData
   | PageViewData
+  | ItineraryViewedData
+  | ItineraryActivityAddedData
+  | ItineraryActivityUpdatedData
+  | ItineraryActivityDeletedData
+  | ItineraryAddressGeocodedData
+  | ItineraryGeocodingFailedData
+  | ItineraryTabOpenedData
   | Record<string, any>;
 
 // Helper to get amount range for privacy
