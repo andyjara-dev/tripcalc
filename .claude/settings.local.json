@@ -43,7 +43,8 @@
       "WebFetch(domain:open-meteo.com)",
       "Bash(node --check:*)",
       "Bash(npm run:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(./scripts/deploy.sh:*)"
     ]
   }
 }

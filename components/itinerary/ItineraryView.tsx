@@ -22,7 +22,7 @@ interface ItineraryViewProps {
   cityBounds?: CityBounds;
   currencySymbol: string;
   onDaysChange: (days: DayItinerary[]) => void;
-  onActiveDay Change: (dayNumber: number) => void;
+  onActiveDayChange: (dayNumber: number) => void;
 }
 
 export default function ItineraryView({

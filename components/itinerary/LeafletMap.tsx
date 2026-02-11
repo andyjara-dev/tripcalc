@@ -47,15 +47,14 @@ function FitBounds({ markers }: { markers: MapMarker[] }) {
   useEffect(() => {
     if (markers.length === 0) return;
 
-    // Get bounds from markers
-    const bounds: LatLngExpression[] = markers.map(m => m.position);
-
     // Fit map to show all markers
-    if (bounds.length === 1) {
+    if (markers.length === 1) {
       // Single marker: center on it
-      map.setView(bounds[0], 14);
+      map.setView(markers[0].position, 14);
     } else {
       // Multiple markers: fit bounds
+      // Create bounds array in the correct format for fitBounds
+      const bounds = markers.map(m => m.position) as [number, number][];
       map.fitBounds(bounds, {
         padding: [50, 50],
         maxZoom: 15,

@@ -26,6 +26,7 @@ export function migrateToItinerary(calculatorState: any): DayItinerary[] {
       category: item.category,
       amount: item.amount,
       visits: item.visits || 1,
+      isOneTime: item.isOneTime || false, // Deprecated but required
       notes: item.notes || '',
 
       // Itinerary fields (add if missing, preserve if exist)
@@ -40,7 +41,7 @@ export function migrateToItinerary(calculatorState: any): DayItinerary[] {
     const migratedDay: DayItinerary = {
       ...day,
       customItems: items,
-      routeCache: day.routeCache || undefined, // Phase 2
+      routeCache: (day as any).routeCache || undefined, // Phase 2
     };
 
     return migratedDay;

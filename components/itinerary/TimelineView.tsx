@@ -42,6 +42,7 @@ export default function TimelineView({
       category,
       amount: 0, // In cents
       visits: 1,
+      isOneTime: false, // Deprecated but required for backward compatibility
       notes: '',
       // Itinerary-specific
       timeSlot: {
