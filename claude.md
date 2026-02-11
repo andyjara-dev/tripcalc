@@ -13,6 +13,84 @@ Unlike typical travel blogs focused on inspiration, TripCalc provides structured
 - **Accuracy over hype**: Small, verified dataset that grows over time
 - **No surprises**: Help travelers budget confidently
 
+## UI/UX Design Principles
+
+### ⚠️ CRITICAL: Text Contrast and Readability
+
+**This is a RECURRING issue that MUST be prevented:**
+
+#### ALWAYS Ensure Sufficient Text Contrast
+
+1. **Light backgrounds (white, gray-50, gray-100) MUST use dark text:**
+   ```tsx
+   // ✅ CORRECT
+   <input className="bg-white text-gray-900 border border-gray-300" />
+   <div className="bg-gray-50 text-gray-900">Content</div>
+
+   // ❌ WRONG - Text will be invisible or hard to read
+   <input className="bg-white border border-gray-300" /> // Missing text-gray-900
+   <div className="bg-gray-50 text-gray-400">Content</div> // Too light
+   ```
+
+2. **Dark backgrounds (gray-800, gray-900, black) MUST use light text:**
+   ```tsx
+   // ✅ CORRECT
+   <button className="bg-gray-900 text-white">Button</button>
+   <div className="bg-gray-800 text-gray-100">Content</div>
+
+   // ❌ WRONG
+   <button className="bg-gray-900">Button</button> // Missing text-white
+   ```
+
+3. **Standard text color hierarchy:**
+   - Primary text: `text-gray-900` (darkest)
+   - Secondary text: `text-gray-700`
+   - Tertiary/hint text: `text-gray-600`
+   - Disabled text: `text-gray-400`
+   - **NEVER use text-gray-300 or lighter on white backgrounds**
+
+4. **All form inputs MUST explicitly set both background and text color:**
+   ```tsx
+   // ✅ CORRECT - Explicit colors
+   <input
+     className="bg-white text-gray-900 border border-gray-300
+                focus:ring-2 focus:ring-blue-500"
+   />
+
+   // ❌ WRONG - Relying on defaults
+   <input className="border border-gray-300 focus:ring-2 focus:ring-blue-500" />
+   ```
+
+5. **Before creating ANY new component with text:**
+   - Ask: "Is the text color dark enough (gray-900/gray-800) on light backgrounds?"
+   - Ask: "Is the text color light enough (white/gray-100) on dark backgrounds?"
+   - Test: Can you read the text clearly without squinting?
+
+6. **Common places where this issue occurs:**
+   - Form inputs (input, select, textarea)
+   - Dropdown menus
+   - Modal content
+   - Cards with light backgrounds
+   - Placeholder text (should be gray-500 minimum)
+
+#### Checklist Before Submitting Code
+
+- [ ] All inputs have `text-gray-900` and `bg-white` on light backgrounds
+- [ ] All text on light backgrounds uses `text-gray-900`, `text-gray-800`, or `text-gray-700`
+- [ ] No text uses `text-gray-300` or lighter on white/light backgrounds
+- [ ] Placeholder text is at least `text-gray-500`
+- [ ] Dark mode (if applicable) uses `text-white` or `text-gray-100` on dark backgrounds
+
+#### WCAG Compliance
+
+- **Minimum contrast ratio**: 4.5:1 for normal text
+- **Large text**: 3:1 for 18pt+ or 14pt+ bold
+- **Interactive elements**: 3:1 for borders and focus indicators
+
+**If in doubt, always use `text-gray-900` on light backgrounds.**
+
+---
+
 ## Tech Stack
 
 - **Framework**: Next.js 15 (App Router)

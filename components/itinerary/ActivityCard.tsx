@@ -79,7 +79,7 @@ export default function ActivityCard({
             type="time"
             value={item.timeSlot?.startTime || ''}
             onChange={(e) => handleTimeChange('startTime', e.target.value)}
-            className="w-24 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-24 px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="HH:MM"
           />
 
@@ -88,7 +88,7 @@ export default function ActivityCard({
             type="text"
             value={item.name}
             onChange={(e) => onUpdate({ name: e.target.value })}
-            className="flex-1 px-3 py-1 font-medium text-gray-900 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 px-3 py-1 font-medium text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder={tActivity('activityName')}
           />
 
@@ -138,7 +138,7 @@ export default function ActivityCard({
                 type="time"
                 value={item.timeSlot?.endTime || ''}
                 onChange={(e) => handleTimeChange('endTime', e.target.value)}
-                className="w-32 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-32 px-2 py-1 text-sm text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="HH:MM"
               />
             </div>
@@ -173,7 +173,7 @@ export default function ActivityCard({
                       const cents = Math.round(parseFloat(e.target.value || '0') * 100);
                       onUpdate({ amount: cents });
                     }}
-                    className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-8 pr-3 py-2 text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     min="0"
                     step="0.01"
                   />
@@ -188,7 +188,7 @@ export default function ActivityCard({
                   type="number"
                   value={item.visits}
                   onChange={(e) => onUpdate({ visits: parseInt(e.target.value) || 1 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   min="1"
                 />
               </div>
@@ -202,7 +202,7 @@ export default function ActivityCard({
               <select
                 value={item.category}
                 onChange={(e) => onUpdate({ category: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="FOOD">{categoryIcons.FOOD} {tActivity('food')}</option>
                 <option value="ACTIVITIES">{categoryIcons.ACTIVITIES} {tActivity('activities')}</option>
@@ -221,7 +221,7 @@ export default function ActivityCard({
               <textarea
                 value={item.notes || ''}
                 onChange={(e) => onUpdate({ notes: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 rows={2}
                 placeholder={tActivity('addNotes')}
               />
@@ -250,7 +250,7 @@ export default function ActivityCard({
                   type="url"
                   value={item.bookingUrl || ''}
                   onChange={(e) => onUpdate({ bookingUrl: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="https://..."
                 />
               </div>
