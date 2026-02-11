@@ -8,7 +8,7 @@
 
 import { useState, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import type { DayItinerary, ItineraryItem } from '@/lib/types/itinerary';
+import type { DayItinerary, ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
 import type { CityBounds } from '@/lib/services/geocoding';
 import TimelineView from './TimelineView';
 import MapPanel from './MapPanel';
@@ -38,6 +38,8 @@ export default function ItineraryView({
 }: ItineraryViewProps) {
   const t = useTranslations('itinerary');
   const [highlightedItemId, setHighlightedItemId] = useState<string | undefined>();
+  const [pickingItemId, setPickingItemId] = useState<string | undefined>();
+  const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
 
   // Get current day
   const currentDay = days.find((d) => d.dayNumber === activeDay);
@@ -79,6 +81,65 @@ export default function ItineraryView({
     }
   }, []);
 
+  // Handle request to pick location from map
+  const handleRequestMapPick = useCallback((itemId: string) => {
+    setPickingItemId(itemId);
+    // Scroll to map
+    const mapElement = document.getElementById('itinerary-map');
+    if (mapElement) {
+      mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  // Handle map click for picking location
+  const handleMapClick = useCallback(async (lat: number, lon: number) => {
+    if (!pickingItemId) return;
+
+    setIsReverseGeocoding(true);
+
+    try {
+      // Call reverse geocoding API (we need to create this endpoint)
+      const response = await fetch('/api/itinerary/reverse-geocode', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lat, lon }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Reverse geocoding failed');
+      }
+
+      const data = await response.json();
+
+      if (data.success && data.location) {
+        // Update the item with the location
+        const updatedItems = currentDay.customItems.map((item) =>
+          item.id === pickingItemId
+            ? { ...item, location: data.location as GeoLocation }
+            : item
+        );
+
+        const updatedDays = days.map((d) =>
+          d.dayNumber === activeDay
+            ? { ...d, customItems: updatedItems }
+            : d
+        );
+
+        onDaysChange(updatedDays);
+
+        // Clear picking mode
+        setPickingItemId(undefined);
+      }
+    } catch (error) {
+      console.error('Reverse geocoding error:', error);
+      alert(t('reverseGeocodingFailed'));
+    } finally {
+      setIsReverseGeocoding(false);
+    }
+  }, [pickingItemId, days, activeDay, currentDay.customItems, onDaysChange, t]);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -108,16 +169,40 @@ export default function ItineraryView({
             cityBounds={cityBounds}
             onItemsChange={handleItemsChange}
             highlightedItemId={highlightedItemId}
+            onRequestMapPick={handleRequestMapPick}
           />
         </div>
 
         {/* Right column: Map (sticky on desktop) */}
-        <div className="lg:sticky lg:top-4 lg:self-start">
+        <div className="lg:sticky lg:top-4 lg:self-start" id="itinerary-map">
+          {pickingItemId && (
+            <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm text-blue-900">
+                  <span>📍</span>
+                  <span className="font-medium">{t('clickMapToSelect')}</span>
+                </div>
+                <button
+                  onClick={() => setPickingItemId(undefined)}
+                  className="text-xs text-blue-700 hover:text-blue-900 font-medium"
+                >
+                  {t('cancel')}
+                </button>
+              </div>
+              {isReverseGeocoding && (
+                <div className="mt-2 text-xs text-blue-700">
+                  {t('gettingAddress')}...
+                </div>
+              )}
+            </div>
+          )}
           <MapPanel
             items={currentDay.customItems as ItineraryItem[]}
             cityCenter={cityCenter}
             onMarkerClick={handleMarkerClick}
             defaultCollapsed={false}
+            onMapClick={handleMapClick}
+            pickingMode={!!pickingItemId}
           />
         </div>
       </div>

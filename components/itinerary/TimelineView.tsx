@@ -19,6 +19,7 @@ interface TimelineViewProps {
   cityBounds?: CityBounds;
   onItemsChange: (items: ItineraryItem[]) => void;
   highlightedItemId?: string;
+  onRequestMapPick?: (itemId: string) => void;
 }
 
 export default function TimelineView({
@@ -27,6 +28,7 @@ export default function TimelineView({
   cityBounds,
   onItemsChange,
   highlightedItemId,
+  onRequestMapPick,
 }: TimelineViewProps) {
   const t = useTranslations('itinerary');
   const [showAddMenu, setShowAddMenu] = useState(false);
@@ -166,6 +168,7 @@ export default function TimelineView({
               onUpdate={(updates) => updateActivity(item.id, updates)}
               onDelete={() => deleteActivity(item.id)}
               isHighlighted={item.id === highlightedItemId}
+              onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
             />
           ))}
 

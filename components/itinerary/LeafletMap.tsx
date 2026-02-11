@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import type { LatLngExpression, Map as LeafletMap, Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -36,6 +36,8 @@ interface LeafletMapProps {
   markers?: MapMarker[];
   height?: string;
   onMarkerClick?: (markerId: string) => void;
+  onMapClick?: (lat: number, lon: number) => void; // Click en mapa para obtener ubicación
+  clickable?: boolean; // Habilitar clicks en el mapa
 }
 
 /**
@@ -65,12 +67,29 @@ function FitBounds({ markers }: { markers: MapMarker[] }) {
   return null;
 }
 
+/**
+ * Component to handle map clicks
+ */
+function MapClickHandler({ onMapClick, clickable }: { onMapClick?: (lat: number, lon: number) => void; clickable?: boolean }) {
+  useMapEvents({
+    click(e) {
+      if (clickable && onMapClick) {
+        onMapClick(e.latlng.lat, e.latlng.lng);
+      }
+    },
+  });
+
+  return null;
+}
+
 export default function LeafletMapComponent({
   center,
   zoom = 13,
   markers = [],
   height = '500px',
   onMarkerClick,
+  onMapClick,
+  clickable = false,
 }: LeafletMapProps) {
   const mapRef = useRef<LeafletMap | null>(null);
 
@@ -112,7 +131,7 @@ export default function LeafletMapComponent({
       <MapContainer
         center={center}
         zoom={zoom}
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: '100%', width: '100%', cursor: clickable ? 'crosshair' : 'grab' }}
         scrollWheelZoom={true}
         ref={mapRef}
       >
@@ -121,6 +140,9 @@ export default function LeafletMapComponent({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* Click handler */}
+        <MapClickHandler onMapClick={onMapClick} clickable={clickable} />
 
         {/* Markers */}
         {markers.map((marker, index) => (

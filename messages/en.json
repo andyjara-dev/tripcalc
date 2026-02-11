@@ -989,6 +989,13 @@
     "rateLimitExceeded": "Too many requests. Please wait and try again.",
     "geocodingFailed": "Failed to geocode address. Please try again.",
     "aiSuggestion": "AI Suggestion",
+    "pickFromMap": "Pick from Map",
+    "pickLocationMode": "Pick Location Mode",
+    "clickMapToSelectLocation": "Click anywhere on the map to select location",
+    "clickMapToSelect": "Click on the map to pick a location",
+    "cancel": "Cancel",
+    "gettingAddress": "Getting address",
+    "reverseGeocodingFailed": "Could not get address from location. Please try again.",
     "premium": {
       "title": "Day-by-Day Itinerary Planner",
       "subtitle": "Plan your days with timeline, maps, and smart suggestions",

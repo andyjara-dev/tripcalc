@@ -22,6 +22,8 @@ interface MapPanelProps {
   cityCenter: [number, number]; // [lat, lon]
   onMarkerClick?: (itemId: string) => void;
   defaultCollapsed?: boolean;
+  onMapClick?: (lat: number, lon: number) => void;
+  pickingMode?: boolean;
 }
 
 function MapLoadingSkeleton() {
@@ -40,6 +42,8 @@ export default function MapPanel({
   cityCenter,
   onMarkerClick,
   defaultCollapsed = false,
+  onMapClick,
+  pickingMode = false,
 }: MapPanelProps) {
   const t = useTranslations('itinerary');
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
@@ -77,18 +81,27 @@ export default function MapPanel({
   };
 
   return (
-    <div className="bg-white rounded-lg border-2 border-gray-200 overflow-hidden">
+    <div className={`bg-white rounded-lg border-2 overflow-hidden ${
+      pickingMode ? 'border-blue-500 shadow-lg' : 'border-gray-200'
+    }`}>
       {/* Header */}
       <button
         onClick={toggleCollapse}
-        className="w-full px-4 py-3 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition-colors"
+        className={`w-full px-4 py-3 flex items-center justify-between transition-colors ${
+          pickingMode ? 'bg-blue-50' : 'bg-gray-50 hover:bg-gray-100'
+        }`}
       >
         <div className="flex items-center gap-3">
           <span className="text-xl">🗺️</span>
           <div className="text-left">
-            <h3 className="font-semibold text-gray-900">{t('map')}</h3>
+            <h3 className="font-semibold text-gray-900">
+              {pickingMode ? t('pickLocationMode') : t('map')}
+            </h3>
             <p className="text-xs text-gray-600">
-              {itemsWithLocation.length} {t('locations')}
+              {pickingMode
+                ? t('clickMapToSelectLocation')
+                : `${itemsWithLocation.length} ${t('locations')}`
+              }
             </p>
           </div>
         </div>
@@ -116,6 +129,8 @@ export default function MapPanel({
                 markers={markers}
                 height="500px"
                 onMarkerClick={onMarkerClick}
+                onMapClick={onMapClick}
+                clickable={pickingMode}
               />
             </Suspense>
           )}

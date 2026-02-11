@@ -153,6 +153,10 @@ export async function geocode(
     format: 'json',
     limit: '1',
     addressdetails: '1',
+    // Enable searching for POIs (airports, monuments, etc.)
+    'accept-language': 'en',
+    // Include various place types
+    featuretype: 'settlement,country,city,state,street,poi',
   });
 
   // Add viewbox for biasing results (if city bounds provided)

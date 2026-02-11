@@ -1012,6 +1012,13 @@
     "rateLimitExceeded": "Demasiadas solicitudes. Por favor espera e intenta de nuevo.",
     "geocodingFailed": "Error al geocodificar la dirección. Por favor intenta de nuevo.",
     "aiSuggestion": "Sugerencia de IA",
+    "pickFromMap": "Elegir del Mapa",
+    "pickLocationMode": "Modo Selección de Ubicación",
+    "clickMapToSelectLocation": "Haz clic en cualquier lugar del mapa para seleccionar ubicación",
+    "clickMapToSelect": "Haz clic en el mapa para elegir una ubicación",
+    "cancel": "Cancelar",
+    "gettingAddress": "Obteniendo dirección",
+    "reverseGeocodingFailed": "No se pudo obtener la dirección de esta ubicación. Por favor intenta de nuevo.",
     "premium": {
       "title": "Planificador de Itinerario Día por Día",
       "subtitle": "Planifica tus días con cronograma, mapas y sugerencias inteligentes",

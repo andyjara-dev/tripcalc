@@ -19,6 +19,7 @@ interface ActivityCardProps {
   onUpdate: (updates: Partial<ItineraryItem>) => void;
   onDelete: () => void;
   isHighlighted?: boolean;
+  onRequestMapPick?: () => void; // Request to pick location from map
 }
 
 export default function ActivityCard({
@@ -29,6 +30,7 @@ export default function ActivityCard({
   onUpdate,
   onDelete,
   isHighlighted = false,
+  onRequestMapPick,
 }: ActivityCardProps) {
   const t = useTranslations('itinerary');
   const tActivity = useTranslations('activity');
@@ -145,9 +147,21 @@ export default function ActivityCard({
 
             {/* Location */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {tActivity('location')}
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-sm font-medium text-gray-700">
+                  {tActivity('location')}
+                </label>
+                {onRequestMapPick && (
+                  <button
+                    type="button"
+                    onClick={onRequestMapPick}
+                    className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                  >
+                    <span>📍</span>
+                    <span>{t('pickFromMap')}</span>
+                  </button>
+                )}
+              </div>
               <LocationAutocomplete
                 value={item.location}
                 onChange={(location) => onUpdate({ location: location || undefined })}
