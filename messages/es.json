@@ -1106,5 +1106,30 @@
     "accommodation": "Alojamiento",
     "shopping": "Compras",
     "other": "Otro"
+  },
+  "unifiedView": {
+    "budgetBreakdown": "Desglose de Presupuesto",
+    "addActivity": "Agregar Actividad",
+    "premiumFeature": "Funcion Premium",
+    "unlockTimeline": "Desbloquear cronograma y mapas",
+    "unlockDescription": "Agrega horarios, ubicaciones y ve tus actividades en un mapa",
+    "baseEstimate": "Estimado base",
+    "dayTotal": "Total del Dia",
+    "noCost": "Sin costo",
+    "mapView": "Vista de Mapa",
+    "mapTeaser": "Ve tus actividades en un mapa interactivo",
+    "mapFeature1": "Actividades en el mapa",
+    "mapFeature2": "Rutas a pie entre puntos",
+    "mapFeature3": "Selecciona ubicaciones haciendo clic en el mapa",
+    "upgradeToPremium": "Mejorar a Premium",
+    "addMeal": "Agregar Comida",
+    "addAttraction": "Agregar Atraccion",
+    "addTransport": "Agregar Transporte",
+    "addAccommodation": "Agregar Alojamiento",
+    "addShopping": "Agregar Compras",
+    "addOther": "Agregar Otro",
+    "confirmDelete": "Eliminar esta actividad?",
+    "emptyDay": "Sin actividades aun",
+    "emptyDayHint": "Agrega actividades para planificar tu dia y seguir costos"
   }
 }

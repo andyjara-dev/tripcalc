@@ -33,6 +33,9 @@ export interface ItineraryItem extends CustomItemLocal {
   // Auto-fill fields (for saved locations feature)
   isAutoFilled?: boolean;      // Marks items auto-generated from saved locations
   autoFillSource?: string;     // SavedLocation.id that generated this item
+
+  // Base estimate flag (unified view)
+  isBaseEstimate?: boolean;    // Marks items that represent base cost estimates
 }
 
 // Route segment between two activities (Phase 2)

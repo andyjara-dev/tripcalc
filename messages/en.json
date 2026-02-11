@@ -1083,5 +1083,30 @@
     "accommodation": "Accommodation",
     "shopping": "Shopping",
     "other": "Other"
+  },
+  "unifiedView": {
+    "budgetBreakdown": "Budget Breakdown",
+    "addActivity": "Add Activity",
+    "premiumFeature": "Premium feature",
+    "unlockTimeline": "Unlock timeline & maps",
+    "unlockDescription": "Add times, locations, and see your activities on a map",
+    "baseEstimate": "Base estimate",
+    "dayTotal": "Day Total",
+    "noCost": "No cost",
+    "mapView": "Map View",
+    "mapTeaser": "See your activities on an interactive map",
+    "mapFeature1": "Activities plotted on a map",
+    "mapFeature2": "Walking routes between spots",
+    "mapFeature3": "Pick locations by clicking the map",
+    "upgradeToPremium": "Upgrade to Premium",
+    "addMeal": "Add Meal",
+    "addAttraction": "Add Attraction",
+    "addTransport": "Add Transport",
+    "addAccommodation": "Add Accommodation",
+    "addShopping": "Add Shopping",
+    "addOther": "Add Other",
+    "confirmDelete": "Delete this activity?",
+    "emptyDay": "No activities yet",
+    "emptyDayHint": "Add activities to plan your day and track costs"
   }
 }

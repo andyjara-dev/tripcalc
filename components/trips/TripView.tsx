@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
@@ -8,16 +8,17 @@ import { useLocale } from 'next-intl';
 import { nanoid } from 'nanoid';
 import type { DayPlan, TripStyle, CustomCosts } from '@/types/trip-planner';
 import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/trip-planner';
-import type { DayItinerary } from '@/lib/types/itinerary';
-import DayPlanCard from '../calculators/DayPlanCard';
+import type { DayItinerary, ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
+import UnifiedDayView from '../trip/UnifiedDayView';
+import BudgetSummaryPanel from '../trip/BudgetSummaryPanel';
+import MapPremiumTeaser from '../premium/MapPremiumTeaser';
 import SaveTripModal from './SaveTripModal';
 import CustomizeCostsModal from './CustomizeCostsModal';
 import ShareTripModal from './ShareTripModal';
 import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { WeatherCard } from './WeatherCard';
-import ItineraryView from '../itinerary/ItineraryView';
-import ItineraryPremiumGate from '../premium/ItineraryPremiumGate';
+import MapPanel from '../itinerary/MapPanel';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -56,8 +57,6 @@ interface TripViewProps {
   isPremium?: boolean;
 }
 
-type ViewTab = 'planning' | 'itinerary';
-
 export default function TripView({ trip, isPremium = false }: TripViewProps) {
   const t = useTranslations('calculator');
   const tTrips = useTranslations('trips');
@@ -86,7 +85,9 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
   const [isExportingCalendar, setIsExportingCalendar] = useState(false);
   const [expenses, setExpenses] = useState<ExpenseDisplay[]>([]);
   const [expensesLoading, setExpensesLoading] = useState(true);
-  const [viewTab, setViewTab] = useState<ViewTab>('planning');
+  const [highlightedItemId, setHighlightedItemId] = useState<string | undefined>();
+  const [pickingItemId, setPickingItemId] = useState<string | undefined>();
+  const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
 
   // Get city data
   const city = getCityById(trip.cityId);
@@ -409,6 +410,54 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
     }
   };
 
+  // Map interaction handlers (premium)
+  const handleMarkerClick = useCallback((itemId: string) => {
+    setHighlightedItemId(itemId);
+    setTimeout(() => setHighlightedItemId(undefined), 3000);
+    const element = document.getElementById(`activity-${itemId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, []);
+
+  const handleRequestMapPick = useCallback((itemId: string) => {
+    setPickingItemId(itemId);
+    const mapElement = document.getElementById('itinerary-map');
+    if (mapElement) {
+      mapElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  const handleMapClick = useCallback(async (lat: number, lon: number) => {
+    if (!pickingItemId || !activeD) return;
+
+    setIsReverseGeocoding(true);
+    try {
+      const response = await fetch('/api/itinerary/reverse-geocode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lat, lon }),
+      });
+
+      if (!response.ok) throw new Error('Reverse geocoding failed');
+
+      const data = await response.json();
+      if (data.success && data.location) {
+        const updatedItems = activeD.customItems.map((item) =>
+          item.id === pickingItemId
+            ? { ...item, location: data.location as GeoLocation }
+            : item
+        );
+        updateDay(activeD.dayNumber, { customItems: updatedItems });
+        setPickingItemId(undefined);
+      }
+    } catch (error) {
+      console.error('Reverse geocoding error:', error);
+    } finally {
+      setIsReverseGeocoding(false);
+    }
+  }, [pickingItemId, activeD]);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Success notification */}
@@ -560,42 +609,8 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
         </div>
       </div>
 
-      {/* View Tabs */}
-      <div className="mb-6 border-b border-gray-200">
-        <div className="flex gap-1">
-          <button
-            onClick={() => setViewTab('planning')}
-            className={`px-6 py-3 font-medium transition-all relative ${
-              viewTab === 'planning'
-                ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            📅 {tTrips('planningView')}
-          </button>
-          <button
-            onClick={() => setViewTab('itinerary')}
-            className={`px-6 py-3 font-medium transition-all relative flex items-center gap-2 ${
-              viewTab === 'itinerary'
-                ? 'text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <span>🗺️ {tTrips('itineraryView')}</span>
-            {!isPremium && (
-              <span className="text-xs px-2 py-0.5 bg-yellow-100 text-yellow-800 rounded-full font-semibold">
-                Premium
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Planning View (default) */}
-      {viewTab === 'planning' && (
-        <>
-          {/* Daily Planning Accordion */}
-          <details open className="border border-gray-200 rounded-lg p-4 mb-6">
+      {/* Daily Planning */}
+      <details open className="border border-gray-200 rounded-lg p-4 mb-6">
         <summary className="font-bold text-xl cursor-pointer flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors">
           <span>📅</span>
           <span>{tTrips('dailyPlanning')}</span>
@@ -636,18 +651,87 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
             )}
           </div>
 
-          {/* Active Day Content */}
+          {/* Unified Day View: Activities + Map/Budget sidebar */}
           {activeD && (
-            <DayPlanCard
-              day={activeD}
-              city={city}
-              costs={costs}
-              tripStyle={tripStyle}
-              totalDays={days.length}
-              onUpdate={updates => updateDay(activeD.dayNumber, updates)}
-              onRemove={() => removeDay(activeD.dayNumber)}
-              onDuplicate={() => duplicateDay(activeD.dayNumber)}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Left: Activities (2/3 width on desktop) */}
+              <div className="lg:col-span-2">
+                <UnifiedDayView
+                  day={activeD}
+                  city={city}
+                  costs={costs}
+                  currencySymbol={city.currencySymbol}
+                  isPremium={isPremium}
+                  totalDays={days.length}
+                  savedLocations={[]}
+                  cityBounds={{
+                    north: city.latitude + 0.1,
+                    south: city.latitude - 0.1,
+                    east: city.longitude + 0.1,
+                    west: city.longitude - 0.1,
+                  }}
+                  onUpdate={updates => updateDay(activeD.dayNumber, updates)}
+                  onRemove={() => removeDay(activeD.dayNumber)}
+                  onDuplicate={() => duplicateDay(activeD.dayNumber)}
+                  highlightedItemId={highlightedItemId}
+                  onRequestMapPick={isPremium ? handleRequestMapPick : undefined}
+                />
+              </div>
+
+              {/* Right: Map + Budget Summary (1/3 width on desktop) */}
+              <div className="lg:sticky lg:top-4 lg:self-start space-y-4">
+                {/* Map Panel or Premium Teaser */}
+                <div id="itinerary-map">
+                  {isPremium ? (
+                    <>
+                      {pickingItemId && (
+                        <div className="mb-3 p-3 bg-blue-600 text-white rounded-lg shadow-lg animate-pulse text-sm">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span>👇</span>
+                              <span className="font-bold">Click on the map</span>
+                            </div>
+                            <button
+                              onClick={() => setPickingItemId(undefined)}
+                              className="px-2 py-1 bg-white text-blue-600 text-xs font-medium rounded hover:bg-blue-50"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                          {isReverseGeocoding && (
+                            <div className="mt-2 flex items-center gap-2 text-xs">
+                              <div className="animate-spin">⏳</div>
+                              <span>Getting address...</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <MapPanel
+                        items={(activeD.customItems as ItineraryItem[])}
+                        cityCenter={[city.latitude, city.longitude]}
+                        onMarkerClick={handleMarkerClick}
+                        defaultCollapsed={false}
+                        onMapClick={handleMapClick}
+                        pickingMode={!!pickingItemId}
+                      />
+                    </>
+                  ) : (
+                    <MapPremiumTeaser />
+                  )}
+                </div>
+
+                {/* Budget Summary (hidden on mobile, shown in sidebar on desktop) */}
+                <div className="hidden lg:block">
+                  <BudgetSummaryPanel
+                    items={(activeD.customItems as ItineraryItem[])}
+                    baseCosts={costs}
+                    includeBase={activeD.includeBase}
+                    included={activeD.included}
+                    currencySymbol={city.currencySymbol}
+                  />
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </details>
@@ -659,15 +743,12 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
           <span>{tTrips('expensesTracking')}</span>
         </summary>
         <div className="mt-4 space-y-6">
-          {/* Expenses List */}
           <ExpensesList
             tripId={trip.id}
             expenses={expenses}
             currencySymbol={city.currencySymbol}
             onExpenseAdded={handleRefreshExpenses}
           />
-
-          {/* Budget vs Actual */}
           {!expensesLoading && (
             <BudgetVsActual
               budget={costs}
@@ -686,7 +767,6 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
           <span>{tTrips('tripSummary')}</span>
         </summary>
         <div className="mt-4 space-y-4">
-          {/* Breakdown per day */}
           <div className="space-y-2">
             {days.map(day => {
               const dayCost = calculateDayCost(day, costs);
@@ -708,7 +788,6 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
             })}
           </div>
 
-          {/* Total */}
           <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
             <span className="text-lg font-medium text-gray-700">
               {tTrips('totalTrip')} ({days.length} {days.length === 1 ? tTrips('day') : tTrips('days')}):
@@ -722,40 +801,11 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
             </span>
           </div>
 
-          {/* Average per day */}
           <div className="text-sm text-gray-600 text-right">
             {tTrips('averagePerDay')}: {city.currencySymbol}{(tripTotal / days.length).toFixed(2)}
           </div>
         </div>
       </details>
-        </>
-      )}
-
-      {/* Itinerary View (Premium) */}
-      {viewTab === 'itinerary' && (
-        <>
-          {isPremium ? (
-            <ItineraryView
-              days={days as DayItinerary[]}
-              activeDay={activeDay}
-              cityId={trip.cityId}
-              cityName={trip.cityName}
-              cityCenter={[city.latitude, city.longitude]}
-              cityBounds={{
-                north: city.latitude + 0.1,
-                south: city.latitude - 0.1,
-                east: city.longitude + 0.1,
-                west: city.longitude - 0.1,
-              }}
-              currencySymbol={city.currencySymbol}
-              onDaysChange={(newDays) => setDays(newDays)}
-              onActiveDayChange={setActiveDay}
-            />
-          ) : (
-            <ItineraryPremiumGate locale={locale} />
-          )}
-        </>
-      )}
 
       {/* Edit Modal */}
       <SaveTripModal
