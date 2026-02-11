@@ -11,6 +11,7 @@ import { sortItemsByTime } from '@/lib/types/itinerary';
 import type { SavedLocation } from '@/lib/types/saved-location';
 import type { CityBounds } from '@/lib/services/geocoding';
 import UnifiedActivityCard from './UnifiedActivityCard';
+import RoutingSegment from '../itinerary/RoutingSegment';
 import { BudgetBar } from './BudgetSummaryPanel';
 
 interface UnifiedDayViewProps {
@@ -281,19 +282,27 @@ export default function UnifiedDayView({
       ) : (
         <div className="space-y-2">
           {sortedItems.map((item, index) => (
-            <UnifiedActivityCard
-              key={item.id}
-              item={item}
-              number={index + 1}
-              currencySymbol={currencySymbol}
-              isPremium={isPremium}
-              cityBounds={cityBounds}
-              savedLocations={savedLocations}
-              onUpdate={(updates) => updateActivity(item.id, updates)}
-              onDelete={() => deleteActivity(item.id)}
-              isHighlighted={item.id === highlightedItemId}
-              onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
-            />
+            <div key={item.id}>
+              <UnifiedActivityCard
+                item={item}
+                number={index + 1}
+                currencySymbol={currencySymbol}
+                isPremium={isPremium}
+                cityBounds={cityBounds}
+                savedLocations={savedLocations}
+                onUpdate={(updates) => updateActivity(item.id, updates)}
+                onDelete={() => deleteActivity(item.id)}
+                isHighlighted={item.id === highlightedItemId}
+                onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
+              />
+              {/* Routing segment between consecutive activities (premium only) */}
+              {isPremium && index < sortedItems.length - 1 && (
+                <RoutingSegment
+                  from={item}
+                  to={sortedItems[index + 1]}
+                />
+              )}
+            </div>
           ))}
         </div>
       )}
