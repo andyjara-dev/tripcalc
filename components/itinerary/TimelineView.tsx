@@ -107,35 +107,35 @@ export default function TimelineView({
                 <div className="py-2">
                   <button
                     onClick={() => addActivity('FOOD')}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-900"
                   >
                     <span className="text-xl">🍽️</span>
                     <span className="font-medium">{t('addMeal')}</span>
                   </button>
                   <button
                     onClick={() => addActivity('ACTIVITIES')}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-900"
                   >
                     <span className="text-xl">🎭</span>
                     <span className="font-medium">{t('addAttraction')}</span>
                   </button>
                   <button
                     onClick={() => addActivity('TRANSPORT')}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-900"
                   >
                     <span className="text-xl">🚕</span>
                     <span className="font-medium">{t('addTransport')}</span>
                   </button>
                   <button
                     onClick={() => addActivity('SHOPPING')}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-900"
                   >
                     <span className="text-xl">🛍️</span>
                     <span className="font-medium">{t('addShopping')}</span>
                   </button>
                   <button
                     onClick={() => addActivity('OTHER')}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-900"
                   >
                     <span className="text-xl">📝</span>
                     <span className="font-medium">{t('addOther')}</span>
