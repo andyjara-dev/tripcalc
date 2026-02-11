@@ -74,6 +74,8 @@ export function createAccommodationItem(
     category: 'ACCOMMODATION',
     amount: 0, // No cost for check-in/check-out
     visits: 1,
+    isOneTime: false, // Required for backward compatibility
+    notes: '',
     timeSlot: {
       startTime: time,
     },
