@@ -43,7 +43,7 @@ export default function SavedLocationForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Validation
-  const isValid = name.trim().length > 0 && location !== undefined;
+  const isValid = name.trim().length > 0 && location !== undefined && location !== null;
 
   // Handle submit
   const handleSubmit = (e: React.FormEvent) => {
@@ -118,8 +118,8 @@ export default function SavedLocationForm({
           {t('location')}
         </label>
         <LocationAutocomplete
-          value={location?.address || ''}
-          onLocationSelect={setLocation}
+          value={location}
+          onChange={setLocation}
           placeholder={t('enterAddress')}
           cityBounds={cityBounds}
         />
