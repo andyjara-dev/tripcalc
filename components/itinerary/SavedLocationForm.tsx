@@ -119,7 +119,7 @@ export default function SavedLocationForm({
         </label>
         <LocationAutocomplete
           value={location}
-          onChange={setLocation}
+          onChange={(loc) => setLocation(loc || undefined)}
           placeholder={t('enterAddress')}
           cityBounds={cityBounds}
         />
