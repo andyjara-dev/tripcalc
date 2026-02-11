@@ -48,6 +48,14 @@ export type AnalyticsEventType =
   | 'itinerary_address_geocoded'
   | 'itinerary_geocoding_failed'
   | 'itinerary_tab_opened'
+  // Saved Locations
+  | 'saved_location_created'
+  | 'saved_location_updated'
+  | 'saved_location_deleted'
+  | 'saved_location_set_primary'
+  | 'saved_location_used_in_activity'
+  | 'auto_fill_executed'
+  | 'day_connection_synced'
   // Page views
   | 'page_view';
 
@@ -175,6 +183,51 @@ export interface ItineraryTabOpenedData {
   isPremium: boolean;
 }
 
+export interface SavedLocationCreatedData {
+  tripId: string;
+  category: string;
+  isPrimary: boolean;
+}
+
+export interface SavedLocationUpdatedData {
+  tripId: string;
+  category: string;
+  wasPrimary: boolean;
+  isPrimary: boolean;
+}
+
+export interface SavedLocationDeletedData {
+  tripId: string;
+  category: string;
+  wasPrimary: boolean;
+  autoFilledItemsRemoved: number;
+}
+
+export interface SavedLocationSetPrimaryData {
+  tripId: string;
+  category: string;
+  previousPrimaryCategory?: string;
+}
+
+export interface SavedLocationUsedInActivityData {
+  tripId: string;
+  locationCategory: string;
+  isPrimary: boolean;
+  viaAutofill: boolean; // true if auto-filled, false if via quick picker
+}
+
+export interface AutoFillExecutedData {
+  tripId: string;
+  days: number;
+  itemsCreated: number;
+}
+
+export interface DayConnectionSyncedData {
+  tripId: string;
+  dayNumber: number;
+  syncMode: 'forward' | 'backward';
+}
+
 // Union type for all event data
 export type AnalyticsEventData =
   | UserSignupData
@@ -198,6 +251,13 @@ export type AnalyticsEventData =
   | ItineraryAddressGeocodedData
   | ItineraryGeocodingFailedData
   | ItineraryTabOpenedData
+  | SavedLocationCreatedData
+  | SavedLocationUpdatedData
+  | SavedLocationDeletedData
+  | SavedLocationSetPrimaryData
+  | SavedLocationUsedInActivityData
+  | AutoFillExecutedData
+  | DayConnectionSyncedData
   | Record<string, any>;
 
 // Helper to get amount range for privacy

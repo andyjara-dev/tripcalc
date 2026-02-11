@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { nanoid } from 'nanoid';
 import type { ItineraryItem } from '@/lib/types/itinerary';
+import type { SavedLocation } from '@/lib/types/saved-location';
 import { sortItemsByTime } from '@/lib/types/itinerary';
 import type { CityBounds } from '@/lib/services/geocoding';
 import ActivityCard from './ActivityCard';
@@ -18,6 +19,7 @@ interface TimelineViewProps {
   items: ItineraryItem[];
   currencySymbol: string;
   cityBounds?: CityBounds;
+  savedLocations?: SavedLocation[];
   onItemsChange: (items: ItineraryItem[]) => void;
   highlightedItemId?: string;
   onRequestMapPick?: (itemId: string) => void;
@@ -27,6 +29,7 @@ export default function TimelineView({
   items,
   currencySymbol,
   cityBounds,
+  savedLocations = [],
   onItemsChange,
   highlightedItemId,
   onRequestMapPick,
@@ -167,6 +170,7 @@ export default function TimelineView({
                 number={index + 1}
                 currencySymbol={currencySymbol}
                 cityBounds={cityBounds}
+                savedLocations={savedLocations}
                 onUpdate={(updates) => updateActivity(item.id, updates)}
                 onDelete={() => deleteActivity(item.id)}
                 isHighlighted={item.id === highlightedItemId}

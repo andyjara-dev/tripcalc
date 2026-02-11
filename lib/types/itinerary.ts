@@ -29,6 +29,10 @@ export interface ItineraryItem extends CustomItemLocal {
   bookingRequired?: boolean;
   bookingUrl?: string;
   isAISuggestion?: boolean; // Phase 3: from AI suggestions
+
+  // Auto-fill fields (for saved locations feature)
+  isAutoFilled?: boolean;      // Marks items auto-generated from saved locations
+  autoFillSource?: string;     // SavedLocation.id that generated this item
 }
 
 // Route segment between two activities (Phase 2)
@@ -60,6 +64,9 @@ export interface TripPlanWithItinerary {
   cityId: string;
   tripStyle: 'budget' | 'midRange' | 'luxury';
   days: DayItinerary[];
+
+  // Optional: saved locations for this trip (from saved-location feature)
+  savedLocations?: any[]; // Type will be SavedLocation[] but avoid circular dependency
 }
 
 // AI Suggestion (Phase 3)

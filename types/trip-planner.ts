@@ -49,6 +49,9 @@ export interface TripPlanDetailed {
   cityId: string;
   tripStyle: TripStyle;
   days: DayPlan[];
+
+  // Optional: saved locations for this trip (stored in calculatorState)
+  savedLocations?: any[]; // Type will be SavedLocation[] but avoid circular dependency
 }
 
 // Helper to create a default day

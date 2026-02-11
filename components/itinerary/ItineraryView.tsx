@@ -6,12 +6,19 @@
  * Two-column layout: Timeline + Map (desktop), stacked (mobile)
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import type { DayItinerary, ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
+import type { SavedLocation } from '@/lib/types/saved-location';
 import type { CityBounds } from '@/lib/services/geocoding';
+import {
+  detectDisconnectedDays,
+  syncConsecutiveDays,
+} from '@/lib/utils/itinerary-autofill';
 import TimelineView from './TimelineView';
 import MapPanel from './MapPanel';
+import SavedLocationsModal from './SavedLocationsModal';
+import DayConnectionWarning from './DayConnectionWarning';
 
 interface ItineraryViewProps {
   days: DayItinerary[];
@@ -40,6 +47,24 @@ export default function ItineraryView({
   const [highlightedItemId, setHighlightedItemId] = useState<string | undefined>();
   const [pickingItemId, setPickingItemId] = useState<string | undefined>();
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
+
+  // Saved locations state (extract from days if stored in calculatorState)
+  const [savedLocations, setSavedLocations] = useState<SavedLocation[]>(
+    (days as any).savedLocations || []
+  );
+  const [showSavedLocationsModal, setShowSavedLocationsModal] = useState(false);
+
+  // Disconnected days detection
+  const [disconnectedDays, setDisconnectedDays] = useState<
+    Array<{ dayNumber: number; lastLocation: string; nextLocation: string }>
+  >([]);
+  const [dismissedWarnings, setDismissedWarnings] = useState<Set<number>>(new Set());
+
+  // Detect disconnected days when days change
+  useEffect(() => {
+    const disconnected = detectDisconnectedDays(days);
+    setDisconnectedDays(disconnected);
+  }, [days]);
 
   // Get current day
   const currentDay = days.find((d) => d.dayNumber === activeDay);
@@ -149,8 +174,61 @@ export default function ItineraryView({
     }
   }, [pickingItemId, days, activeDay, currentDay.customItems, onDaysChange, t]);
 
+  // Handle save saved locations
+  const handleSaveLocations = useCallback(
+    (newLocations: SavedLocation[], updatedDays: DayItinerary[]) => {
+      setSavedLocations(newLocations);
+      // Update days with savedLocations included
+      onDaysChange(updatedDays);
+    },
+    [onDaysChange]
+  );
+
+  // Handle sync consecutive days
+  const handleSyncDays = useCallback(
+    (dayNumber: number, mode: 'forward' | 'backward') => {
+      const currentDayIndex = days.findIndex((d) => d.dayNumber === dayNumber);
+      const previousDayIndex = currentDayIndex - 1;
+
+      if (currentDayIndex === -1 || previousDayIndex === -1) return;
+
+      const { previousDay: updatedPrevDay, currentDay: updatedCurrDay } =
+        syncConsecutiveDays(days[previousDayIndex], days[currentDayIndex], mode);
+
+      const newDays = [...days];
+      newDays[previousDayIndex] = updatedPrevDay;
+      newDays[currentDayIndex] = updatedCurrDay;
+
+      onDaysChange(newDays);
+
+      // Clear warning for this day
+      setDismissedWarnings((prev) => new Set(prev).add(dayNumber));
+    },
+    [days, onDaysChange]
+  );
+
+  // Handle dismiss warning
+  const handleDismissWarning = useCallback((dayNumber: number) => {
+    setDismissedWarnings((prev) => new Set(prev).add(dayNumber));
+  }, []);
+
   return (
     <div className="space-y-6">
+      {/* Day Connection Warning (if current day is disconnected from previous) */}
+      {disconnectedDays
+        .filter((d) => d.dayNumber === activeDay && !dismissedWarnings.has(d.dayNumber))
+        .map((warning) => (
+          <DayConnectionWarning
+            key={warning.dayNumber}
+            previousDay={warning.dayNumber - 1}
+            currentDay={warning.dayNumber}
+            lastLocation={warning.lastLocation}
+            nextLocation={warning.nextLocation}
+            onSync={(mode) => handleSyncDays(warning.dayNumber, mode)}
+            onDismiss={() => handleDismissWarning(warning.dayNumber)}
+          />
+        ))}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -162,9 +240,20 @@ export default function ItineraryView({
           </p>
         </div>
 
-        {/* Help text */}
-        <div className="text-xs text-gray-500 text-right max-w-xs">
-          {t('itineraryHelpText')}
+        <div className="flex flex-col items-end gap-2">
+          {/* Manage Saved Locations Button */}
+          <button
+            onClick={() => setShowSavedLocationsModal(true)}
+            className="px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors flex items-center gap-2"
+          >
+            <span>📍</span>
+            <span>{t('manageSavedLocations')}</span>
+          </button>
+
+          {/* Help text */}
+          <div className="text-xs text-gray-500 text-right max-w-xs">
+            {t('itineraryHelpText')}
+          </div>
         </div>
       </div>
 
@@ -176,6 +265,7 @@ export default function ItineraryView({
             items={currentDay.customItems as ItineraryItem[]}
             currencySymbol={currencySymbol}
             cityBounds={cityBounds}
+            savedLocations={savedLocations}
             onItemsChange={handleItemsChange}
             highlightedItemId={highlightedItemId}
             onRequestMapPick={handleRequestMapPick}
@@ -229,6 +319,16 @@ export default function ItineraryView({
       <div className="lg:hidden text-center text-xs text-gray-500 mt-8">
         💡 {t('mobileMapHint')}
       </div>
+
+      {/* Saved Locations Modal */}
+      <SavedLocationsModal
+        isOpen={showSavedLocationsModal}
+        onClose={() => setShowSavedLocationsModal(false)}
+        savedLocations={savedLocations}
+        days={days}
+        cityBounds={cityBounds}
+        onSave={handleSaveLocations}
+      />
     </div>
   );
 }

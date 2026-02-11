@@ -7,15 +7,18 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import type { ItineraryItem } from '@/lib/types/itinerary';
+import type { ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
+import type { SavedLocation } from '@/lib/types/saved-location';
 import type { CityBounds } from '@/lib/services/geocoding';
 import LocationAutocomplete from './LocationAutocomplete';
+import SavedLocationPicker from './SavedLocationPicker';
 
 interface ActivityCardProps {
   item: ItineraryItem;
   number: number; // Position in timeline
   currencySymbol: string;
   cityBounds?: CityBounds;
+  savedLocations?: SavedLocation[]; // Saved locations for quick picker
   onUpdate: (updates: Partial<ItineraryItem>) => void;
   onDelete: () => void;
   isHighlighted?: boolean;
@@ -27,6 +30,7 @@ export default function ActivityCard({
   number,
   currencySymbol,
   cityBounds,
+  savedLocations = [],
   onUpdate,
   onDelete,
   isHighlighted = false,
@@ -35,6 +39,30 @@ export default function ActivityCard({
   const t = useTranslations('itinerary');
   const tActivity = useTranslations('activity');
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Handle saved location selection
+  const handleSavedLocationSelect = (location: GeoLocation, locationName: string) => {
+    onUpdate({
+      location,
+      // Optionally update name if it's empty
+      name: item.name || locationName,
+    });
+  };
+
+  // Handle manual edit - remove auto-fill flags when user manually edits
+  const handleManualUpdate = (updates: Partial<ItineraryItem>) => {
+    // If this item is auto-filled and user is manually editing it,
+    // remove auto-fill flags so it won't be overwritten
+    if (item.isAutoFilled && (updates.name || updates.location)) {
+      onUpdate({
+        ...updates,
+        isAutoFilled: false,
+        autoFillSource: undefined,
+      });
+    } else {
+      onUpdate(updates);
+    }
+  };
 
   // Category icons
   const categoryIcons = {
@@ -89,7 +117,7 @@ export default function ActivityCard({
           <input
             type="text"
             value={item.name}
-            onChange={(e) => onUpdate({ name: e.target.value })}
+            onChange={(e) => handleManualUpdate({ name: e.target.value })}
             className="flex-1 px-3 py-1 font-medium text-gray-900 bg-white border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder={tActivity('activityName')}
           />
@@ -125,6 +153,11 @@ export default function ActivityCard({
           </span>
           {item.location && (
             <span className="text-green-600">📍</span>
+          )}
+          {item.isAutoFilled && (
+            <span className="px-2 py-0.5 text-xs font-medium bg-blue-100 text-blue-700 rounded-full flex items-center gap-1">
+              🤖 {t('autoFilled')}
+            </span>
           )}
         </div>
 
@@ -162,12 +195,23 @@ export default function ActivityCard({
                   </button>
                 )}
               </div>
-              <LocationAutocomplete
-                value={item.location}
-                onChange={(location) => onUpdate({ location: location || undefined })}
-                cityBounds={cityBounds}
-                placeholder={tActivity('enterAddress')}
-              />
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <LocationAutocomplete
+                    value={item.location}
+                    onChange={(location) => handleManualUpdate({ location: location || undefined })}
+                    cityBounds={cityBounds}
+                    placeholder={tActivity('enterAddress')}
+                  />
+                </div>
+                {savedLocations.length > 0 && (
+                  <SavedLocationPicker
+                    savedLocations={savedLocations}
+                    currentLocation={item.location}
+                    onSelect={handleSavedLocationSelect}
+                  />
+                )}
+              </div>
             </div>
 
             {/* Cost */}
