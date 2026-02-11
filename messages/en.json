@@ -450,7 +450,9 @@
       "noLists": "No packing lists yet",
       "noListsDescription": "Create packing lists for your luggage and track your weight",
       "createFirst": "Create First Packing List"
-    }
+    },
+    "planningView": "Planning",
+    "itineraryView": "Itinerary"
   },
   "footer": {
     "tagline": "Real travel costs, no surprises",
@@ -1035,9 +1037,5 @@
     "accommodation": "Accommodation",
     "shopping": "Shopping",
     "other": "Other"
-  },
-  "trips": {
-    "planningView": "Planning",
-    "itineraryView": "Itinerary"
   }
 }

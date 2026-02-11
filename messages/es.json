@@ -473,7 +473,9 @@
       "noLists": "Aún no hay listas de equipaje",
       "noListsDescription": "Crea listas de equipaje para tu maleta y rastrea tu peso",
       "createFirst": "Crear Primera Lista de Equipaje"
-    }
+    },
+    "planningView": "Planificación",
+    "itineraryView": "Itinerario"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",
@@ -1058,9 +1060,5 @@
     "accommodation": "Alojamiento",
     "shopping": "Compras",
     "other": "Otro"
-  },
-  "trips": {
-    "planningView": "Planificación",
-    "itineraryView": "Itinerario"
   }
 }
