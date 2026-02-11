@@ -73,8 +73,12 @@ function FitBounds({ markers }: { markers: MapMarker[] }) {
 function MapClickHandler({ onMapClick, clickable }: { onMapClick?: (lat: number, lon: number) => void; clickable?: boolean }) {
   useMapEvents({
     click(e) {
+      console.log('Map clicked:', { lat: e.latlng.lat, lng: e.latlng.lng, clickable });
       if (clickable && onMapClick) {
+        console.log('Calling onMapClick handler');
         onMapClick(e.latlng.lat, e.latlng.lng);
+      } else if (!clickable) {
+        console.log('Map not in picking mode - click ignored');
       }
     },
   });

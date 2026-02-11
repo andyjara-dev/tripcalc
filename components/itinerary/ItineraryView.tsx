@@ -83,6 +83,7 @@ export default function ItineraryView({
 
   // Handle request to pick location from map
   const handleRequestMapPick = useCallback((itemId: string) => {
+    console.log('Pick from map requested for item:', itemId);
     setPickingItemId(itemId);
     // Scroll to map
     const mapElement = document.getElementById('itinerary-map');
@@ -93,8 +94,14 @@ export default function ItineraryView({
 
   // Handle map click for picking location
   const handleMapClick = useCallback(async (lat: number, lon: number) => {
-    if (!pickingItemId) return;
+    console.log('Map clicked with coordinates:', { lat, lon, pickingItemId });
 
+    if (!pickingItemId) {
+      console.log('No item selected for picking - click ignored');
+      return;
+    }
+
+    console.log('Starting reverse geocoding...');
     setIsReverseGeocoding(true);
 
     try {
@@ -112,8 +119,10 @@ export default function ItineraryView({
       }
 
       const data = await response.json();
+      console.log('Reverse geocoding response:', data);
 
       if (data.success && data.location) {
+        console.log('Updating item location:', data.location);
         // Update the item with the location
         const updatedItems = currentDay.customItems.map((item) =>
           item.id === pickingItemId
@@ -176,22 +185,31 @@ export default function ItineraryView({
         {/* Right column: Map (sticky on desktop) */}
         <div className="lg:sticky lg:top-4 lg:self-start" id="itinerary-map">
           {pickingItemId && (
-            <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mb-3 p-4 bg-blue-600 text-white rounded-lg shadow-lg animate-pulse">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm text-blue-900">
-                  <span>📍</span>
-                  <span className="font-medium">{t('clickMapToSelect')}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">👇</span>
+                  <div>
+                    <div className="font-bold text-base">{t('clickMapToSelect')}</div>
+                    <div className="text-xs text-blue-100 mt-1">
+                      Haz clic en cualquier punto del mapa para seleccionar ubicación
+                    </div>
+                  </div>
                 </div>
                 <button
-                  onClick={() => setPickingItemId(undefined)}
-                  className="text-xs text-blue-700 hover:text-blue-900 font-medium"
+                  onClick={() => {
+                    console.log('Canceling picking mode');
+                    setPickingItemId(undefined);
+                  }}
+                  className="px-3 py-1 bg-white text-blue-600 text-sm font-medium rounded hover:bg-blue-50 transition-colors"
                 >
                   {t('cancel')}
                 </button>
               </div>
               {isReverseGeocoding && (
-                <div className="mt-2 text-xs text-blue-700">
-                  {t('gettingAddress')}...
+                <div className="mt-3 flex items-center gap-2 text-sm bg-blue-500 rounded px-3 py-2">
+                  <div className="animate-spin">⏳</div>
+                  <span>{t('gettingAddress')}...</span>
                 </div>
               )}
             </div>

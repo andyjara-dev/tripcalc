@@ -49,6 +49,14 @@ export default function MapPanel({
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
 
+  // Auto-expand map when entering picking mode
+  if (pickingMode && isCollapsed) {
+    setIsCollapsed(false);
+    if (!isMapLoaded) {
+      setIsMapLoaded(true);
+    }
+  }
+
   // Filter items with location
   const itemsWithLocation = useMemo(
     () => items.filter((item) => item.location),
