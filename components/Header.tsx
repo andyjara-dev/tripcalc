@@ -61,14 +61,17 @@ export default function Header({ locale, activeSection = 'home', translations }:
             {translations.cities}
           </Link>
           <Link
-            href={`/${locale}/calculators/luggage`}
-            className={`transition ${
+            href={`/${locale}/trips`}
+            className={`transition flex items-center gap-1.5 ${
               activeSection === 'calculators'
                 ? 'text-gray-900 font-semibold'
                 : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             {translations.calculators}
+            <span className="text-[10px] px-1.5 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full font-bold leading-none">
+              PRO
+            </span>
           </Link>
           <Link
             href={`/${locale}/about`}
@@ -135,8 +138,8 @@ export default function Header({ locale, activeSection = 'home', translations }:
               {translations.cities}
             </Link>
             <Link
-              href={`/${locale}/calculators/luggage`}
-              className={`block py-2 ${
+              href={`/${locale}/trips`}
+              className={`block py-2 flex items-center gap-1.5 ${
                 activeSection === 'calculators'
                   ? 'text-gray-900 font-semibold'
                   : 'text-gray-600'
@@ -144,6 +147,9 @@ export default function Header({ locale, activeSection = 'home', translations }:
               onClick={() => setIsMobileMenuOpen(false)}
             >
               {translations.calculators}
+              <span className="text-[10px] px-1.5 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-full font-bold leading-none">
+                PRO
+              </span>
             </Link>
             <Link
               href={`/${locale}/about`}
