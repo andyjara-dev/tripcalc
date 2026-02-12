@@ -38,6 +38,7 @@ interface PDFExportData {
   days: number;
   tripStyle: string;
   currencySymbol: string;
+  locale: string;
   costs: {
     accommodation: number;
     food: number;
@@ -94,17 +95,47 @@ interface PDFExportData {
     pdfOf?: string;
     pdfTripStats?: string;
     pdfDaysPlanned?: string;
+    // Category translations (for itinerary tags)
+    catAccommodation?: string;
+    catFood?: string;
+    catTransport?: string;
+    catActivities?: string;
+    catShopping?: string;
+    catOther?: string;
   };
 }
 
-// Category emoji map
-const categoryEmoji: Record<string, string> = {
-  ACCOMMODATION: '🏨',
-  FOOD: '🍽️',
-  TRANSPORT: '🚌',
-  ACTIVITIES: '🎯',
-  SHOPPING: '🛍️',
-  OTHER: '📦',
+// Weather description translations (EN -> ES)
+const weatherDescES: Record<string, string> = {
+  'Clear sky': 'Cielo despejado',
+  'Mainly clear': 'Mayormente despejado',
+  'Partly cloudy': 'Parcialmente nublado',
+  'Overcast': 'Nublado',
+  'Foggy': 'Niebla',
+  'Depositing rime fog': 'Niebla con escarcha',
+  'Light drizzle': 'Llovizna ligera',
+  'Moderate drizzle': 'Llovizna moderada',
+  'Dense drizzle': 'Llovizna densa',
+  'Light freezing drizzle': 'Llovizna helada ligera',
+  'Dense freezing drizzle': 'Llovizna helada densa',
+  'Slight rain': 'Lluvia ligera',
+  'Moderate rain': 'Lluvia moderada',
+  'Heavy rain': 'Lluvia fuerte',
+  'Light freezing rain': 'Lluvia helada ligera',
+  'Heavy freezing rain': 'Lluvia helada fuerte',
+  'Slight snow': 'Nieve ligera',
+  'Moderate snow': 'Nieve moderada',
+  'Heavy snow': 'Nieve fuerte',
+  'Snow grains': 'Granizo de nieve',
+  'Slight rain showers': 'Chubascos ligeros',
+  'Moderate rain showers': 'Chubascos moderados',
+  'Violent rain showers': 'Chubascos fuertes',
+  'Slight snow showers': 'Nevadas ligeras',
+  'Heavy snow showers': 'Nevadas fuertes',
+  'Thunderstorm': 'Tormenta',
+  'Thunderstorm with slight hail': 'Tormenta con granizo ligero',
+  'Thunderstorm with heavy hail': 'Tormenta con granizo fuerte',
+  'Unknown': 'Desconocido',
 };
 
 export async function exportTripToPDF(data: PDFExportData) {
@@ -114,6 +145,25 @@ export async function exportTripToPDF(data: PDFExportData) {
   let yPosition = 20;
 
   const isPremium = data.isPremium === true;
+  const isSpanish = data.locale === 'es';
+
+  // Build category labels from translations
+  const categoryLabel: Record<string, string> = {
+    ACCOMMODATION: `[${(data.translations.catAccommodation || 'Accommodation').substring(0, 4)}]`,
+    FOOD: `[${(data.translations.catFood || 'Food').substring(0, 4)}]`,
+    TRANSPORT: `[${(data.translations.catTransport || 'Transport').substring(0, 4)}]`,
+    ACTIVITIES: `[${(data.translations.catActivities || 'Activities').substring(0, 4)}]`,
+    SHOPPING: `[${(data.translations.catShopping || 'Shopping').substring(0, 4)}]`,
+    OTHER: `[${(data.translations.catOther || 'Other').substring(0, 4)}]`,
+  };
+
+  // Helper to translate weather description
+  const translateWeather = (desc: string): string => {
+    if (isSpanish) {
+      return weatherDescES[desc] || desc;
+    }
+    return desc;
+  };
 
   // Helper function to check if we need a new page
   const checkNewPage = (requiredSpace: number) => {
@@ -341,15 +391,23 @@ export async function exportTripToPDF(data: PDFExportData) {
     doc.text(data.translations.actual, pageWidth / 2 + 10, yPosition);
     yPosition += 6;
 
+    // Map category keys to translated names
+    const budgetCategoryNames: Record<string, string> = {
+      ACCOMMODATION: data.translations.accommodation,
+      FOOD: data.translations.food,
+      TRANSPORT: data.translations.transport,
+      ACTIVITIES: data.translations.activities,
+    };
+
     Object.entries(budgetByCategory).forEach(([category, budgetAmount]) => {
       checkNewPage(8);
 
       const actualAmount = actualByCategory[category as keyof typeof actualByCategory];
-      const categoryLabel = category.charAt(0) + category.slice(1).toLowerCase();
+      const categoryName = budgetCategoryNames[category] || category.charAt(0) + category.slice(1).toLowerCase();
 
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(0, 0, 0);
-      doc.text(categoryLabel, 15, yPosition);
+      doc.text(categoryName, 15, yPosition);
 
       doc.text(`${data.currencySymbol}${budgetAmount.toFixed(0)}`, pageWidth / 2 - 10, yPosition, { align: 'right' });
 
@@ -408,11 +466,11 @@ export async function exportTripToPDF(data: PDFExportData) {
 
           doc.setFontSize(9);
           doc.setTextColor(0, 0, 0);
-          const emoji = categoryEmoji[item.category] || '';
+          const catTag = categoryLabel[item.category] || '';
 
-          // Line 1: Name + category emoji + cost
+          // Line 1: Name + category tag + cost
           doc.setFont('helvetica', 'bold');
-          const itemName = `${emoji} ${item.name}`;
+          const itemName = `${catTag} ${item.name}`;
           doc.text(itemName, 20, yPosition);
 
           const cost = (item.amount * item.visits) / 100;
@@ -497,8 +555,8 @@ export async function exportTripToPDF(data: PDFExportData) {
         doc.setTextColor(0, 0, 0);
         doc.text(day.date, colDate, yPosition);
 
-        // Weather icon + description
-        const weatherText = `${day.weatherIcon} ${day.weatherDescription}`;
+        // Weather description (skip emoji icon - jsPDF doesn't support Unicode)
+        const weatherText = translateWeather(day.weatherDescription);
         const truncWeather = weatherText.length > 30 ? weatherText.substring(0, 30) + '...' : weatherText;
         doc.text(truncWeather, colWeather, yPosition);
 

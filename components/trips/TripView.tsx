@@ -379,6 +379,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         days: days.length,
         tripStyle: tripStyleLabels[tripStyle],
         currencySymbol: city.currencySymbol,
+        locale,
         costs,
         dailyPlans: days,
         tripTotal,
@@ -427,6 +428,12 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
           pdfOf: tTrips('pdfOf'),
           pdfTripStats: tTrips('pdfTripStats'),
           pdfDaysPlanned: tTrips('pdfDaysPlanned'),
+          catAccommodation: tTrips('categories.ACCOMMODATION'),
+          catFood: tTrips('categories.FOOD'),
+          catTransport: tTrips('categories.TRANSPORT'),
+          catActivities: tTrips('categories.ACTIVITIES'),
+          catShopping: tTrips('categories.SHOPPING'),
+          catOther: tTrips('categories.OTHER'),
         },
       });
     } catch (error) {
