@@ -93,8 +93,22 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
   const [tripStyle, setTripStyle] = useState<TripStyle>(
     tripStyleMap[trip.tripStyle] || 'midRange'
   );
+  // Parse calculatorState: supports both array (legacy) and object { days, savedLocations } format
+  const parsedState = (() => {
+    const cs = trip.calculatorState as any;
+    if (Array.isArray(cs)) {
+      // Legacy format: calculatorState is just DayPlan[]
+      return { days: cs as DayPlan[], savedLocations: [] as SavedLocation[] };
+    }
+    // New format: { days: DayPlan[], savedLocations: SavedLocation[] }
+    return {
+      days: (cs?.days || []) as DayPlan[],
+      savedLocations: (cs?.savedLocations || []) as SavedLocation[],
+    };
+  })();
+
   const [activeDay, setActiveDay] = useState(1);
-  const [days, setDays] = useState<DayPlan[]>(trip.calculatorState as DayPlan[]);
+  const [days, setDays] = useState<DayPlan[]>(parsedState.days);
   const [animateTotal, setAnimateTotal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCustomizeCostsModal, setShowCustomizeCostsModal] = useState(false);
@@ -108,9 +122,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
   const [highlightedItemId, setHighlightedItemId] = useState<string | undefined>();
   const [pickingItemId, setPickingItemId] = useState<string | undefined>();
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
-  const [savedLocations, setSavedLocations] = useState<SavedLocation[]>(
-    (trip.calculatorState as any)?.savedLocations || []
-  );
+  const [savedLocations, setSavedLocations] = useState<SavedLocation[]>(parsedState.savedLocations);
   const [showSavedLocationsModal, setShowSavedLocationsModal] = useState(false);
 
   // Get city data
@@ -256,7 +268,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         luxury: 'LUXURY',
       } as const;
 
-      const calculatorState = Object.assign(days, { savedLocations });
+      const calculatorState = { days, savedLocations };
 
       const response = await fetch(`/api/trips/${trip.id}`, {
         method: 'PUT',
@@ -297,8 +309,8 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         luxury: 'LUXURY',
       } as const;
 
-      // Include savedLocations in calculatorState so they persist
-      const calculatorState = Object.assign(days, { savedLocations });
+      // Store as object { days, savedLocations } so both persist in JSON
+      const calculatorState = { days, savedLocations };
 
       const response = await fetch(`/api/trips/${trip.id}`, {
         method: 'PUT',

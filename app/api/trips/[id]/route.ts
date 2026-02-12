@@ -125,10 +125,12 @@ export async function PUT(
       });
 
       // Re-create from calculatorState
-      const calculatorState = validated.calculatorState as any[];
+      // Support both array (legacy) and object { days, savedLocations } format
+      const cs = validated.calculatorState as any;
+      const daysArray: any[] = Array.isArray(cs) ? cs : (cs?.days || []);
       const customItemsToCreate: any[] = [];
 
-      calculatorState.forEach((day: any) => {
+      daysArray.forEach((day: any) => {
         if (day.customItems && Array.isArray(day.customItems)) {
           day.customItems.forEach((item: any) => {
             customItemsToCreate.push({

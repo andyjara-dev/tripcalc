@@ -41,7 +41,9 @@ export default function PublicTripView({ trip, locale }: PublicTripViewProps) {
   } as const;
 
   const tripStyle: TripStyle = tripStyleMap[trip.tripStyle] || 'midRange';
-  const days: DayPlan[] = trip.calculatorState as DayPlan[];
+  // Support both array (legacy) and object { days, savedLocations } format
+  const cs = trip.calculatorState as any;
+  const days: DayPlan[] = Array.isArray(cs) ? cs : (cs?.days || []);
 
   const city = getCityById(trip.cityId);
   if (!city) {
