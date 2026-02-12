@@ -131,7 +131,7 @@ export default function SavedLocationForm({
           htmlFor="location-icon"
           className="block text-sm font-medium text-gray-700 mb-1"
         >
-          Icon (optional)
+          {t('iconOptional')}
         </label>
         <input
           id="location-icon"
@@ -143,7 +143,7 @@ export default function SavedLocationForm({
           maxLength={4}
         />
         <p className="text-xs text-gray-500 mt-1">
-          Leave empty to use default category icon
+          {t('iconHint')}
         </p>
       </div>
 
@@ -153,7 +153,7 @@ export default function SavedLocationForm({
           htmlFor="location-notes"
           className="block text-sm font-medium text-gray-700 mb-1"
         >
-          {t('notes')} (optional)
+          {t('notes')} ({t('optional')})
         </label>
         <textarea
           id="location-notes"
@@ -176,7 +176,7 @@ export default function SavedLocationForm({
           className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
         />
         <label htmlFor="is-primary" className="text-sm text-gray-700">
-          {t('makePrimary')} (auto-fill check-in/check-out on all days)
+          {t('makePrimary')} ({t('makePrimaryHint')})
         </label>
       </div>
 
@@ -194,7 +194,7 @@ export default function SavedLocationForm({
           disabled={!isValid || isSubmitting}
           className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
         >
-          {isSubmitting ? 'Saving...' : initialData ? 'Update' : 'Add'}
+          {isSubmitting ? t('saving') : initialData ? t('update') : t('add')}
         </button>
       </div>
     </form>
