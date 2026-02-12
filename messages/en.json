@@ -489,7 +489,8 @@
     "pdfWarnings": "Warnings",
     "pdfOf": "of",
     "pdfTripStats": "Trip Statistics",
-    "pdfDaysPlanned": "Days Planned"
+    "pdfDaysPlanned": "Days Planned",
+    "manageSavedLocations": "Saved Locations"
   },
   "footer": {
     "tagline": "Real travel costs, no surprises",

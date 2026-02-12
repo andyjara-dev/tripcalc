@@ -512,7 +512,8 @@
     "pdfWarnings": "Advertencias",
     "pdfOf": "de",
     "pdfTripStats": "Estadísticas del Viaje",
-    "pdfDaysPlanned": "Días Planificados"
+    "pdfDaysPlanned": "Días Planificados",
+    "manageSavedLocations": "Ubicaciones Guardadas"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",

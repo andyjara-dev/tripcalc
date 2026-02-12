@@ -45,7 +45,8 @@
       "Bash(npm run:*)",
       "Bash(xargs:*)",
       "Bash(./scripts/deploy.sh:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(git diff:*)"
     ]
   }
 }

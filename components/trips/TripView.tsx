@@ -19,6 +19,8 @@ import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { WeatherCard } from './WeatherCard';
 import MapPanel from '../itinerary/MapPanel';
+import SavedLocationsModal from '../itinerary/SavedLocationsModal';
+import type { SavedLocation } from '@/lib/types/saved-location';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -106,6 +108,10 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
   const [highlightedItemId, setHighlightedItemId] = useState<string | undefined>();
   const [pickingItemId, setPickingItemId] = useState<string | undefined>();
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
+  const [savedLocations, setSavedLocations] = useState<SavedLocation[]>(
+    (trip.calculatorState as any)?.savedLocations || []
+  );
+  const [showSavedLocationsModal, setShowSavedLocationsModal] = useState(false);
 
   // Get city data
   const city = getCityById(trip.cityId);
@@ -250,6 +256,8 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         luxury: 'LUXURY',
       } as const;
 
+      const calculatorState = Object.assign(days, { savedLocations });
+
       const response = await fetch(`/api/trips/${trip.id}`, {
         method: 'PUT',
         headers: {
@@ -261,7 +269,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
           endDate: data.endDate || null,
           days: days.length,
           tripStyle: tripStyleMapReverse[tripStyle],
-          calculatorState: days,
+          calculatorState,
         }),
       });
 
@@ -289,6 +297,9 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         luxury: 'LUXURY',
       } as const;
 
+      // Include savedLocations in calculatorState so they persist
+      const calculatorState = Object.assign(days, { savedLocations });
+
       const response = await fetch(`/api/trips/${trip.id}`, {
         method: 'PUT',
         headers: {
@@ -297,7 +308,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         body: JSON.stringify({
           days: days.length,
           tripStyle: tripStyleMapReverse[tripStyle],
-          calculatorState: days,
+          calculatorState,
         }),
       });
 
@@ -476,6 +487,15 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
       setIsExportingCalendar(false);
     }
   };
+
+  // Saved locations handler (premium)
+  const handleSaveLocations = useCallback(
+    (newLocations: SavedLocation[], updatedDays: DayItinerary[]) => {
+      setSavedLocations(newLocations);
+      setDays(updatedDays as DayPlan[]);
+    },
+    []
+  );
 
   // Map interaction handlers (premium)
   const handleMarkerClick = useCallback((itemId: string) => {
@@ -730,7 +750,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
                   currencySymbol={city.currencySymbol}
                   isPremium={isPremium}
                   totalDays={days.length}
-                  savedLocations={[]}
+                  savedLocations={savedLocations}
                   cityBounds={{
                     north: city.latitude + 0.1,
                     south: city.latitude - 0.1,
@@ -751,6 +771,20 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
                 <div id="itinerary-map">
                   {isPremium ? (
                     <>
+                      {/* Manage Saved Locations */}
+                      <button
+                        onClick={() => setShowSavedLocationsModal(true)}
+                        className="w-full mb-3 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
+                      >
+                        <span>📍</span>
+                        <span>{tTrips('manageSavedLocations')}</span>
+                        {savedLocations.length > 0 && (
+                          <span className="text-xs px-2 py-0.5 bg-blue-200 text-blue-800 rounded-full font-medium">
+                            {savedLocations.length}
+                          </span>
+                        )}
+                      </button>
+
                       {pickingItemId && (
                         <div className="mb-3 p-3 bg-blue-600 text-white rounded-lg shadow-lg animate-pulse text-sm">
                           <div className="flex items-center justify-between">
@@ -905,6 +939,23 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
         initialIsPublic={trip.isPublic}
         initialShareToken={trip.shareToken}
       />
+
+      {/* Saved Locations Modal (Premium) */}
+      {isPremium && (
+        <SavedLocationsModal
+          isOpen={showSavedLocationsModal}
+          onClose={() => setShowSavedLocationsModal(false)}
+          savedLocations={savedLocations}
+          days={days as DayItinerary[]}
+          cityBounds={{
+            north: city.latitude + 0.1,
+            south: city.latitude - 0.1,
+            east: city.longitude + 0.1,
+            west: city.longitude - 0.1,
+          }}
+          onSave={handleSaveLocations}
+        />
+      )}
     </div>
   );
 }
