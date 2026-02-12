@@ -75,7 +75,26 @@ export default async function TripDetailPage({ params }: PageProps) {
       {/* Main Content */}
       <div className="pt-24 pb-12">
         <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-          <TripView trip={trip} isPremium={isPremiumUser} />
+          <TripView
+            trip={trip}
+            isPremium={isPremiumUser}
+            packingLists={isPremiumUser ? trip.packingLists.map(list => ({
+              name: list.name || undefined,
+              luggageType: list.luggageType,
+              weightLimit: list.weightLimit,
+              totalWeight: list.totalWeight,
+              items: (list.items as any[]).map((item: any) => ({
+                category: item.category || 'Other',
+                name: item.name || '',
+                quantity: item.quantity || 1,
+                weightPerItem: item.weightPerItem || 0,
+                totalWeight: item.totalWeight || 0,
+                essential: item.essential || false,
+              })),
+              tips: (list.tips as string[]) || [],
+              warnings: (list.warnings as string[]) || [],
+            })) : undefined}
+          />
 
           {/* Packing Lists Section (Premium only) */}
           {isPremiumUser && (

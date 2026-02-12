@@ -34,6 +34,23 @@ import { downloadICalendar } from '@/lib/utils/ical-export';
 // Import city data to get costs
 import { getCityById } from '@/data/cities';
 
+interface PackingListProp {
+  name?: string;
+  luggageType: string;
+  weightLimit: number;
+  totalWeight: number;
+  items: Array<{
+    category: string;
+    name: string;
+    quantity: number;
+    weightPerItem: number;
+    totalWeight: number;
+    essential: boolean;
+  }>;
+  tips: string[];
+  warnings: string[];
+}
+
 interface TripViewProps {
   trip: {
     id: string;
@@ -55,9 +72,10 @@ interface TripViewProps {
     updatedAt: Date;
   };
   isPremium?: boolean;
+  packingLists?: PackingListProp[];
 }
 
-export default function TripView({ trip, isPremium = false }: TripViewProps) {
+export default function TripView({ trip, isPremium = false, packingLists }: TripViewProps) {
   const t = useTranslations('calculator');
   const tTrips = useTranslations('trips');
   const locale = useLocale();
@@ -327,6 +345,26 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
         console.error('Error loading logo:', error);
       }
 
+      // Fetch weather data for premium PDF
+      let weatherData: { days: Array<{ date: string; tempMin: number; tempMax: number; weatherIcon: string; weatherDescription: string; precipitationProb: number }> } | undefined;
+      if (isPremium && trip.startDate && trip.endDate) {
+        try {
+          const startDateISO = new Date(trip.startDate).toISOString().split('T')[0];
+          const endDateISO = new Date(trip.endDate).toISOString().split('T')[0];
+          const weatherResponse = await fetch(
+            `/api/weather?cityId=${trip.cityId}&startDate=${startDateISO}&endDate=${endDateISO}`
+          );
+          if (weatherResponse.ok) {
+            const weatherResult = await weatherResponse.json();
+            if (weatherResult.days) {
+              weatherData = { days: weatherResult.days };
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching weather for PDF:', error);
+        }
+      }
+
       const tripStyleLabels = {
         budget: t('budget'),
         midRange: t('midRange'),
@@ -346,6 +384,9 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
         tripTotal,
         expenses,
         logoDataUrl,
+        isPremium,
+        weatherData,
+        packingLists: isPremium ? packingLists : undefined,
         translations: {
           tripDetails: tTrips('tripDetails'),
           city: tTrips('city'),
@@ -367,6 +408,25 @@ export default function TripView({ trip, isPremium = false }: TripViewProps) {
           budgeted: tTrips('budgeted'),
           actual: tTrips('actual'),
           generatedBy: tTrips('generatedBy'),
+          pdfItinerary: tTrips('pdfItinerary'),
+          pdfWeather: tTrips('pdfWeather'),
+          pdfPackingList: tTrips('pdfPackingList'),
+          pdfWeight: tTrips('pdfWeight'),
+          pdfEssential: tTrips('pdfEssential'),
+          pdfItems: tTrips('pdfItems'),
+          pdfTime: tTrips('pdfTime'),
+          pdfLocation: tTrips('pdfLocation'),
+          pdfNotes: tTrips('pdfNotes'),
+          pdfPremium: tTrips('pdfPremium'),
+          pdfActivitiesPlanned: tTrips('pdfActivitiesPlanned'),
+          pdfExpensesTracked: tTrips('pdfExpensesTracked'),
+          pdfTemperature: tTrips('pdfTemperature'),
+          pdfPrecipitation: tTrips('pdfPrecipitation'),
+          pdfTips: tTrips('pdfTips'),
+          pdfWarnings: tTrips('pdfWarnings'),
+          pdfOf: tTrips('pdfOf'),
+          pdfTripStats: tTrips('pdfTripStats'),
+          pdfDaysPlanned: tTrips('pdfDaysPlanned'),
         },
       });
     } catch (error) {

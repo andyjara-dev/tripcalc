@@ -470,7 +470,26 @@
       "createFirst": "Create First Packing List"
     },
     "planningView": "Planning",
-    "itineraryView": "Itinerary"
+    "itineraryView": "Itinerary",
+    "pdfItinerary": "Daily Itinerary",
+    "pdfWeather": "Weather Forecast",
+    "pdfPackingList": "Packing List",
+    "pdfWeight": "Weight",
+    "pdfEssential": "Essential",
+    "pdfItems": "items",
+    "pdfTime": "Time",
+    "pdfLocation": "Location",
+    "pdfNotes": "Notes",
+    "pdfPremium": "PREMIUM",
+    "pdfActivitiesPlanned": "Activities Planned",
+    "pdfExpensesTracked": "Expenses Tracked",
+    "pdfTemperature": "Temperature",
+    "pdfPrecipitation": "Rain %",
+    "pdfTips": "Tips",
+    "pdfWarnings": "Warnings",
+    "pdfOf": "of",
+    "pdfTripStats": "Trip Statistics",
+    "pdfDaysPlanned": "Days Planned"
   },
   "footer": {
     "tagline": "Real travel costs, no surprises",

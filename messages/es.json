@@ -493,7 +493,26 @@
       "createFirst": "Crear Primera Lista de Equipaje"
     },
     "planningView": "Planificación",
-    "itineraryView": "Itinerario"
+    "itineraryView": "Itinerario",
+    "pdfItinerary": "Itinerario Diario",
+    "pdfWeather": "Pronóstico del Clima",
+    "pdfPackingList": "Lista de Equipaje",
+    "pdfWeight": "Peso",
+    "pdfEssential": "Esencial",
+    "pdfItems": "items",
+    "pdfTime": "Hora",
+    "pdfLocation": "Ubicación",
+    "pdfNotes": "Notas",
+    "pdfPremium": "PREMIUM",
+    "pdfActivitiesPlanned": "Actividades Planificadas",
+    "pdfExpensesTracked": "Gastos Registrados",
+    "pdfTemperature": "Temperatura",
+    "pdfPrecipitation": "Lluvia %",
+    "pdfTips": "Consejos",
+    "pdfWarnings": "Advertencias",
+    "pdfOf": "de",
+    "pdfTripStats": "Estadísticas del Viaje",
+    "pdfDaysPlanned": "Días Planificados"
   },
   "footer": {
     "tagline": "Costos reales de viaje, sin sorpresas",
