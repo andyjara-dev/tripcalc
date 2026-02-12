@@ -58,19 +58,45 @@ export default async function HomePage({
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {['dailyCost', 'transport', 'airport', 'tips', 'cash', 'budget'].map((feature) => (
-              <div
-                key={feature}
-                className="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-all border border-gray-100"
-              >
-                <h3 className="text-xl font-semibold mb-4 text-gray-900">
-                  {t(`home.features.${feature}.title`)}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {t(`home.features.${feature}.description`)}
-                </p>
-              </div>
-            ))}
+            {([
+              { key: 'dailyCost', href: `/${locale}/cities` },
+              { key: 'transport', href: `/${locale}/cities` },
+              { key: 'weather', href: `/${locale}/cities` },
+              { key: 'itinerary', href: `/${locale}/cities` },
+              { key: 'luggage', href: `/${locale}/calculators/luggage` },
+              { key: 'expenses', href: `/${locale}/cities` },
+            ] as const).map(({ key, href }) => {
+              const isPro = t(`home.features.${key}.tag`) === 'PRO';
+              return (
+                <Link
+                  key={key}
+                  href={href}
+                  className={`block p-8 rounded-xl hover:shadow-lg transition-all border ${
+                    isPro
+                      ? 'bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200 hover:border-amber-300'
+                      : 'bg-gray-50 border-gray-100'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {t(`home.features.${key}.title`)}
+                    </h3>
+                    {isPro ? (
+                      <span className="px-2.5 py-0.5 text-xs font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full uppercase tracking-wide">
+                        PRO
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 rounded-full">
+                        {t(`home.features.${key}.tag`)}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    {t(`home.features.${key}.description`)}
+                  </p>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>

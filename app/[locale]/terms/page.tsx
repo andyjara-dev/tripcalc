@@ -69,7 +69,7 @@ export default async function TermsPage({ params }: PageProps) {
               <p className="text-gray-700">{t('section1.p3')}</p>
             </section>
 
-            {/* Section 2 */}
+            {/* Section 2 - Use of Data */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section2.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section2.p1')}</p>
@@ -79,10 +79,11 @@ export default async function TermsPage({ params }: PageProps) {
                 <li>{t('section2.list.item3')}</li>
                 <li>{t('section2.list.item4')}</li>
               </ul>
-              <p className="text-gray-700">{t('section2.p2')}</p>
+              <p className="text-gray-700 mb-3">{t('section2.p2')}</p>
+              <p className="text-gray-700">{t('section2.p3')}</p>
             </section>
 
-            {/* Section 3 */}
+            {/* Section 3 - Price & Weather Disclaimer */}
             <section className="mb-8 bg-yellow-50 border-l-4 border-yellow-600 p-6 rounded">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section3.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section3.p1')}</p>
@@ -92,11 +93,12 @@ export default async function TermsPage({ params }: PageProps) {
                 <li>{t('section3.list.item3')}</li>
                 <li>{t('section3.list.item4')}</li>
               </ul>
-              <p className="text-gray-700 font-semibold">{t('section3.p2')}</p>
+              <p className="text-gray-700 font-semibold mb-3">{t('section3.p2')}</p>
+              <p className="text-gray-700">{t('section3.p3')}</p>
             </section>
 
-            {/* Section 4 */}
-            <section className="mb-8">
+            {/* Section 4 - Premium & Subscriptions */}
+            <section className="mb-8 bg-amber-50 border-l-4 border-amber-500 p-6 rounded">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section4.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section4.p1')}</p>
               <p className="text-gray-700 mb-3">{t('section4.p2')}</p>
@@ -106,72 +108,87 @@ export default async function TermsPage({ params }: PageProps) {
                 <li>{t('section4.list.item3')}</li>
                 <li>{t('section4.list.item4')}</li>
               </ul>
-              <p className="text-gray-700 font-semibold">{t('section4.p3')}</p>
+              <p className="text-gray-700">{t('section4.p3')}</p>
             </section>
 
-            {/* Section 5 */}
+            {/* Section 5 - Limitation of Liability */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section5.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section5.p1')}</p>
+              <p className="text-gray-700 mb-3">{t('section5.p2')}</p>
               <ul className="list-disc pl-6 mb-3 text-gray-700 space-y-2">
                 <li>{t('section5.list.item1')}</li>
                 <li>{t('section5.list.item2')}</li>
                 <li>{t('section5.list.item3')}</li>
+                <li>{t('section5.list.item4')}</li>
               </ul>
-              <p className="text-gray-700">{t('section5.p2')}</p>
+              <p className="text-gray-700 font-semibold">{t('section5.p3')}</p>
             </section>
 
-            {/* Section 6 */}
+            {/* Section 6 - User-Generated Content */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section6.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section6.p1')}</p>
-              <ul className="list-disc pl-6 text-gray-700 space-y-2">
+              <ul className="list-disc pl-6 mb-3 text-gray-700 space-y-2">
                 <li>{t('section6.list.item1')}</li>
                 <li>{t('section6.list.item2')}</li>
                 <li>{t('section6.list.item3')}</li>
-                <li>{t('section6.list.item4')}</li>
               </ul>
+              <p className="text-gray-700">{t('section6.p2')}</p>
             </section>
 
-            {/* Section 7 */}
+            {/* Section 7 - Acceptable Use */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section7.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section7.p1')}</p>
-              <p className="text-gray-700">{t('section7.p2')}</p>
+              <ul className="list-disc pl-6 text-gray-700 space-y-2">
+                <li>{t('section7.list.item1')}</li>
+                <li>{t('section7.list.item2')}</li>
+                <li>{t('section7.list.item3')}</li>
+                <li>{t('section7.list.item4')}</li>
+              </ul>
             </section>
 
-            {/* Section 8 */}
+            {/* Section 8 - Intellectual Property */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section8.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section8.p1')}</p>
-              <p className="text-gray-700">{t('section8.p2')}</p>
+              <p className="text-gray-700 mb-3">{t('section8.p2')}</p>
+              <p className="text-gray-700">{t('section8.p3')}</p>
             </section>
 
-            {/* Section 9 */}
+            {/* Section 9 - Account Termination */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section9.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section9.p1')}</p>
-              <p className="text-gray-700 mb-3">{t('section9.p2')}</p>
-              <p className="text-gray-700">{t('section9.p3')}</p>
+              <p className="text-gray-700">{t('section9.p2')}</p>
             </section>
 
-            {/* Section 10 */}
-            <section className="mb-8 bg-green-50 border-l-4 border-green-600 p-6 rounded">
+            {/* Section 10 - Changes to Terms */}
+            <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section10.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section10.p1')}</p>
-              <p className="text-lg font-semibold text-blue-600 mb-3">
-                <a href="mailto:hello@tripcalc.site" className="hover:underline">
-                  {t('section10.email')}
-                </a>
-              </p>
-              <p className="text-gray-700">{t('section10.p2')}</p>
+              <p className="text-gray-700 mb-3">{t('section10.p2')}</p>
+              <p className="text-gray-700">{t('section10.p3')}</p>
             </section>
 
-            {/* Section 11 */}
-            <section className="mb-8">
+            {/* Section 11 - Contact */}
+            <section className="mb-8 bg-green-50 border-l-4 border-green-600 p-6 rounded">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section11.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section11.p1')}</p>
+              <p className="text-lg font-semibold text-blue-600 mb-3">
+                <a href="mailto:hello@tripcalc.site" className="hover:underline">
+                  {t('section11.email')}
+                </a>
+              </p>
               <p className="text-gray-700">{t('section11.p2')}</p>
+            </section>
+
+            {/* Section 12 - Governing Law */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section12.title')}</h2>
+              <p className="text-gray-700 mb-3">{t('section12.p1')}</p>
+              <p className="text-gray-700">{t('section12.p2')}</p>
             </section>
 
             {/* Acceptance */}

@@ -61,18 +61,24 @@ export default async function PrivacyPage({ params }: PageProps) {
 
           {/* Content */}
           <div className="prose prose-lg max-w-none">
-            {/* Section 1 */}
+            {/* Section 1 - Information We Collect */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section1.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section1.p1')}</p>
-              <ul className="list-disc pl-6 text-gray-700 space-y-2">
+              <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
                 <li>{t('section1.list.item1')}</li>
                 <li>{t('section1.list.item2')}</li>
                 <li>{t('section1.list.item3')}</li>
               </ul>
+              <p className="text-gray-700 mb-3">{t('section1.p2')}</p>
+              <ul className="list-disc pl-6 text-gray-700 space-y-2">
+                <li>{t('section1.list2.item1')}</li>
+                <li>{t('section1.list2.item2')}</li>
+                <li>{t('section1.list2.item3')}</li>
+              </ul>
             </section>
 
-            {/* Section 2 */}
+            {/* Section 2 - How We Use Your Information */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section2.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section2.p1')}</p>
@@ -81,26 +87,33 @@ export default async function PrivacyPage({ params }: PageProps) {
                 <li>{t('section2.list.item2')}</li>
                 <li>{t('section2.list.item3')}</li>
                 <li>{t('section2.list.item4')}</li>
+                <li>{t('section2.list.item5')}</li>
               </ul>
             </section>
 
-            {/* Section 3 */}
+            {/* Section 3 - Data Sharing & Third-Party Services */}
             <section className="mb-8 bg-green-50 border-l-4 border-green-600 p-6 rounded">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section3.title')}</h2>
               <p className="text-gray-700 mb-3 font-semibold">{t('section3.p1')}</p>
               <p className="text-gray-700 mb-3">{t('section3.p2')}</p>
+              <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+                <li>{t('section3.list.item1')}</li>
+                <li>{t('section3.list.item2')}</li>
+                <li>{t('section3.list.item3')}</li>
+              </ul>
               <p className="text-gray-700">{t('section3.p3')}</p>
             </section>
 
-            {/* Section 4 */}
+            {/* Section 4 - Data Security */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section4.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section4.p1')}</p>
               <p className="text-gray-700 mb-3">{t('section4.p2')}</p>
-              <p className="text-gray-700">{t('section4.p3')}</p>
+              <p className="text-gray-700 mb-3">{t('section4.p3')}</p>
+              <p className="text-gray-700">{t('section4.p4')}</p>
             </section>
 
-            {/* Section 5 */}
+            {/* Section 5 - GDPR */}
             <section className="mb-8 bg-purple-50 border-l-4 border-purple-600 p-6 rounded">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section5.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section5.p1')}</p>
@@ -113,15 +126,16 @@ export default async function PrivacyPage({ params }: PageProps) {
               </ul>
             </section>
 
-            {/* Section 6 */}
+            {/* Section 6 - Cookies, Sessions & Analytics */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section6.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section6.p1')}</p>
               <p className="text-gray-700 mb-3">{t('section6.p2')}</p>
-              <p className="text-gray-700">{t('section6.p3')}</p>
+              <p className="text-gray-700 mb-3">{t('section6.p3')}</p>
+              <p className="text-gray-700">{t('section6.p4')}</p>
             </section>
 
-            {/* Section 7 */}
+            {/* Section 7 - Data Retention */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section7.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section7.p1')}</p>
@@ -129,27 +143,34 @@ export default async function PrivacyPage({ params }: PageProps) {
               <p className="text-gray-700">{t('section7.p3')}</p>
             </section>
 
-            {/* Section 8 */}
+            {/* Section 8 - Premium Features & Subscriptions */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section8.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section8.p1')}</p>
               <p className="text-gray-700">{t('section8.p2')}</p>
             </section>
 
-            {/* Section 9 */}
+            {/* Section 9 - Children's Privacy */}
             <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section9.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section9.p1')}</p>
               <p className="text-gray-700">{t('section9.p2')}</p>
             </section>
 
-            {/* Section 10 */}
-            <section className="mb-8 bg-green-50 border-l-4 border-green-600 p-6 rounded">
+            {/* Section 10 - Changes */}
+            <section className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section10.title')}</h2>
               <p className="text-gray-700 mb-3">{t('section10.p1')}</p>
+              <p className="text-gray-700">{t('section10.p2')}</p>
+            </section>
+
+            {/* Section 11 - Contact */}
+            <section className="mb-8 bg-green-50 border-l-4 border-green-600 p-6 rounded">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{t('section11.title')}</h2>
+              <p className="text-gray-700 mb-3">{t('section11.p1')}</p>
               <p className="text-lg font-semibold text-blue-600">
                 <a href="mailto:hello@tripcalc.site" className="hover:underline">
-                  {t('section10.email')}
+                  {t('section11.email')}
                 </a>
               </p>
             </section>

@@ -18,28 +18,34 @@
     },
     "features": {
       "dailyCost": {
-        "title": "Real Daily Costs",
-        "description": "Estimate actual expenses per day based on real traveler experience"
+        "title": "Daily Cost Calculator",
+        "description": "Estimate real expenses per day for accommodation, food, transport, and activities based on actual traveler experience.",
+        "tag": "Free"
       },
       "transport": {
         "title": "Transport Comparison",
-        "description": "Compare real prices for metro, taxi, Uber, and more"
+        "description": "Compare real prices for metro, taxi, Uber, and airport transfers side by side.",
+        "tag": "Free"
       },
-      "airport": {
-        "title": "Airport Transfers",
-        "description": "Calculate the best way to get from airport to city"
+      "weather": {
+        "title": "Weather Forecasts & Alerts",
+        "description": "16-day forecasts with 3-level extreme weather alerts so you can pack and plan accordingly.",
+        "tag": "Free"
       },
-      "tips": {
-        "title": "Hidden Costs",
-        "description": "Understand tips, fees, and costs most sites won't tell you"
+      "itinerary": {
+        "title": "Itinerary Planner",
+        "description": "Plan your trip day by day with timeline view, interactive maps, route calculations, and saved locations.",
+        "tag": "PRO"
       },
-      "cash": {
-        "title": "Cash Planning",
-        "description": "Know exactly how much cash to carry and where to use cards"
+      "luggage": {
+        "title": "Smart Luggage Calculator",
+        "description": "AI-powered packing lists optimized for your weight limit, trip type, and climate.",
+        "tag": "PRO"
       },
-      "budget": {
-        "title": "Smart Budgeting",
-        "description": "Make informed decisions before and during your trip"
+      "expenses": {
+        "title": "Expense Tracking",
+        "description": "Track your actual spending vs. budget in real time and stay on top of your travel costs.",
+        "tag": "Free"
       }
     }
   },
@@ -184,31 +190,43 @@
       "title": "Built from Real Experience",
       "description": "TripCalc is not a generic travel blog. It's built using:",
       "points": {
-        "1": "First-hand travel experience",
-        "2": "Local knowledge from residents",
+        "1": "First-hand travel experience across 6 cities with detailed cost data",
+        "2": "Local knowledge from residents and verified sources",
         "3": "Real-world testing of transport, ATMs, SIMs, and daily expenses",
-        "4": "Data collected and refined over time"
+        "4": "Weather data powered by 80+ years of historical records",
+        "5": "Data collected, verified, and refined over time"
       }
     },
     "whatYouCanDo": {
       "title": "What You Can Do with TripCalc",
       "points": {
-        "1": "Estimate the real daily cost of a trip",
-        "2": "Compare transportation options with real prices",
-        "3": "Calculate airport-to-city transfers",
-        "4": "Understand tips, fees, and hidden costs",
-        "5": "Plan cash vs card usage",
-        "6": "Make smarter budgeting decisions before and during a trip"
+        "1": "Estimate the real daily cost of a trip with budget, mid-range, and luxury breakdowns",
+        "2": "Compare transportation options with real prices (metro, taxi, Uber, airport transfers)",
+        "3": "Check weather forecasts with extreme condition alerts for your travel dates",
+        "4": "Create day-by-day itineraries with timeline, interactive maps, and route calculations",
+        "5": "Generate AI-powered packing lists optimized for your weight limit and climate",
+        "6": "Track actual expenses vs. budget during your trip",
+        "7": "Share trip plans and export as PDF or calendar",
+        "8": "Understand tips, fees, and hidden costs that most sites won't tell you"
+      }
+    },
+    "premium": {
+      "title": "Premium Features",
+      "description": "TripCalc offers powerful free tools for every traveler. Premium users unlock advanced planning features:",
+      "points": {
+        "1": "Day-by-Day Itinerary Planner with timeline view, interactive maps, and route calculations",
+        "2": "Smart Luggage Calculator with AI-powered packing suggestions and airline presets",
+        "3": "All premium features included with a single subscription"
       }
     },
     "community": {
       "title": "Growing with the Community",
-      "description": "TripCalc is designed to grow gradually:",
+      "description": "TripCalc is actively growing with new features and data:",
       "points": {
-        "1": "Starting with a few cities and core calculators",
-        "2": "Expanding with better data over time",
-        "3": "Eventually incorporating community-submitted insights",
-        "4": "Always prioritizing accuracy over hype"
+        "1": "6 cities with full cost data — Barcelona, Tokyo, New York, London, Paris, Mexico City",
+        "2": "3 calculators — Daily Cost, Transport Comparison, and Luggage Planner",
+        "3": "Weather integration, expense tracking, trip sharing, and PDF export",
+        "4": "More cities and features added regularly, always prioritizing accuracy over hype"
       }
     },
     "finalMessage": "TripCalc helps you plan with confidence by turning travel into numbers you can actually use."
@@ -480,17 +498,18 @@
     },
     "section2": {
       "title": "2. Use of Your Data",
-      "p1": "Trip data (budgets, expenses, custom items) is used to:",
+      "p1": "Trip data (budgets, expenses, itineraries, packing lists, custom items) is used to:",
       "list": {
-        "item1": "Provide calculator functionality and trip planning features",
+        "item1": "Provide calculator functionality, trip planning, and weather forecast features",
         "item2": "Generate anonymous statistics to help future travelers",
         "item3": "Improve price accuracy through data normalization",
         "item4": "Identify popular activities and destinations"
       },
-      "p2": "All aggregated data is anonymized and cannot be traced back to individual users."
+      "p2": "All aggregated data is anonymized and cannot be traced back to individual users.",
+      "p3": "We collect analytics data (pageviews, events, session duration, anonymized geolocation) to improve the service. IP addresses are hashed before storage."
     },
     "section3": {
-      "title": "3. Price Accuracy Disclaimer",
+      "title": "3. Price & Weather Data Disclaimer",
       "p1": "While we strive for accuracy, travel costs displayed on TripCalc:",
       "list": {
         "item1": "May contain errors or be outdated",
@@ -498,22 +517,35 @@
         "item3": "Are based on personal experience and user-submitted data",
         "item4": "Should be verified before making travel decisions"
       },
-      "p2": "Prices are estimates and guidelines, not guarantees."
+      "p2": "Prices are estimates and guidelines, not guarantees.",
+      "p3": "Weather forecasts are provided by Open-Meteo (a third-party service) and are limited to 16-day forecasts. Weather data is for informational purposes only and should not replace official weather warnings."
     },
     "section4": {
-      "title": "4. Limitation of Liability",
+      "title": "4. Premium Features & Subscriptions",
+      "p1": "TripCalc offers premium features (Itinerary Planner, Smart Luggage Calculator) through a paid subscription.",
+      "p2": "Premium subscriptions:",
+      "list": {
+        "item1": "Are billed monthly at the displayed price",
+        "item2": "Can be cancelled at any time — access continues until the end of the billing period",
+        "item3": "May include a free trial period for new subscribers",
+        "item4": "Grant access to all current and future premium features during the subscription period"
+      },
+      "p3": "We reserve the right to change pricing with 30 days' notice to existing subscribers."
+    },
+    "section5": {
+      "title": "5. Limitation of Liability",
       "p1": "TripCalc provides travel cost information as a guide only.",
       "p2": "We are not responsible for:",
       "list": {
-        "item1": "Decisions made based on our data",
+        "item1": "Decisions made based on our data or weather forecasts",
         "item2": "Financial losses due to inaccurate information",
-        "item3": "Changes in prices or travel conditions",
+        "item3": "Changes in prices, weather, or travel conditions",
         "item4": "Issues arising from trip planning based on our tools"
       },
       "p3": "You are solely responsible for verifying all information and making your own travel decisions."
     },
-    "section5": {
-      "title": "5. User-Generated Content",
+    "section6": {
+      "title": "6. User-Generated Content",
       "p1": "By submitting custom items, expenses, or feedback, you grant TripCalc the right to:",
       "list": {
         "item1": "Use the data to improve the service",
@@ -522,8 +554,8 @@
       },
       "p2": "You retain ownership of your data and can delete it at any time."
     },
-    "section6": {
-      "title": "6. Acceptable Use",
+    "section7": {
+      "title": "7. Acceptable Use",
       "p1": "You agree not to:",
       "list": {
         "item1": "Scrape or automatically extract data from the site",
@@ -532,30 +564,31 @@
         "item4": "Use the service for any illegal purpose"
       }
     },
-    "section7": {
-      "title": "7. Intellectual Property",
-      "p1": "All content, design, code, and data on TripCalc is owned by TripCalc or its licensors.",
-      "p2": "You may not copy, modify, or distribute our content without permission."
-    },
     "section8": {
-      "title": "8. Account Termination",
+      "title": "8. Intellectual Property",
+      "p1": "All content, design, code, and data on TripCalc is owned by TripCalc or its licensors.",
+      "p2": "Some content may be generated or assisted by AI tools. Such content remains the property of TripCalc.",
+      "p3": "You may not copy, modify, or distribute our content without permission."
+    },
+    "section9": {
+      "title": "9. Account Termination",
       "p1": "You may delete your account at any time, which will remove all your personal data.",
       "p2": "We reserve the right to suspend or terminate accounts that violate these terms."
     },
-    "section9": {
-      "title": "9. Changes to Terms",
+    "section10": {
+      "title": "10. Changes to Terms",
       "p1": "We may update these terms from time to time.",
       "p2": "Continued use of the service after changes constitutes acceptance of the new terms.",
       "p3": "We will notify users of significant changes via email or site notification."
     },
-    "section10": {
-      "title": "10. Contact & Support",
+    "section11": {
+      "title": "11. Contact & Support",
       "p1": "For questions, errors, or feedback, contact us at:",
       "email": "hello@tripcalc.site",
       "p2": "We welcome your suggestions and will do our best to respond promptly."
     },
-    "section11": {
-      "title": "11. Governing Law",
+    "section12": {
+      "title": "12. Governing Law",
       "p1": "These terms are governed by the laws of Republic of Chile.",
       "p2": "Any disputes will be resolved in the courts of Republic of Chile."
     },
@@ -589,8 +622,14 @@
       "p1": "We collect information you provide directly:",
       "list": {
         "item1": "Email address (for authentication)",
-        "item2": "Trip data (budgets, expenses, custom items)",
-        "item3": "Usage data (pages visited, features used)"
+        "item2": "Trip data (budgets, expenses, custom items, itineraries, packing lists)",
+        "item3": "Usage data (pages visited, features used, time on page)"
+      },
+      "p2": "We also collect information automatically:",
+      "list2": {
+        "item1": "IP-based geolocation (country, city, region) — IP addresses are hashed and never stored in plain text",
+        "item2": "Session data (anonymous session ID, 30-day persistence)",
+        "item3": "Device and browser information for analytics"
       }
     },
     "section2": {
@@ -598,22 +637,29 @@
       "p1": "We use your information to:",
       "list": {
         "item1": "Provide and improve the service",
-        "item2": "Authenticate your account",
-        "item3": "Generate anonymous statistics",
-        "item4": "Respond to your questions and support requests"
+        "item2": "Authenticate your account and manage sessions",
+        "item3": "Generate anonymous usage statistics",
+        "item4": "Display weather forecasts for your trip destinations",
+        "item5": "Respond to your questions and support requests"
       }
     },
     "section3": {
-      "title": "3. Data Sharing",
+      "title": "3. Data Sharing & Third-Party Services",
       "p1": "We do not sell your personal data.",
-      "p2": "We may share anonymized, aggregated data with the community to help travelers.",
-      "p3": "We may share data with service providers (hosting, authentication) under strict confidentiality."
+      "p2": "We use the following third-party services:",
+      "list": {
+        "item1": "Open-Meteo — for weather forecast data (no personal data is shared, only city coordinates)",
+        "item2": "Supabase — for database hosting and authentication",
+        "item3": "Vercel — for application hosting"
+      },
+      "p3": "We may share anonymized, aggregated data with the community to help travelers."
     },
     "section4": {
       "title": "4. Data Security",
       "p1": "We use industry-standard security measures to protect your data.",
       "p2": "All connections are encrypted (HTTPS).",
-      "p3": "Passwords are hashed and never stored in plain text."
+      "p3": "Passwords are hashed and never stored in plain text.",
+      "p4": "IP addresses used for geolocation are hashed before storage (GDPR compliant)."
     },
     "section5": {
       "title": "5. Your Rights (GDPR)",
@@ -627,29 +673,35 @@
       }
     },
     "section6": {
-      "title": "6. Cookies & Analytics",
-      "p1": "We use essential cookies for authentication and session management.",
-      "p2": "We may use analytics tools (Google Analytics, Vercel Analytics) to understand usage patterns.",
-      "p3": "You can disable cookies in your browser settings."
+      "title": "6. Cookies, Sessions & Analytics",
+      "p1": "We use essential cookies for authentication and session management (30-day sessions).",
+      "p2": "We use our own analytics system to track pageviews, events, and time on page. No third-party analytics trackers are used.",
+      "p3": "Analytics data includes: pages visited, features used, session duration, and anonymized geolocation (country/city level).",
+      "p4": "You can disable cookies in your browser settings, though this may affect authentication."
     },
     "section7": {
       "title": "7. Data Retention",
       "p1": "We retain your data as long as your account is active.",
       "p2": "When you delete your account, your personal data is permanently removed.",
-      "p3": "Anonymized statistics may be retained indefinitely."
+      "p3": "Anonymized analytics and statistics may be retained indefinitely."
     },
     "section8": {
-      "title": "8. Children's Privacy",
+      "title": "8. Premium Features & Subscriptions",
+      "p1": "If you subscribe to premium features, we store your subscription status and access dates.",
+      "p2": "Payment processing is handled by third-party providers. We do not store credit card information."
+    },
+    "section9": {
+      "title": "9. Children's Privacy",
       "p1": "TripCalc is not intended for users under 13 years of age.",
       "p2": "We do not knowingly collect data from children."
     },
-    "section9": {
-      "title": "9. Changes to Privacy Policy",
+    "section10": {
+      "title": "10. Changes to Privacy Policy",
       "p1": "We may update this policy from time to time.",
       "p2": "We will notify you of significant changes."
     },
-    "section10": {
-      "title": "10. Contact",
+    "section11": {
+      "title": "11. Contact",
       "p1": "For privacy-related questions, contact us at:",
       "email": "hello@tripcalc.site"
     }

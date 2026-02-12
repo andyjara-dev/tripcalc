@@ -52,22 +52,12 @@ export default async function AboutPage({
                 {t('about.realExperience.description')}
               </p>
               <ul className="space-y-3 text-gray-700">
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.realExperience.points.1')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.realExperience.points.2')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.realExperience.points.3')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.realExperience.points.4')}</span>
-                </li>
+                {['1', '2', '3', '4', '5'].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-gray-400">•</span>
+                    <span>{t(`about.realExperience.points.${i}`)}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -76,30 +66,34 @@ export default async function AboutPage({
                 {t('about.whatYouCanDo.title')}
               </h2>
               <ul className="space-y-3 text-gray-700">
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.1')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.2')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.3')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.4')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.5')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.whatYouCanDo.points.6')}</span>
-                </li>
+                {['1', '2', '3', '4', '5', '6', '7', '8'].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-gray-400">•</span>
+                    <span>{t(`about.whatYouCanDo.points.${i}`)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200">
+              <div className="flex items-center gap-3 mb-4">
+                <h2 className="text-3xl font-semibold text-gray-900">
+                  {t('about.premium.title')}
+                </h2>
+                <span className="px-3 py-1 text-sm font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full uppercase tracking-wide">
+                  PRO
+                </span>
+              </div>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                {t('about.premium.description')}
+              </p>
+              <ul className="space-y-3 text-gray-700">
+                {['1', '2', '3'].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-amber-500">•</span>
+                    <span>{t(`about.premium.points.${i}`)}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -111,22 +105,12 @@ export default async function AboutPage({
                 {t('about.community.description')}
               </p>
               <ul className="space-y-3 text-gray-700">
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.community.points.1')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.community.points.2')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.community.points.3')}</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-gray-400">•</span>
-                  <span>{t('about.community.points.4')}</span>
-                </li>
+                {['1', '2', '3', '4'].map((i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="text-gray-400">•</span>
+                    <span>{t(`about.community.points.${i}`)}</span>
+                  </li>
+                ))}
               </ul>
             </div>
 
