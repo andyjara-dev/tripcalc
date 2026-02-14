@@ -28,7 +28,7 @@ interface MapPanelProps {
 
 function MapLoadingSkeleton() {
   return (
-    <div className="w-full h-[500px] bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
+    <div className="w-full h-[300px] sm:h-[400px] lg:h-[500px] bg-gray-100 rounded-lg animate-pulse flex items-center justify-center">
       <div className="text-gray-400 text-center">
         <div className="text-3xl mb-2">🗺️</div>
         <p className="text-sm">Loading map...</p>
@@ -132,14 +132,16 @@ export default function MapPanel({
             </div>
           ) : (
             <Suspense fallback={<MapLoadingSkeleton />}>
-              <LeafletMap
-                center={markers.length > 0 ? markers[0].position : cityCenter}
-                markers={markers}
-                height="500px"
-                onMarkerClick={onMarkerClick}
-                onMapClick={onMapClick}
-                clickable={pickingMode}
-              />
+              <div className="h-[300px] sm:h-[400px] lg:h-[500px]">
+                <LeafletMap
+                  center={markers.length > 0 ? markers[0].position : cityCenter}
+                  markers={markers}
+                  height="100%"
+                  onMarkerClick={onMarkerClick}
+                  onMapClick={onMapClick}
+                  clickable={pickingMode}
+                />
+              </div>
             </Suspense>
           )}
 

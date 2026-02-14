@@ -779,7 +779,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
               </div>
 
               {/* Right: Map + Budget Summary (1/3 width on desktop) */}
-              <div className="lg:sticky lg:top-4 lg:self-start space-y-4">
+              <div className="relative z-0 lg:sticky lg:top-4 lg:self-start space-y-4">
                 {/* Map Panel or Premium Teaser */}
                 <div id="itinerary-map">
                   {isPremium ? (

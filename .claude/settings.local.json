@@ -46,7 +46,8 @@
       "Bash(xargs:*)",
       "Bash(./scripts/deploy.sh:*)",
       "Bash(git log:*)",
-      "Bash(git diff:*)"
+      "Bash(git diff:*)",
+      "Bash(npx next build:*)"
     ]
   }
 }

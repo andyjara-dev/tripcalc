@@ -273,7 +273,7 @@ export default function ItineraryView({
         </div>
 
         {/* Right column: Map (sticky on desktop) */}
-        <div className="lg:sticky lg:top-4 lg:self-start" id="itinerary-map">
+        <div className="relative z-0 lg:sticky lg:top-4 lg:self-start" id="itinerary-map">
           {pickingItemId && (
             <div className="mb-3 p-4 bg-blue-600 text-white rounded-lg shadow-lg animate-pulse">
               <div className="flex items-center justify-between">

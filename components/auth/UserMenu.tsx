@@ -54,25 +54,20 @@ export function UserMenu() {
             {/* @ts-ignore - isAdmin is added to session in auth config */}
             {session.user.isAdmin && (
               <>
-                <div className="relative">
+                <div>
                   <button
-                    onMouseEnter={() => setAdminSubmenuOpen(true)}
-                    onMouseLeave={() => setAdminSubmenuOpen(false)}
+                    onClick={() => setAdminSubmenuOpen(!adminSubmenuOpen)}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 transition-colors text-blue-600 font-medium flex items-center justify-between"
                   >
                     <span>⚙️ {t('admin')}</span>
-                    <span className="text-gray-400">›</span>
+                    <span className={`text-gray-400 transition-transform ${adminSubmenuOpen ? 'rotate-90' : ''}`}>›</span>
                   </button>
 
                   {adminSubmenuOpen && (
-                    <div
-                      onMouseEnter={() => setAdminSubmenuOpen(true)}
-                      onMouseLeave={() => setAdminSubmenuOpen(false)}
-                      className="absolute left-full top-0 ml-1 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1"
-                    >
+                    <div className="bg-gray-50 py-1">
                       <Link
                         href={`/${locale}/admin/users`}
-                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        className="block px-8 py-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm"
                         onClick={() => {
                           setAdminSubmenuOpen(false)
                           setIsOpen(false)
@@ -82,7 +77,7 @@ export function UserMenu() {
                       </Link>
                       <Link
                         href={`/${locale}/admin/cities`}
-                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        className="block px-8 py-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm"
                         onClick={() => {
                           setAdminSubmenuOpen(false)
                           setIsOpen(false)
@@ -92,7 +87,7 @@ export function UserMenu() {
                       </Link>
                       <Link
                         href={`/${locale}/admin/analytics`}
-                        className="block px-4 py-2 hover:bg-gray-100 transition-colors text-gray-900"
+                        className="block px-8 py-2 hover:bg-gray-100 transition-colors text-gray-900 text-sm"
                         onClick={() => {
                           setAdminSubmenuOpen(false)
                           setIsOpen(false)
