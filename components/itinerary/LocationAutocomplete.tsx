@@ -30,11 +30,16 @@ export default function LocationAutocomplete({
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Track if location was set externally (map pick, saved location)
+  // to avoid re-geocoding on blur
+  const resolvedExternallyRef = useRef(!!value);
 
-  // Update input when value prop changes
+  // Update input when value prop changes (e.g. from map pick or saved location)
   useEffect(() => {
     if (value?.address && value.address !== inputValue) {
       setInputValue(value.address);
+      resolvedExternallyRef.current = true;
+      setError(null);
     }
   }, [value]);
 
@@ -98,6 +103,8 @@ export default function LocationAutocomplete({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setInputValue(newValue);
+    // User is typing manually, clear external resolution flag
+    resolvedExternallyRef.current = false;
 
     // Clear existing timer
     if (debounceTimerRef.current) {
@@ -116,7 +123,9 @@ export default function LocationAutocomplete({
       clearTimeout(debounceTimerRef.current);
     }
 
-    if (inputValue && !value) {
+    // Don't re-geocode if location was set externally (map pick, saved location)
+    // or if we already have a resolved value
+    if (inputValue && !value && !resolvedExternallyRef.current) {
       geocodeAddress(inputValue);
     }
   };
