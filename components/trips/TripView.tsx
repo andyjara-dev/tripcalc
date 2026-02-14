@@ -29,6 +29,7 @@ import {
   DropdownMenuSeparator,
 } from '../ui/DropdownMenu';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
+import { formatDayDateShort, formatDayDate } from '@/lib/utils/format-day-date';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
 import { exportTripToPDF } from '@/lib/utils/pdf-export';
 import { downloadICalendar } from '@/lib/utils/ical-export';
@@ -730,7 +731,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
                   }`}
                 >
                   <div className="font-semibold text-sm">
-                    {day.date || `Day ${day.dayNumber}`}
+                    {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
                   </div>
                   <div className={`text-xs mt-1 ${
                     activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
@@ -890,7 +891,7 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
                   onClick={() => setActiveDay(day.dayNumber)}
                 >
                   <span className="text-gray-700">
-                    {day.date || `Day ${day.dayNumber}`}
+                    {day.date ? formatDayDate(day.date, locale) : `Day ${day.dayNumber}`}
                     {day.dayName && <span className="text-gray-500 ml-2">• {day.dayName}</span>}
                   </span>
                   <span className="font-semibold text-gray-900">

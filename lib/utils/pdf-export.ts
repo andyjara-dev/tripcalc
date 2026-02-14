@@ -3,6 +3,7 @@ import type { DayPlan } from '@/types/trip-planner';
 import { calculateDayCost } from '@/types/trip-planner';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
 import type { ItineraryItem } from '@/lib/types/itinerary';
+import { formatDayDate } from '@/lib/utils/format-day-date';
 
 interface WeatherDayData {
   date: string;
@@ -324,7 +325,7 @@ export async function exportTripToPDF(data: PDFExportData) {
 
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    const dayLabel = day.date || `${data.translations.day} ${day.dayNumber}`;
+    const dayLabel = day.date ? formatDayDate(day.date, data.locale) : `${data.translations.day} ${day.dayNumber}`;
     doc.text(dayLabel, 15, yPosition);
 
     doc.setFont('helvetica', 'bold');
@@ -442,7 +443,7 @@ export async function exportTripToPDF(data: PDFExportData) {
         checkNewPage(20);
 
         // Day header
-        const dayLabel = day.date || `${data.translations.day} ${day.dayNumber}`;
+        const dayLabel = day.date ? formatDayDate(day.date, data.locale) : `${data.translations.day} ${day.dayNumber}`;
         const dayTitle = day.dayName ? `${dayLabel} - ${day.dayName}` : dayLabel;
 
         doc.setFontSize(11);
@@ -553,7 +554,7 @@ export async function exportTripToPDF(data: PDFExportData) {
 
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(0, 0, 0);
-        doc.text(day.date, colDate, yPosition);
+        doc.text(formatDayDate(day.date, data.locale), colDate, yPosition);
 
         // Weather description (skip emoji icon - jsPDF doesn't support Unicode)
         const weatherText = translateWeather(day.weatherDescription);

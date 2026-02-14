@@ -58,6 +58,8 @@ model User {
   sessions     Session[]
   trips        Trip[]
   packingLists PackingList[]
+  sharedTrips    SharedTrip[] @relation("SharedByUser")
+  receivedTrips  SharedTrip[] @relation("SharedWithUser")
 }
 
 model VerificationToken {
@@ -119,6 +121,7 @@ model Trip {
   customItems  CustomItem[]
   expenses     Expense[]
   packingLists PackingList[]
+  sharedWith   SharedTrip[]
 
   @@index([userId])
   @@index([shareToken])
@@ -418,6 +421,26 @@ model PackingList {
   @@index([userId])
   @@index([tripId])
   @@index([createdAt])
+}
+
+// Shared Trips
+
+model SharedTrip {
+  id           String   @id @default(cuid())
+  tripId       String
+  sharedById   String
+  sharedWithId String
+  message      String?
+
+  createdAt DateTime @default(now())
+
+  trip      Trip @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  sharedBy  User @relation("SharedByUser", fields: [sharedById], references: [id], onDelete: Cascade)
+  sharedWith User @relation("SharedWithUser", fields: [sharedWithId], references: [id], onDelete: Cascade)
+
+  @@unique([tripId, sharedWithId])
+  @@index([sharedWithId])
+  @@index([tripId])
 }
 
 // Analytics Models
