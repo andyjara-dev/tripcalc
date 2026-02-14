@@ -818,6 +818,16 @@
       "duration": "Duración",
       "day": "día",
       "days": "días"
+    },
+    "shareTripUser": {
+      "subject": "{sender} compartió un viaje contigo en TripCalc",
+      "sharedWith": "{sender} compartió un viaje contigo",
+      "clickBelow": "Puedes ver los detalles del viaje y copiarlo a tus propios viajes desde tu cuenta de TripCalc.",
+      "viewButton": "Ver Viaje Compartido",
+      "copyHint": "También puedes copiar este viaje a tus propios viajes y personalizarlo.",
+      "message": "Mensaje de {sender}:",
+      "sentBy": "Enviado por",
+      "tagline": "Costos reales de viaje, sin sorpresas"
     }
   },
   "luggage": {

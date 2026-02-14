@@ -156,7 +156,7 @@ export default function ShareTripModal({
       const response = await fetch(`/api/trips/${tripId}/share/user`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: userEmail }),
+        body: JSON.stringify({ email: userEmail, locale }),
       });
 
       const data = await response.json();

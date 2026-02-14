@@ -795,6 +795,16 @@
       "duration": "Duration",
       "day": "day",
       "days": "days"
+    },
+    "shareTripUser": {
+      "subject": "{sender} shared a trip with you on TripCalc",
+      "sharedWith": "{sender} shared a trip with you",
+      "clickBelow": "You can view the trip details and copy it to your own trips from your TripCalc account.",
+      "viewButton": "View Shared Trip",
+      "copyHint": "You can also copy this trip to your own trips and customize it.",
+      "message": "Message from {sender}:",
+      "sentBy": "Sent by",
+      "tagline": "Real travel costs, no surprises"
     }
   },
   "luggage": {

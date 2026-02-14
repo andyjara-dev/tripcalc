@@ -3,6 +3,7 @@
 /**
  * LocationAutocomplete Component
  * Input field with address autocomplete using geocoding API
+ * Supports pasting coordinates (e.g. from Google Maps: "41.3851, 2.1734")
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
@@ -18,6 +19,25 @@ interface LocationAutocompleteProps {
   disabled?: boolean;
 }
 
+// Detect if text looks like coordinates (lat, lon)
+// Supports: "41.3851, 2.1734", "-33.4489,-70.6693", "41.3851 2.1734"
+function parseCoordinates(text: string): { lat: number; lon: number } | null {
+  const trimmed = text.trim();
+  // Match: optional minus, digits, optional decimal, separator (comma and/or space), same pattern
+  const match = trimmed.match(
+    /^(-?\d{1,3}(?:\.\d+)?)\s*[,\s]\s*(-?\d{1,3}(?:\.\d+)?)$/
+  );
+  if (!match) return null;
+
+  const lat = parseFloat(match[1]);
+  const lon = parseFloat(match[2]);
+
+  // Validate ranges
+  if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return null;
+
+  return { lat, lon };
+}
+
 export default function LocationAutocomplete({
   value,
   onChange,
@@ -30,7 +50,7 @@ export default function LocationAutocomplete({
   const [isGeocoding, setIsGeocoding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-  // Track if location was set externally (map pick, saved location)
+  // Track if location was set externally (map pick, saved location, coordinates)
   // to avoid re-geocoding on blur
   const resolvedExternallyRef = useRef(!!value);
 
@@ -43,12 +63,73 @@ export default function LocationAutocomplete({
     }
   }, [value]);
 
+  // Reverse geocode coordinates
+  const reverseGeocodeCoords = useCallback(
+    async (lat: number, lon: number) => {
+      setIsGeocoding(true);
+      setError(null);
+
+      try {
+        const response = await fetch('/api/itinerary/reverse-geocode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ lat, lon }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success || !data.location) {
+          // Even if reverse geocode fails, use coordinates as address
+          const location: GeoLocation = {
+            lat,
+            lon,
+            address: `${lat.toFixed(6)}, ${lon.toFixed(6)}`,
+            placeId: `coords_${lat}_${lon}`,
+          };
+          onChange(location);
+          resolvedExternallyRef.current = true;
+          setInputValue(location.address);
+          setError(null);
+          return;
+        }
+
+        onChange(data.location);
+        resolvedExternallyRef.current = true;
+        setInputValue(data.location.address);
+        setError(null);
+      } catch (err) {
+        console.error('Reverse geocoding error:', err);
+        // Fallback: use raw coordinates
+        const location: GeoLocation = {
+          lat,
+          lon,
+          address: `${lat.toFixed(6)}, ${lon.toFixed(6)}`,
+          placeId: `coords_${lat}_${lon}`,
+        };
+        onChange(location);
+        resolvedExternallyRef.current = true;
+        setInputValue(location.address);
+        setError(null);
+      } finally {
+        setIsGeocoding(false);
+      }
+    },
+    [onChange]
+  );
+
   // Geocode address with debounce
   const geocodeAddress = useCallback(
     async (address: string) => {
       if (!address || address.trim().length < 3) {
         onChange(null);
         setError(null);
+        return;
+      }
+
+      // Check if it's coordinates first
+      const coords = parseCoordinates(address);
+      if (coords) {
+        reverseGeocodeCoords(coords.lat, coords.lon);
         return;
       }
 
@@ -96,7 +177,25 @@ export default function LocationAutocomplete({
         setIsGeocoding(false);
       }
     },
-    [onChange, cityBounds, t]
+    [onChange, cityBounds, t, reverseGeocodeCoords]
+  );
+
+  // Handle paste - detect coordinates immediately
+  const handlePaste = useCallback(
+    (e: React.ClipboardEvent<HTMLInputElement>) => {
+      const pasted = e.clipboardData.getData('text');
+      const coords = parseCoordinates(pasted);
+      if (coords) {
+        e.preventDefault();
+        setInputValue(pasted.trim());
+        // Clear any pending debounce
+        if (debounceTimerRef.current) {
+          clearTimeout(debounceTimerRef.current);
+        }
+        reverseGeocodeCoords(coords.lat, coords.lon);
+      }
+    },
+    [reverseGeocodeCoords]
   );
 
   // Handle input change with debounce
@@ -147,6 +246,7 @@ export default function LocationAutocomplete({
           value={inputValue}
           onChange={handleInputChange}
           onBlur={handleBlur}
+          onPaste={handlePaste}
           placeholder={placeholder || t('enterAddress')}
           disabled={disabled}
           className={`w-full px-3 py-2 text-gray-900 border rounded-lg focus:outline-none focus:ring-2 ${
