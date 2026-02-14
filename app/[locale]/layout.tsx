@@ -12,9 +12,63 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tripcalc.site';
+
 export const metadata: Metadata = {
-  title: "TripCalc - Real Travel Costs",
-  description: "Calculate real travel costs based on experience, not generic averages.",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: 'TripCalc - Real Travel Costs, No Surprises',
+    template: '%s | TripCalc',
+  },
+  description: 'Calculate real travel costs for 20+ cities worldwide. Daily budgets, transport prices, and practical tips based on actual experience, not generic averages.',
+  keywords: ['travel costs', 'trip calculator', 'travel budget', 'daily cost estimator', 'city travel costs', 'trip planner', 'travel expenses'],
+  authors: [{ name: 'TripCalc' }],
+  creator: 'TripCalc',
+  openGraph: {
+    type: 'website',
+    siteName: 'TripCalc',
+    title: 'TripCalc - Real Travel Costs, No Surprises',
+    description: 'Calculate real travel costs for 20+ cities worldwide. Daily budgets, transport prices, and practical tips.',
+    url: baseUrl,
+    images: [
+      {
+        url: '/logo.png',
+        width: 800,
+        height: 600,
+        alt: 'TripCalc - Real Travel Costs',
+      },
+    ],
+    locale: 'en_US',
+    alternateLocale: ['es_ES'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TripCalc - Real Travel Costs, No Surprises',
+    description: 'Calculate real travel costs for 20+ cities worldwide. Daily budgets, transport prices, and practical tips.',
+    images: ['/logo.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/logo-small.png',
+    apple: '/logo.png',
+  },
+  alternates: {
+    canonical: baseUrl,
+    languages: {
+      'en': `${baseUrl}/en`,
+      'es': `${baseUrl}/es`,
+    },
+  },
 };
 
 export function generateStaticParams() {

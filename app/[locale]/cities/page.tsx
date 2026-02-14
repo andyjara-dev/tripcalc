@@ -1,12 +1,27 @@
+import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import { getAllCities } from '@/lib/cities/service';
 import Header from '@/components/Header';
 
-export const metadata = {
-  title: 'Cities - TripCalc',
-  description: 'Browse travel cost calculators for cities worldwide.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tripcalc.site';
+
+  return {
+    title: locale === 'es' ? 'Ciudades - Calculadora de Costos de Viaje' : 'Cities - Travel Cost Calculator',
+    description: locale === 'es'
+      ? 'Explora calculadoras de costos de viaje para más de 20 ciudades del mundo. Presupuestos diarios, transporte y tips.'
+      : 'Browse travel cost calculators for 20+ cities worldwide. Daily budgets, transport prices, and practical tips.',
+    alternates: {
+      canonical: `${baseUrl}/${locale}/cities`,
+      languages: {
+        'en': `${baseUrl}/en/cities`,
+        'es': `${baseUrl}/es/cities`,
+      },
+    },
+  };
+}
 
 export default async function CitiesPage({
   params,

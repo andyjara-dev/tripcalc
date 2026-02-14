@@ -283,6 +283,13 @@ export default function LocationAutocomplete({
           📍 {t('locationFound')}
         </p>
       )}
+
+      {/* Coordinates hint (when empty) */}
+      {!value && !error && !isGeocoding && !inputValue && (
+        <p className="mt-1 text-xs text-gray-500">
+          {t('coordsHint')}
+        </p>
+      )}
     </div>
   );
 }

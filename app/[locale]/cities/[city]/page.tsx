@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: CityPageProps) {
   const { city: cityId, locale } = await params;
   const city = await getCity(cityId);
   const t = await getTranslations({ locale, namespace: 'cities' });
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tripcalc.site';
 
   if (!city) {
     return {
@@ -34,9 +35,30 @@ export async function generateMetadata({ params }: CityPageProps) {
     };
   }
 
+  const title = t('metadata.title', { city: city.name });
+  const description = t('metadata.description', { city: city.name, country: city.country });
+
   return {
-    title: t('metadata.title', { city: city.name }),
-    description: t('metadata.description', { city: city.name, country: city.country }),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `${baseUrl}/${locale}/cities/${city.id}`,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
+    },
+    alternates: {
+      canonical: `${baseUrl}/${locale}/cities/${city.id}`,
+      languages: {
+        'en': `${baseUrl}/en/cities/${city.id}`,
+        'es': `${baseUrl}/es/cities/${city.id}`,
+      },
+    },
   };
 }
 
@@ -49,8 +71,29 @@ export default async function CityPage({ params }: CityPageProps) {
     notFound();
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    name: city.name,
+    description: t('cities.metadata.description', { city: city.name, country: city.country }),
+    containedInPlace: {
+      '@type': 'Country',
+      name: city.country,
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: city.latitude,
+      longitude: city.longitude,
+    },
+    currenciesAccepted: city.currency,
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Fixed Header */}
       <Header
         locale={locale}

@@ -1,7 +1,29 @@
+import { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import HeroCarousel from '@/components/HeroCarousel';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://tripcalc.site';
+
+  return {
+    title: locale === 'es'
+      ? 'TripCalc - Costos Reales de Viaje, Sin Sorpresas'
+      : 'TripCalc - Real Travel Costs, No Surprises',
+    description: locale === 'es'
+      ? 'Calcula costos reales de viaje para más de 20 ciudades. Presupuestos diarios, precios de transporte y tips prácticos basados en experiencia real.'
+      : 'Calculate real travel costs for 20+ cities worldwide. Daily budgets, transport prices, and practical tips based on actual experience.',
+    alternates: {
+      canonical: `${baseUrl}/${locale}`,
+      languages: {
+        'en': `${baseUrl}/en`,
+        'es': `${baseUrl}/es`,
+      },
+    },
+  };
+}
 
 export default async function HomePage({
   params,
