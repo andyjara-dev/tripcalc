@@ -6,7 +6,7 @@
  */
 
 import { prisma } from '@/lib/db';
-import { getCityById as getStaticCity } from '@/data/cities';
+import { getCityById as getStaticCity, getAllCities as getStaticAllCities } from '@/data/cities';
 import type { CityData } from '@/data/cities/types';
 
 // Helper to convert cents back to currency units
@@ -128,14 +128,7 @@ export async function getAllCitiesFromDatabase(): Promise<CityData[]> {
  */
 async function getAllStaticCities(): Promise<CityData[]> {
   try {
-    // Import all static cities
-    const { barcelona } = await import('@/data/cities/barcelona');
-    const { tokyo } = await import('@/data/cities/tokyo');
-    const { paris } = await import('@/data/cities/paris');
-    const { newYork } = await import('@/data/cities/new-york');
-    const { mexicoCity } = await import('@/data/cities/mexico-city');
-
-    return [barcelona, tokyo, paris, newYork, mexicoCity];
+    return getStaticAllCities();
   } catch (error) {
     console.error('Error loading static cities:', error);
     return [];
