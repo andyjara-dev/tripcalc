@@ -48,7 +48,7 @@ export default function MapPremiumTeaser() {
           href={`/${locale}/premium`}
           className="block w-full text-center bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2.5 rounded-lg font-semibold text-sm hover:shadow-md transition transform hover:scale-[1.02]"
         >
-          {t('upgradeToPremium')}
+          {t('requestPremium')}
         </Link>
       </div>
     </div>

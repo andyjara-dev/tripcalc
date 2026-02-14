@@ -918,8 +918,7 @@
       "subtitle": "AI-powered packing suggestions",
       "upgradeTitle": "Premium Feature",
       "upgradeDescription": "Get personalized packing lists with AI-powered weight optimization and smart suggestions.",
-      "upgradeButton": "Upgrade to Premium",
-      "freeTrialInfo": "7-day free trial • Cancel anytime",
+      "upgradeButton": "Request Premium Access",
       "features": {
         "title": "Premium Features",
         "aiSuggestions": "AI-Powered Packing Suggestions",
@@ -1148,8 +1147,7 @@
       "subtitle": "Plan your days with timeline, maps, and smart suggestions",
       "upgradeTitle": "Premium Feature",
       "upgradeDescription": "Create detailed itineraries with timeline view, interactive maps, route calculations, and AI-powered activity suggestions.",
-      "upgradeButton": "Upgrade to Premium - $4.99/mo",
-      "priceInfo": "Cancel anytime • All premium features included",
+      "upgradeButton": "Request Premium Access",
       "features": {
         "title": "Premium Features",
         "timeline": "Visual Timeline with Times",
@@ -1207,6 +1205,7 @@
     "mapFeature2": "Walking routes between spots",
     "mapFeature3": "Pick locations by clicking the map",
     "upgradeToPremium": "Upgrade to Premium",
+    "requestPremium": "Request Premium Access",
     "addMeal": "Add Meal",
     "addAttraction": "Add Attraction",
     "addTransport": "Add Transport",
@@ -1216,5 +1215,35 @@
     "confirmDelete": "Delete this activity?",
     "emptyDay": "No activities yet",
     "emptyDayHint": "Add activities to plan your day and track costs"
+  },
+  "premiumPage": {
+    "title": "Premium Features",
+    "subtitle": "Unlock advanced planning tools for your trips",
+    "featuresTitle": "What's included",
+    "features": {
+      "itinerary": "Day-by-Day Itinerary Planner",
+      "itineraryDescription": "Plan your days with a visual timeline, drag & drop activities, and smart scheduling",
+      "maps": "Interactive Maps",
+      "mapsDescription": "See all your activities on an interactive map with numbered markers and walking routes",
+      "luggage": "Smart Luggage Calculator",
+      "luggageDescription": "AI-powered packing suggestions optimized for your weight limit and airline rules",
+      "ai": "AI-Powered Suggestions",
+      "aiDescription": "Get smart restaurant and activity recommendations based on your preferences"
+    },
+    "alreadyPremium": "You have Premium access",
+    "alreadyPremiumDescription": "You already have access to all premium features. Enjoy!",
+    "signInToRequest": "Sign in to request access",
+    "requestTitle": "Request Premium Access",
+    "requestDescription": "Premium is currently free by request. Tell us why you'd like to try it and we'll review your request.",
+    "name": "Name",
+    "email": "Email",
+    "reasonLabel": "Why do you want to try Premium?",
+    "reasonPlaceholder": "Tell us about your upcoming trips, what features interest you most...",
+    "reasonHint": "Minimum 10 characters",
+    "submitRequest": "Send Request",
+    "sending": "Sending...",
+    "requestSent": "Request sent!",
+    "requestSentDescription": "We'll review your request and activate Premium on your account shortly. You'll receive an email confirmation.",
+    "requestError": "Failed to send request. Please try again."
   }
 }

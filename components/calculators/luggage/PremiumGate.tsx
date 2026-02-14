@@ -48,9 +48,6 @@ export default function PremiumGate({ locale }: Props) {
                 {t('upgradeButton')}
               </Link>
 
-              <p className="text-sm text-gray-600 mt-4">
-                {t('freeTrialInfo')}
-              </p>
             </div>
           </div>
         </div>
@@ -71,17 +68,13 @@ export default function PremiumGate({ locale }: Props) {
           ))}
         </ul>
 
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-semibold text-gray-900">{t('pricing.title')}</p>
-              <p className="text-sm text-gray-600">{t('pricing.subtitle')}</p>
-            </div>
-            <div className="text-right">
-              <p className="text-3xl font-bold text-gray-900">$4.99</p>
-              <p className="text-sm text-gray-600">{t('pricing.perMonth')}</p>
-            </div>
-          </div>
+        <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+          <Link
+            href={`/${locale}/premium`}
+            className="inline-block bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition transform hover:scale-105"
+          >
+            {t('upgradeButton')}
+          </Link>
         </div>
       </div>
 
