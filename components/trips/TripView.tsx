@@ -672,11 +672,11 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
             className={`p-3 rounded-lg border-2 transition-all ${
               tripStyle === 'budget'
                 ? 'border-gray-900 bg-gray-900 text-white'
-                : 'border-gray-200 hover:border-gray-300'
+                : 'border-gray-200 bg-white text-gray-900 hover:border-gray-300'
             }`}
           >
             <div className="font-semibold text-sm">{t('budget')}</div>
-            <div className={`text-xs ${tripStyle === 'budget' ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'budget' ? 'text-gray-300' : 'text-gray-600'}`}>
               {t('basic')}
             </div>
           </button>
@@ -685,11 +685,11 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
             className={`p-3 rounded-lg border-2 transition-all ${
               tripStyle === 'midRange'
                 ? 'border-gray-900 bg-gray-900 text-white'
-                : 'border-gray-200 hover:border-gray-300'
+                : 'border-gray-200 bg-white text-gray-900 hover:border-gray-300'
             }`}
           >
             <div className="font-semibold text-sm">{t('midRange')}</div>
-            <div className={`text-xs ${tripStyle === 'midRange' ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'midRange' ? 'text-gray-300' : 'text-gray-600'}`}>
               {t('comfortable')}
             </div>
           </button>
@@ -698,11 +698,11 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
             className={`p-3 rounded-lg border-2 transition-all ${
               tripStyle === 'luxury'
                 ? 'border-gray-900 bg-gray-900 text-white'
-                : 'border-gray-200 hover:border-gray-300'
+                : 'border-gray-200 bg-white text-gray-900 hover:border-gray-300'
             }`}
           >
             <div className="font-semibold text-sm">{t('luxury')}</div>
-            <div className={`text-xs ${tripStyle === 'luxury' ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className={`text-xs ${tripStyle === 'luxury' ? 'text-gray-300' : 'text-gray-600'}`}>
               {t('premium')}
             </div>
           </button>
@@ -721,24 +721,38 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
             {days.map(day => {
               const dayCost = calculateDayCost(day, costs);
               return (
-                <button
-                  key={day.dayNumber}
-                  onClick={() => setActiveDay(day.dayNumber)}
-                  className={`px-4 py-3 rounded-lg flex-shrink-0 transition-all ${
-                    activeDay === day.dayNumber
-                      ? 'bg-gray-900 text-white shadow-lg'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                  }`}
-                >
-                  <div className="font-semibold text-sm">
-                    {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
-                  </div>
-                  <div className={`text-xs mt-1 ${
-                    activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                    {city.currencySymbol}{dayCost.toFixed(0)}
-                  </div>
-                </button>
+                <div key={day.dayNumber} className="relative group flex-shrink-0">
+                  <button
+                    onClick={() => setActiveDay(day.dayNumber)}
+                    className={`px-4 py-3 rounded-lg transition-all w-[110px] ${
+                      activeDay === day.dayNumber
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                    }`}
+                  >
+                    <div className="font-semibold text-sm truncate">
+                      {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
+                    </div>
+                    {day.dayName && (
+                      <div className={`text-xs mt-0.5 truncate ${
+                        activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-500'
+                      }`}>
+                        {day.dayName}
+                      </div>
+                    )}
+                    <div className={`text-xs mt-0.5 ${
+                      activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      {city.currencySymbol}{dayCost.toFixed(0)}
+                    </div>
+                  </button>
+                  {day.dayName && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                      {day.dayName}
+                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
+                    </div>
+                  )}
+                </div>
               );
             })}
             {days.length < 30 && (
