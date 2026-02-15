@@ -181,21 +181,15 @@
   },
   "about": {
     "title": "About TripCalc",
-    "mission": "TripCalc was created to answer a simple question most travel websites can't: How much does a trip really cost?",
-    "difference": {
-      "title": "Why TripCalc?",
-      "description": "Most travel sites focus on inspiration, hotels, and attractions. TripCalc focuses on something more practical: real-world numbers, real traveler decisions, and real costs — based on experience, not generic averages."
+    "origin": {
+      "title": "How It Started",
+      "p1": "TripCalc was born from my first international trip. I had a lot of questions and very few answers. I searched and gathered a ton of information — an avalanche, really.",
+      "p2": "But I realized everything covered the big picture: what to visit, how to save based on activities recommended by influencers. However, I couldn't find a single tool that helped me with the things that really matter for those of us who don't travel frequently.",
+      "p3": "How do I calculate luggage weight? How do I build an itinerary and know the times? What about basic things like tipping, ATMs, hidden fees? And most importantly: something to help me organize a budget and stick to it."
     },
-    "realExperience": {
-      "title": "Built from Real Experience",
-      "description": "TripCalc is not a generic travel blog. It's built using:",
-      "points": {
-        "1": "First-hand travel experience across 6 cities with detailed cost data",
-        "2": "Local knowledge from residents and verified sources",
-        "3": "Real-world testing of transport, ATMs, SIMs, and daily expenses",
-        "4": "Weather data powered by 80+ years of historical records",
-        "5": "Data collected, verified, and refined over time"
-      }
+    "why": {
+      "title": "Why TripCalc?",
+      "description": "That's why I created TripCalc — to get real trip costs, no surprises. I'm just a programmer who saw a gap where technology and AI can help us with something that may seem trivial to some, but is essential for those of us who are more structured: having everything organized."
     },
     "whatYouCanDo": {
       "title": "What You Can Do with TripCalc",
@@ -212,22 +206,28 @@
     },
     "premium": {
       "title": "Premium Features",
-      "description": "TripCalc offers powerful free tools for every traveler. Premium users unlock advanced planning features:",
+      "description": "TripCalc offers powerful free tools for every traveler. Premium unlocks advanced planning features:",
       "points": {
         "1": "Day-by-Day Itinerary Planner with timeline view, interactive maps, and route calculations",
         "2": "Smart Luggage Calculator with AI-powered packing suggestions and airline presets",
-        "3": "All premium features included with a single subscription"
+        "3": "Currently free by request — just tell us why you'd like to try it"
       }
     },
-    "community": {
-      "title": "Growing with the Community",
-      "description": "TripCalc is actively growing with new features and data:",
+    "future": {
+      "title": "What's Next",
+      "description": "TripCalc is a tool that can keep growing as new ideas emerge — new ways this site can help any traveler in need of easy, relevant, and accurate information.",
       "points": {
-        "1": "6 cities with full cost data — Barcelona, Tokyo, New York, London, Paris, Mexico City",
-        "2": "3 calculators — Daily Cost, Transport Comparison, and Luggage Planner",
-        "3": "Weather integration, expense tracking, trip sharing, and PDF export",
-        "4": "More cities and features added regularly, always prioritizing accuracy over hype"
+        "1": "More cities with full cost data added regularly",
+        "2": "Community contributions and traveler-submitted tips",
+        "3": "New calculators and planning tools based on real needs",
+        "4": "Always prioritizing accuracy over hype"
       }
+    },
+    "contact": {
+      "title": "Get in Touch",
+      "p1": "If you have ideas or suggestions, write to us at",
+      "p2": "If you want to try the Pro version, send a request from the Premium page.",
+      "p3": "Currently my budget for the site is very limited and I have no sponsorship whatsoever — everything comes out of my own pocket. That's why I'll review premium requests carefully, and if the site warrants it, increase its capacity and with it be able to charge a fair price to maintain the server and AI services."
     },
     "finalMessage": "TripCalc helps you plan with confidence by turning travel into numbers you can actually use."
   },
