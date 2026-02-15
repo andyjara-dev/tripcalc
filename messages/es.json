@@ -205,52 +205,52 @@
   "about": {
     "title": "Acerca de TripCalc",
     "origin": {
-      "title": "Como nacio",
-      "p1": "TripCalc nacio de mi primer viaje internacional. Tenia muchas preguntas y muy pocas respuestas. Busque y recabe mucha informacion — una avalancha, realmente.",
-      "p2": "Pero me di cuenta de que todo trataba lo macro: que visitar, como ahorrar en base a actividades que influencers recomendaban. Sin embargo, no encontre una sola herramienta que me ayudara con lo que realmente importa para quienes no viajamos tan frecuentemente.",
-      "p3": "Como calculo el peso de las maletas? Como armo un itinerario y se los tiempos? Que hay de cosas basicas como propinas, cajeros automaticos, tarifas ocultas? Y lo mas importante: algo que me ayude a organizar un presupuesto y no salirme de el."
+      "title": "Cómo nació",
+      "p1": "TripCalc nació de mi primer viaje internacional. Tenía muchas preguntas y muy pocas respuestas. Busqué y recabé mucha información — una avalancha, realmente.",
+      "p2": "Pero me di cuenta de que todo trataba lo macro: qué visitar, cómo ahorrar en base a actividades que influencers recomendaban. Sin embargo, no encontré una sola herramienta que me ayudara con lo que realmente importa para quienes no viajamos tan frecuentemente.",
+      "p3": "¿Cómo calculo el peso de las maletas? ¿Cómo armo un itinerario y sé los tiempos? ¿Qué hay de cosas básicas como propinas, cajeros automáticos, tarifas ocultas? Y lo más importante: algo que me ayude a organizar un presupuesto y no salirme de él."
     },
     "why": {
-      "title": "Por que TripCalc?",
-      "description": "Por eso cree TripCalc — para obtener costos reales de viajes, sin sorpresas. Soy un simple programador que vio un vacio donde la informatica y la IA pueden ayudarnos en algo quiza trivial para algunos, pero fundamental para quienes somos mas estructurados: tener todo organizado."
+      "title": "¿Por qué TripCalc?",
+      "description": "Por eso creé TripCalc — para obtener costos reales de viajes, sin sorpresas. Soy un simple programador que vio un vacío donde la informática y la IA pueden ayudarnos en algo quizá trivial para algunos, pero fundamental para quienes somos más estructurados: tener todo organizado."
     },
     "whatYouCanDo": {
-      "title": "Que puedes hacer con TripCalc",
+      "title": "Qué puedes hacer con TripCalc",
       "points": {
-        "1": "Estimar el costo diario real de un viaje con desgloses economico, medio y lujo",
+        "1": "Estimar el costo diario real de un viaje con desgloses económico, medio y lujo",
         "2": "Comparar opciones de transporte con precios reales (metro, taxi, Uber, traslados aeropuerto)",
-        "3": "Consultar pronosticos del clima con alertas de condiciones extremas para tus fechas de viaje",
-        "4": "Crear itinerarios dia a dia con cronograma, mapas interactivos y calculo de rutas",
-        "5": "Generar listas de empaque con IA optimizadas para tu limite de peso y clima",
+        "3": "Consultar pronósticos del clima con alertas de condiciones extremas para tus fechas de viaje",
+        "4": "Crear itinerarios día a día con cronograma, mapas interactivos y cálculo de rutas",
+        "5": "Generar listas de empaque con IA optimizadas para tu límite de peso y clima",
         "6": "Rastrear gastos reales vs. presupuesto durante tu viaje",
         "7": "Compartir planes de viaje y exportar como PDF o calendario",
-        "8": "Entender propinas, tarifas y costos ocultos que la mayoria de sitios no mencionan"
+        "8": "Entender propinas, tarifas y costos ocultos que la mayoría de sitios no mencionan"
       }
     },
     "premium": {
       "title": "Funciones Premium",
-      "description": "TripCalc ofrece herramientas gratuitas para cada viajero. Premium desbloquea funciones avanzadas de planificacion:",
+      "description": "TripCalc ofrece herramientas gratuitas para cada viajero. Premium desbloquea funciones avanzadas de planificación:",
       "points": {
-        "1": "Planificador de Itinerario Dia a Dia con cronograma visual, mapas interactivos y calculo de rutas",
-        "2": "Calculadora Inteligente de Equipaje con sugerencias de empaque con IA y presets de aerolineas",
-        "3": "Actualmente gratuito por solicitud — solo cuentanos por que te gustaria probarlo"
+        "1": "Planificador de Itinerario Día a Día con cronograma visual, mapas interactivos y cálculo de rutas",
+        "2": "Calculadora Inteligente de Equipaje con sugerencias de empaque con IA y presets de aerolíneas",
+        "3": "Actualmente gratuito por solicitud — solo cuéntanos por qué te gustaría probarlo"
       }
     },
     "future": {
-      "title": "Que sigue",
-      "description": "TripCalc es una herramienta que puede seguir creciendo a medida que surjan nuevas ideas — nuevas formas en que este sitio pueda ayudar a cualquier viajero necesitado de informacion facil, relevante y precisa.",
+      "title": "Qué sigue",
+      "description": "TripCalc es una herramienta que puede seguir creciendo a medida que surjan nuevas ideas — nuevas formas en que este sitio pueda ayudar a cualquier viajero necesitado de información fácil, relevante y precisa.",
       "points": {
-        "1": "Mas ciudades con datos completos de costos agregadas regularmente",
+        "1": "Más ciudades con datos completos de costos agregadas regularmente",
         "2": "Contribuciones de la comunidad y tips de otros viajeros",
-        "3": "Nuevas calculadoras y herramientas de planificacion basadas en necesidades reales",
-        "4": "Siempre priorizando precision sobre exageracion"
+        "3": "Nuevas calculadoras y herramientas de planificación basadas en necesidades reales",
+        "4": "Siempre priorizando precisión sobre exageración"
       }
     },
     "contact": {
       "title": "Contacto",
-      "p1": "Si tienes ideas o sugerencias, escribenos a",
-      "p2": "Si quieres probar la version Pro, envia una solicitud desde la pagina de Premium.",
-      "p3": "Actualmente mi presupuesto para el sitio es muy limitado y no tengo patrocinio alguno — todo sale de mi bolsillo. Por eso analizare las solicitudes premium cuidadosamente, y si el sitio lo amerita, poder aumentar su capacidad y con ello poder cobrar lo justo para mantener el servidor y los servicios de IA."
+      "p1": "Si tienes ideas o sugerencias, escríbenos a",
+      "p2": "Si quieres probar la versión Pro, envía una solicitud desde la página de Premium.",
+      "p3": "Actualmente mi presupuesto para el sitio es muy limitado y no tengo patrocinio alguno — todo sale de mi bolsillo. Por eso analizaré las solicitudes premium cuidadosamente, y si el sitio lo amerita, poder aumentar su capacidad y con ello poder cobrar lo justo para mantener el servidor y los servicios de IA."
     },
     "finalMessage": "TripCalc te ayuda a planificar con confianza convirtiendo los viajes en números que realmente puedes usar."
   },
@@ -1241,32 +1241,32 @@
   },
   "premiumPage": {
     "title": "Funciones Premium",
-    "subtitle": "Desbloquea herramientas avanzadas de planificacion para tus viajes",
-    "featuresTitle": "Que incluye",
+    "subtitle": "Desbloquea herramientas avanzadas de planificación para tus viajes",
+    "featuresTitle": "Qué incluye",
     "features": {
-      "itinerary": "Planificador de Itinerario Dia por Dia",
-      "itineraryDescription": "Planifica tus dias con un cronograma visual, arrastra y suelta actividades y programacion inteligente",
+      "itinerary": "Planificador de Itinerario Día por Día",
+      "itineraryDescription": "Planifica tus días con un cronograma visual, arrastra y suelta actividades y programación inteligente",
       "maps": "Mapas Interactivos",
       "mapsDescription": "Ve todas tus actividades en un mapa interactivo con marcadores numerados y rutas a pie",
       "luggage": "Calculadora Inteligente de Equipaje",
-      "luggageDescription": "Sugerencias de empaque con IA optimizadas para tu limite de peso y reglas de aerolineas",
+      "luggageDescription": "Sugerencias de empaque con IA optimizadas para tu límite de peso y reglas de aerolíneas",
       "ai": "Sugerencias con IA",
       "aiDescription": "Obtén recomendaciones inteligentes de restaurantes y actividades basadas en tus preferencias"
     },
     "alreadyPremium": "Tienes acceso Premium",
-    "alreadyPremiumDescription": "Ya tienes acceso a todas las funciones premium. Disfruta!",
-    "signInToRequest": "Inicia sesion para solicitar acceso",
+    "alreadyPremiumDescription": "Ya tienes acceso a todas las funciones premium. ¡Disfruta!",
+    "signInToRequest": "Inicia sesión para solicitar acceso",
     "requestTitle": "Solicitar Acceso Premium",
-    "requestDescription": "Premium es actualmente gratuito por solicitud. Cuentanos por que te gustaria probarlo y revisaremos tu solicitud.",
+    "requestDescription": "Premium es actualmente gratuito por solicitud. Cuéntanos por qué te gustaría probarlo y revisaremos tu solicitud.",
     "name": "Nombre",
-    "email": "Correo electronico",
-    "reasonLabel": "Por que quieres probar Premium?",
-    "reasonPlaceholder": "Cuentanos sobre tus proximos viajes, que funciones te interesan mas...",
-    "reasonHint": "Minimo 10 caracteres",
+    "email": "Correo electrónico",
+    "reasonLabel": "¿Por qué quieres probar Premium?",
+    "reasonPlaceholder": "Cuéntanos sobre tus próximos viajes, qué funciones te interesan más...",
+    "reasonHint": "Mínimo 10 caracteres",
     "submitRequest": "Enviar Solicitud",
     "sending": "Enviando...",
-    "requestSent": "Solicitud enviada!",
-    "requestSentDescription": "Revisaremos tu solicitud y activaremos Premium en tu cuenta pronto. Recibiras una confirmacion por correo.",
+    "requestSent": "¡Solicitud enviada!",
+    "requestSentDescription": "Revisaremos tu solicitud y activaremos Premium en tu cuenta pronto. Recibirás una confirmación por correo.",
     "requestError": "Error al enviar la solicitud. Intenta de nuevo."
   }
 }
