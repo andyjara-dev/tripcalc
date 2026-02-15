@@ -721,38 +721,32 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
             {days.map(day => {
               const dayCost = calculateDayCost(day, costs);
               return (
-                <div key={day.dayNumber} className="relative group flex-shrink-0">
-                  <button
-                    onClick={() => setActiveDay(day.dayNumber)}
-                    className={`px-4 py-3 rounded-lg transition-all w-[110px] ${
-                      activeDay === day.dayNumber
-                        ? 'bg-gray-900 text-white shadow-lg'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-                    }`}
-                  >
-                    <div className="font-semibold text-sm truncate">
-                      {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
-                    </div>
-                    {day.dayName && (
-                      <div className={`text-xs mt-0.5 truncate ${
-                        activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-500'
-                      }`}>
-                        {day.dayName}
-                      </div>
-                    )}
-                    <div className={`text-xs mt-0.5 ${
-                      activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
-                      {city.currencySymbol}{dayCost.toFixed(0)}
-                    </div>
-                  </button>
+                <button
+                  key={day.dayNumber}
+                  onClick={() => setActiveDay(day.dayNumber)}
+                  title={day.dayName ? `${day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`} — ${day.dayName}` : undefined}
+                  className={`px-4 py-3 rounded-lg flex-shrink-0 transition-all w-[110px] ${
+                    activeDay === day.dayNumber
+                      ? 'bg-gray-900 text-white shadow-lg'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                  }`}
+                >
+                  <div className="font-semibold text-sm truncate">
+                    {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
+                  </div>
                   {day.dayName && (
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                    <div className={`text-xs mt-0.5 truncate ${
+                      activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
                       {day.dayName}
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900" />
                     </div>
                   )}
-                </div>
+                  <div className={`text-xs mt-0.5 ${
+                    activeDay === day.dayNumber ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    {city.currencySymbol}{dayCost.toFixed(0)}
+                  </div>
+                </button>
               );
             })}
             {days.length < 30 && (
