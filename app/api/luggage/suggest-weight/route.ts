@@ -101,7 +101,7 @@ async function suggestWeightWithAI(
     throw new Error('Gemini AI is not configured');
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are a travel packing expert. Estimate the weight in grams of a single "${itemName}"${category ? ` (category: ${category})` : ''} that a traveler would pack.
 
