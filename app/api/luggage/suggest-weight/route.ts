@@ -102,37 +102,16 @@ async function suggestWeightWithAI(
   }
 
   const model = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-2.0-flash',
     generationConfig: {
       temperature: 0.2,
-      maxOutputTokens: 500,
+      maxOutputTokens: 256,
       responseMimeType: 'application/json',
     },
   });
 
-  const prompt = `You are a travel packing expert. Estimate the weight in grams of a single "${itemName}"${category ? ` (category: ${category})` : ''} that a traveler would pack.
-
-Rules:
-- Provide a realistic weight in grams for ONE item
-- Consider the typical travel version (not the largest or smallest variant)
-- If it's a liquid/toiletry, assume travel size (100ml or less)
-- Weight must be between 10g and 50,000g (50kg)
-- Provide your confidence level: high (common item, certain), medium (estimated), or low (very uncertain)
-- Optionally add a brief note explaining your estimate
-
-Respond ONLY with valid JSON in this exact format:
-{
-  "weight": <number in grams>,
-  "confidence": "high" | "medium" | "low",
-  "notes": "<optional brief explanation>"
-}
-
-Example for "Sunglasses":
-{
-  "weight": 50,
-  "confidence": "high",
-  "notes": "Typical lightweight travel sunglasses"
-}`;
+  const item = category ? `${itemName} (${category})` : itemName;
+  const prompt = `Return the travel weight in grams for: "${item}". Use travel/compact size for toiletries. Respond with this JSON only: {"weight":<grams>,"confidence":"high"|"medium"|"low","notes":"<10 words max>"}`;
 
   // Add timeout to prevent zombie processes (30s for weight suggestions)
   const timeoutPromise = new Promise((_, reject) =>
