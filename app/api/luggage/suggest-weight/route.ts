@@ -101,7 +101,14 @@ async function suggestWeightWithAI(
     throw new Error('Gemini AI is not configured');
   }
 
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+  const model = genAI.getGenerativeModel({
+    model: 'gemini-2.5-flash',
+    generationConfig: {
+      temperature: 0.2,
+      maxOutputTokens: 500,
+      responseMimeType: 'application/json',
+    },
+  });
 
   const prompt = `You are a travel packing expert. Estimate the weight in grams of a single "${itemName}"${category ? ` (category: ${category})` : ''} that a traveler would pack.
 
@@ -135,10 +142,6 @@ Example for "Sunglasses":
   const result = await Promise.race([
     model.generateContent({
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.2, // Low temperature for consistent estimates
-        maxOutputTokens: 200,
-      },
     }),
     timeoutPromise
   ]) as any;
