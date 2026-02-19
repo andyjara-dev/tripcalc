@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
@@ -8,6 +8,7 @@ import { SessionProvider } from '@/components/auth/SessionProvider';
 import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
 import { auth } from '@/lib/auth';
 import Footer from '@/components/Footer';
+import ServiceWorkerRegistration from '@/components/pwa/ServiceWorkerRegistration';
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -58,9 +59,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  manifest: '/manifest.json',
   icons: {
-    icon: '/logo-small.png',
-    apple: '/logo.png',
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: '/icons/icon-192.png',
   },
   alternates: {
     canonical: baseUrl,
@@ -69,6 +74,13 @@ export const metadata: Metadata = {
       'es': `${baseUrl}/es`,
     },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#2563eb',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export function generateStaticParams() {
@@ -89,6 +101,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
+        <ServiceWorkerRegistration />
         <SessionProvider session={session}>
           <AnalyticsProvider>
             <NextIntlClientProvider messages={messages} locale={locale}>
