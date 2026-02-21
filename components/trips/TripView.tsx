@@ -6,33 +6,17 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { nanoid } from 'nanoid';
-import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  TouchSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
-  useDroppable,
-  type DragStartEvent,
-  type DragOverEvent,
-  type DragEndEvent,
-} from '@dnd-kit/core';
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import dynamic from 'next/dynamic';
 import type { DayPlan, TripStyle, CustomCosts } from '@/types/trip-planner';
 import { createDefaultDay, calculateDayCost, calculateTripTotal } from '@/types/trip-planner';
-import type { DayItinerary, ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
-import UnifiedDayView from '../trip/UnifiedDayView';
-import BudgetSummaryPanel from '../trip/BudgetSummaryPanel';
-import MapPremiumTeaser from '../premium/MapPremiumTeaser';
+import type { DayItinerary, GeoLocation } from '@/lib/types/itinerary';
+import type { DayPlanningSectionProps } from './DayPlanningSection';
 import SaveTripModal from './SaveTripModal';
 import CustomizeCostsModal from './CustomizeCostsModal';
 import ShareTripModal from './ShareTripModal';
 import ExpensesList from './ExpensesList';
 import BudgetVsActual from './BudgetVsActual';
 import { WeatherCard } from './WeatherCard';
-import MapPanel from '../itinerary/MapPanel';
 import SavedLocationsModal from '../itinerary/SavedLocationsModal';
 import type { SavedLocation } from '@/lib/types/saved-location';
 import {
@@ -43,10 +27,23 @@ import {
   DropdownMenuSeparator,
 } from '../ui/DropdownMenu';
 import { getEffectiveCosts, hasCustomCosts, countCustomCosts } from '@/lib/utils/trip-costs';
-import { formatDayDateShort, formatDayDate } from '@/lib/utils/format-day-date';
+import { formatDayDate } from '@/lib/utils/format-day-date';
 import type { ExpenseDisplay } from '@/lib/validations/expense';
 import { exportTripToPDF } from '@/lib/utils/pdf-export';
 import { downloadICalendar } from '@/lib/utils/ical-export';
+
+// Cargado solo en cliente para evitar errores de hidratación SSR con DndContext
+const DayPlanningSection = dynamic<DayPlanningSectionProps>(
+  () => import('./DayPlanningSection'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="mt-4 py-12 text-center text-gray-400 animate-pulse">
+        Loading planner…
+      </div>
+    ),
+  }
+);
 
 // Import city data to get costs
 import { getCityById } from '@/data/cities';
@@ -90,87 +87,6 @@ interface TripViewProps {
   };
   isPremium?: boolean;
   packingLists?: PackingListProp[];
-}
-
-// Componente para tab de día que actúa como drop zone
-function DroppableDayTab({
-  day,
-  isActive,
-  currencySymbol,
-  locale,
-  costs,
-  onClick,
-}: {
-  day: DayPlan;
-  isActive: boolean;
-  currencySymbol: string;
-  locale: string;
-  costs: { accommodation: number; food: number; transport: number; activities: number };
-  onClick: () => void;
-}) {
-  const { setNodeRef, isOver } = useDroppable({ id: `tab-${day.dayNumber}` });
-  const dayCost = calculateDayCost(day, costs);
-
-  return (
-    <button
-      ref={setNodeRef}
-      onClick={onClick}
-      className={`px-4 py-3 rounded-lg flex-shrink-0 transition-all w-[110px] ${
-        isOver
-          ? 'bg-blue-100 border-2 border-blue-400 scale-105 shadow-md'
-          : isActive
-          ? 'bg-gray-900 text-white shadow-lg'
-          : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
-      }`}
-    >
-      <div className={`font-semibold text-sm truncate ${isOver ? 'text-blue-900' : ''}`}>
-        {day.date ? formatDayDateShort(day.date, locale) : `Day ${day.dayNumber}`}
-      </div>
-      {day.dayName && (
-        <div className={`text-xs mt-0.5 truncate ${
-          isOver ? 'text-blue-700' : isActive ? 'text-gray-300' : 'text-gray-500'
-        }`}>
-          {day.dayName}
-        </div>
-      )}
-      <div className={`text-xs mt-0.5 ${
-        isOver ? 'text-blue-700' : isActive ? 'text-gray-300' : 'text-gray-600'
-      }`}>
-        {currencySymbol}{dayCost.toFixed(0)}
-      </div>
-    </button>
-  );
-}
-
-// Overlay que se muestra mientras se arrastra
-function DragOverlayCard({
-  item,
-  currencySymbol,
-}: {
-  item: ItineraryItem;
-  currencySymbol: string;
-}) {
-  const categoryIcons: Record<string, string> = {
-    ACCOMMODATION: '🏨',
-    FOOD: '🍽️',
-    TRANSPORT: '🚕',
-    ACTIVITIES: '🎭',
-    SHOPPING: '🛍️',
-    OTHER: '📝',
-  };
-  const cost = (item.amount * item.visits / 100).toFixed(2);
-
-  return (
-    <div className="bg-white border-2 border-blue-400 rounded-lg p-4 shadow-2xl opacity-90 cursor-grabbing max-w-sm">
-      <div className="flex items-center gap-3">
-        <span className="text-xl">{categoryIcons[item.category] || '📝'}</span>
-        <span className="font-medium text-gray-900 flex-1 truncate">{item.name || '…'}</span>
-        <span className="font-semibold text-gray-900 text-sm whitespace-nowrap">
-          {currencySymbol}{cost}
-        </span>
-      </div>
-    </div>
-  );
 }
 
 export default function TripView({ trip, isPremium = false, packingLists }: TripViewProps) {
@@ -220,16 +136,6 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
   const [isReverseGeocoding, setIsReverseGeocoding] = useState(false);
   const [savedLocations, setSavedLocations] = useState<SavedLocation[]>(parsedState.savedLocations);
   const [showSavedLocationsModal, setShowSavedLocationsModal] = useState(false);
-  const [activeItem, setActiveItem] = useState<ItineraryItem | null>(null);
-  const [overDayNumber, setOverDayNumber] = useState<number | null>(null);
-
-  // DnD sensors
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
-
   // Get city data
   const city = getCityById(trip.cityId);
   if (!city) {
@@ -441,108 +347,6 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
       alert('Failed to save changes');
     } finally {
       setIsSaving(false);
-    }
-  };
-
-  // DnD handlers
-  const handleDragStart = (event: DragStartEvent) => {
-    const { active } = event;
-    for (const day of days) {
-      const found = (day.customItems as ItineraryItem[]).find(i => i.id === active.id);
-      if (found) {
-        setActiveItem(found);
-        break;
-      }
-    }
-  };
-
-  const handleDragOver = (event: DragOverEvent) => {
-    const { over } = event;
-    if (!over) {
-      setOverDayNumber(null);
-      return;
-    }
-    const overId = String(over.id);
-    if (overId.startsWith('tab-')) {
-      setOverDayNumber(parseInt(overId.replace('tab-', ''), 10));
-    } else if (overId.startsWith('day-')) {
-      setOverDayNumber(parseInt(overId.replace('day-', ''), 10));
-    } else {
-      // over.id is an item id — find which day it belongs to
-      for (const day of days) {
-        if ((day.customItems as ItineraryItem[]).some(i => i.id === overId)) {
-          setOverDayNumber(day.dayNumber);
-          break;
-        }
-      }
-    }
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    setActiveItem(null);
-    setOverDayNumber(null);
-
-    if (!over) return;
-
-    const activeId = String(active.id);
-    const overId = String(over.id);
-
-    // Find which day the dragged item is from
-    const sourceDayIdx = days.findIndex(d =>
-      (d.customItems as ItineraryItem[]).some(i => i.id === activeId)
-    );
-    if (sourceDayIdx === -1) return;
-    const sourceDay = days[sourceDayIdx];
-
-    // Determine target day number
-    let targetDayNumber: number;
-    if (overId.startsWith('tab-')) {
-      targetDayNumber = parseInt(overId.replace('tab-', ''), 10);
-    } else if (overId.startsWith('day-')) {
-      targetDayNumber = parseInt(overId.replace('day-', ''), 10);
-    } else {
-      // over.id is an item id — find which day it belongs to
-      let found = false;
-      targetDayNumber = sourceDay.dayNumber;
-      for (const day of days) {
-        if ((day.customItems as ItineraryItem[]).some(i => i.id === overId)) {
-          targetDayNumber = day.dayNumber;
-          found = true;
-          break;
-        }
-      }
-      if (!found) return;
-    }
-
-    const targetDayIdx = days.findIndex(d => d.dayNumber === targetDayNumber);
-    if (targetDayIdx === -1) return;
-
-    if (sourceDayIdx === targetDayIdx) {
-      // Same-day reorder
-      const currentItems = [...(sourceDay.customItems as ItineraryItem[])];
-      const oldIndex = currentItems.findIndex(i => i.id === activeId);
-      const newIndex = currentItems.findIndex(i => i.id === overId);
-      if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
-      const reordered = arrayMove(currentItems, oldIndex, newIndex);
-      setDays(days.map(d =>
-        d.dayNumber === sourceDay.dayNumber ? { ...d, customItems: reordered } : d
-      ));
-    } else {
-      // Cross-day move
-      const itemToMove = (sourceDay.customItems as ItineraryItem[]).find(i => i.id === activeId);
-      if (!itemToMove) return;
-      const itemCopy = { ...itemToMove };
-      setDays(days.map(d => {
-        if (d.dayNumber === sourceDay.dayNumber) {
-          return { ...d, customItems: (d.customItems as ItineraryItem[]).filter(i => i.id !== activeId) };
-        }
-        if (d.dayNumber === targetDayNumber) {
-          return { ...d, customItems: [...(d.customItems as ItineraryItem[]), itemCopy] };
-        }
-        return d;
-      }));
-      setActiveDay(targetDayNumber);
     }
   };
 
@@ -921,142 +725,29 @@ export default function TripView({ trip, isPremium = false, packingLists }: Trip
           <span>📅</span>
           <span>{tTrips('dailyPlanning')}</span>
         </summary>
-        <DndContext
-          sensors={sensors}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-        <div className="mt-4 space-y-4">
-          {/* Day Tabs — cada tab es un drop zone */}
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            {days.map(day => (
-              <DroppableDayTab
-                key={day.dayNumber}
-                day={day}
-                isActive={activeDay === day.dayNumber}
-                currencySymbol={city.currencySymbol}
-                locale={locale}
-                costs={costs}
-                onClick={() => setActiveDay(day.dayNumber)}
-              />
-            ))}
-            {days.length < 30 && (
-              <button
-                onClick={addDay}
-                className="px-4 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 flex-shrink-0 font-semibold text-sm"
-              >
-                + Add Day
-              </button>
-            )}
-          </div>
-
-          {/* Unified Day View: Activities + Map/Budget sidebar */}
-          {activeD && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left: Activities (2/3 width on desktop) */}
-              <div className="lg:col-span-2">
-                <UnifiedDayView
-                  day={activeD}
-                  city={city}
-                  costs={costs}
-                  currencySymbol={city.currencySymbol}
-                  isPremium={isPremium}
-                  totalDays={days.length}
-                  isDragContext={true}
-                  savedLocations={savedLocations}
-                  cityBounds={{
-                    north: city.latitude + 0.1,
-                    south: city.latitude - 0.1,
-                    east: city.longitude + 0.1,
-                    west: city.longitude - 0.1,
-                  }}
-                  onUpdate={updates => updateDay(activeD.dayNumber, updates)}
-                  onRemove={() => removeDay(activeD.dayNumber)}
-                  onDuplicate={() => duplicateDay(activeD.dayNumber)}
-                  highlightedItemId={highlightedItemId}
-                  onRequestMapPick={isPremium ? handleRequestMapPick : undefined}
-                />
-              </div>
-
-              {/* Right: Map + Budget Summary (1/3 width on desktop) */}
-              <div className="relative z-0 lg:sticky lg:top-4 lg:self-start space-y-4">
-                {/* Map Panel or Premium Teaser */}
-                <div id="itinerary-map">
-                  {isPremium ? (
-                    <>
-                      {/* Manage Saved Locations */}
-                      <button
-                        onClick={() => setShowSavedLocationsModal(true)}
-                        className="w-full mb-3 px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
-                      >
-                        <span>📍</span>
-                        <span>{tTrips('manageSavedLocations')}</span>
-                        {savedLocations.length > 0 && (
-                          <span className="text-xs px-2 py-0.5 bg-blue-200 text-blue-800 rounded-full font-medium">
-                            {savedLocations.length}
-                          </span>
-                        )}
-                      </button>
-
-                      {pickingItemId && (
-                        <div className="mb-3 p-3 bg-blue-600 text-white rounded-lg shadow-lg animate-pulse text-sm">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span>👇</span>
-                              <span className="font-bold">Click on the map</span>
-                            </div>
-                            <button
-                              onClick={() => setPickingItemId(undefined)}
-                              className="px-2 py-1 bg-white text-blue-600 text-xs font-medium rounded hover:bg-blue-50"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                          {isReverseGeocoding && (
-                            <div className="mt-2 flex items-center gap-2 text-xs">
-                              <div className="animate-spin">⏳</div>
-                              <span>Getting address...</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      <MapPanel
-                        items={(activeD.customItems as ItineraryItem[])}
-                        cityCenter={[city.latitude, city.longitude]}
-                        onMarkerClick={handleMarkerClick}
-                        defaultCollapsed={false}
-                        onMapClick={handleMapClick}
-                        pickingMode={!!pickingItemId}
-                      />
-                    </>
-                  ) : (
-                    <MapPremiumTeaser />
-                  )}
-                </div>
-
-                {/* Budget Summary (hidden on mobile, shown in sidebar on desktop) */}
-                <div className="hidden lg:block">
-                  <BudgetSummaryPanel
-                    items={(activeD.customItems as ItineraryItem[])}
-                    baseCosts={costs}
-                    includeBase={activeD.includeBase}
-                    included={activeD.included}
-                    currencySymbol={city.currencySymbol}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* DragOverlay — tarjeta flotante durante el arrastre */}
-        <DragOverlay>
-          {activeItem ? (
-            <DragOverlayCard item={activeItem} currencySymbol={city.currencySymbol} />
-          ) : null}
-        </DragOverlay>
-        </DndContext>
+        <DayPlanningSection
+          days={days}
+          setDays={setDays}
+          activeDay={activeDay}
+          setActiveDay={setActiveDay}
+          city={city}
+          costs={costs}
+          locale={locale}
+          isPremium={isPremium}
+          savedLocations={savedLocations}
+          highlightedItemId={highlightedItemId}
+          pickingItemId={pickingItemId}
+          setPickingItemId={setPickingItemId}
+          isReverseGeocoding={isReverseGeocoding}
+          onAddDay={addDay}
+          onUpdateDay={updateDay}
+          onRemoveDay={removeDay}
+          onDuplicateDay={duplicateDay}
+          onRequestMapPick={handleRequestMapPick}
+          onMarkerClick={handleMarkerClick}
+          onMapClick={handleMapClick}
+          onShowSavedLocations={() => setShowSavedLocationsModal(true)}
+        />
       </details>
 
       {/* Expenses & Tracking Accordion */}
