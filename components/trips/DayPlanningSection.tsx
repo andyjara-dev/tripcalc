@@ -27,6 +27,26 @@ import MapPremiumTeaser from '../premium/MapPremiumTeaser';
 import BudgetSummaryPanel from '../trip/BudgetSummaryPanel';
 import { formatDayDateShort } from '@/lib/utils/format-day-date';
 
+// Desplaza la hora de un item 15 min hacia adelante hasta no chocar con ningún item existente
+function resolveTimeConflict(item: ItineraryItem, targetItems: ItineraryItem[]): ItineraryItem {
+  if (!item.timeSlot?.startTime) return item;
+
+  const existingTimes = new Set(
+    targetItems.filter(i => i.timeSlot?.startTime).map(i => i.timeSlot!.startTime!)
+  );
+
+  let time = item.timeSlot.startTime;
+  let attempts = 0;
+  while (existingTimes.has(time) && attempts < 96) {
+    const [h, m] = time.split(':').map(Number);
+    const totalMin = (h * 60 + m + 15) % (24 * 60);
+    time = `${String(Math.floor(totalMin / 60)).padStart(2, '0')}:${String(totalMin % 60).padStart(2, '0')}`;
+    attempts++;
+  }
+
+  return { ...item, timeSlot: { ...item.timeSlot, startTime: time } };
+}
+
 // --- DroppableDayTab ---
 
 function DroppableDayTab({
@@ -218,7 +238,11 @@ export default function DayPlanningSection({
     if (targetDayIdx === -1) return;
 
     if (sourceDayIdx === targetDayIdx) {
-      // Same-day reorder
+      // Si el item tiene hora asignada, el orden lo define el tiempo — no reordenar
+      const dragged = (sourceDay.customItems as ItineraryItem[]).find(i => i.id === activeId);
+      if (isPremium && dragged?.timeSlot?.startTime) return;
+
+      // Same-day reorder (solo para items sin hora o usuarios no premium)
       const currentItems = [...(sourceDay.customItems as ItineraryItem[])];
       const oldIndex = currentItems.findIndex(i => i.id === activeId);
       const newIndex = currentItems.findIndex(i => i.id === overId);
@@ -228,10 +252,13 @@ export default function DayPlanningSection({
         d.dayNumber === sourceDay.dayNumber ? { ...d, customItems: reordered } : d
       ));
     } else {
-      // Cross-day move — preserves all item properties
+      // Cross-day move — siempre permitido, mantiene la hora y resuelve conflictos
       const itemToMove = (sourceDay.customItems as ItineraryItem[]).find(i => i.id === activeId);
       if (!itemToMove) return;
-      const itemCopy = { ...itemToMove };
+      const targetItems = (days[targetDayIdx].customItems as ItineraryItem[]);
+      const itemCopy = isPremium && itemToMove.timeSlot?.startTime
+        ? resolveTimeConflict({ ...itemToMove }, targetItems)
+        : { ...itemToMove };
       setDays(days.map(d => {
         if (d.dayNumber === sourceDay.dayNumber) {
           return { ...d, customItems: (d.customItems as ItineraryItem[]).filter(i => i.id !== activeId) };

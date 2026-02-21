@@ -49,8 +49,9 @@ export default function UnifiedActivityCard({
   const tActivity = useTranslations('activity');
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Items con startTime no se reordenan en same-day (el tiempo los ordena)
-  const isSortDisabled = !isDraggable || (isPremium && !!item.timeSlot?.startTime);
+  // Items con startTime mantienen orden temporal dentro del día,
+  // pero sí se pueden arrastrar a otro día
+  const hasTimeOrder = isPremium && !!item.timeSlot?.startTime;
 
   const {
     attributes,
@@ -61,7 +62,7 @@ export default function UnifiedActivityCard({
     isDragging,
   } = useSortable({
     id: item.id,
-    disabled: isSortDisabled,
+    disabled: !isDraggable,
   });
 
   const style = {
@@ -116,15 +117,17 @@ export default function UnifiedActivityCard({
       {/* Main row: drag handle, number, name, category, cost, actions */}
       <div className="flex items-center gap-3">
         {/* Drag handle */}
-        {isDraggable && !isSortDisabled ? (
+        {isDraggable ? (
           <div
             {...listeners}
-            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 flex-shrink-0 touch-none p-1 -ml-1"
+            className={`cursor-grab active:cursor-grabbing flex-shrink-0 touch-none p-1 -ml-1 ${
+              hasTimeOrder ? 'text-blue-300 hover:text-blue-500' : 'text-gray-400 hover:text-gray-600'
+            }`}
+            title={hasTimeOrder
+              ? 'Drag to move to another day (within-day order follows time)'
+              : 'Drag to reorder or move to another day'
+            }
           >
-            <GripVertical size={18} />
-          </div>
-        ) : isDraggable ? (
-          <div className="flex-shrink-0 p-1 -ml-1 text-gray-200" title="Reorder disabled (time-based order)">
             <GripVertical size={18} />
           </div>
         ) : null}
