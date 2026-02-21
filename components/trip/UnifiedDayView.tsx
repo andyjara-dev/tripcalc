@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { nanoid } from 'nanoid';
+import { useDroppable } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import type { CityData } from '@/data/cities';
 import type { DayPlan, ItemCategory } from '@/types/trip-planner';
 import { calculateDayCost } from '@/types/trip-planner';
@@ -26,6 +28,7 @@ interface UnifiedDayViewProps {
   currencySymbol: string;
   isPremium: boolean;
   totalDays: number;
+  isDragContext?: boolean;
   savedLocations?: SavedLocation[];
   cityBounds?: CityBounds;
   onUpdate: (updates: Partial<DayPlan>) => void;
@@ -42,6 +45,7 @@ export default function UnifiedDayView({
   currencySymbol,
   isPremium,
   totalDays,
+  isDragContext = false,
   savedLocations = [],
   cityBounds,
   onUpdate,
@@ -54,6 +58,10 @@ export default function UnifiedDayView({
   const tCalc = useTranslations('calculator');
   const [isEditingDate, setIsEditingDate] = useState(false);
   const [showAddMenu, setShowAddMenu] = useState(false);
+
+  const { setNodeRef: setDropRef, isOver } = useDroppable({
+    id: `day-${day.dayNumber}`,
+  });
 
   const items = day.customItems as ItineraryItem[];
   const sortedItems = isPremium ? sortItemsByTime(items) : items;
@@ -273,39 +281,58 @@ export default function UnifiedDayView({
       </div>
 
       {/* Activity Cards */}
-      {sortedItems.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
-          <div className="text-3xl mb-2">📝</div>
-          <p className="font-medium text-gray-900">{t('emptyDay')}</p>
-          <p className="text-sm mt-1">{t('emptyDayHint')}</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {sortedItems.map((item, index) => (
-            <div key={item.id}>
-              <UnifiedActivityCard
-                item={item}
-                number={index + 1}
-                currencySymbol={currencySymbol}
-                isPremium={isPremium}
-                cityBounds={cityBounds}
-                savedLocations={savedLocations}
-                onUpdate={(updates) => updateActivity(item.id, updates)}
-                onDelete={() => deleteActivity(item.id)}
-                isHighlighted={item.id === highlightedItemId}
-                onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
-              />
-              {/* Routing segment between consecutive activities (premium only) */}
-              {isPremium && index < sortedItems.length - 1 && (
-                <RoutingSegment
-                  from={item}
-                  to={sortedItems[index + 1]}
-                />
+      <SortableContext items={sortedItems.map(i => i.id)} strategy={verticalListSortingStrategy}>
+        <div
+          ref={setDropRef}
+          className={`transition-all rounded-lg ${
+            isOver && isDragContext ? 'bg-blue-50 ring-2 ring-blue-300 ring-dashed p-2' : ''
+          }`}
+        >
+          {sortedItems.length === 0 ? (
+            <div className={`text-center py-8 ${isOver && isDragContext ? 'text-blue-500' : 'text-gray-500'}`}>
+              {isOver && isDragContext ? (
+                <>
+                  <div className="text-3xl mb-2">📥</div>
+                  <p className="font-medium text-blue-700">Drop here</p>
+                </>
+              ) : (
+                <>
+                  <div className="text-3xl mb-2">📝</div>
+                  <p className="font-medium text-gray-900">{t('emptyDay')}</p>
+                  <p className="text-sm mt-1">{t('emptyDayHint')}</p>
+                </>
               )}
             </div>
-          ))}
+          ) : (
+            <div className="space-y-2">
+              {sortedItems.map((item, index) => (
+                <div key={item.id}>
+                  <UnifiedActivityCard
+                    item={item}
+                    number={index + 1}
+                    currencySymbol={currencySymbol}
+                    isPremium={isPremium}
+                    isDraggable={isDragContext}
+                    cityBounds={cityBounds}
+                    savedLocations={savedLocations}
+                    onUpdate={(updates) => updateActivity(item.id, updates)}
+                    onDelete={() => deleteActivity(item.id)}
+                    isHighlighted={item.id === highlightedItemId}
+                    onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
+                  />
+                  {/* Routing segment between consecutive activities (premium only) */}
+                  {isPremium && index < sortedItems.length - 1 && (
+                    <RoutingSegment
+                      from={item}
+                      to={sortedItems[index + 1]}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </SortableContext>
 
       {/* Add Activity Button */}
       <div className="relative">

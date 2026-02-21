@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { GripVertical } from 'lucide-react';
 import type { ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
 import type { SavedLocation } from '@/lib/types/saved-location';
 import type { CityBounds } from '@/lib/services/geocoding';
@@ -11,6 +14,7 @@ interface UnifiedActivityCardProps {
   number: number;
   currencySymbol: string;
   isPremium: boolean;
+  isDraggable?: boolean;
   cityBounds?: CityBounds;
   savedLocations?: SavedLocation[];
   onUpdate: (updates: Partial<ItineraryItem>) => void;
@@ -33,6 +37,7 @@ export default function UnifiedActivityCard({
   number,
   currencySymbol,
   isPremium,
+  isDraggable = false,
   cityBounds,
   savedLocations = [],
   onUpdate,
@@ -43,6 +48,26 @@ export default function UnifiedActivityCard({
   const t = useTranslations('unifiedView');
   const tActivity = useTranslations('activity');
   const [isExpanded, setIsExpanded] = useState(false);
+
+  // Items con startTime no se reordenan en same-day (el tiempo los ordena)
+  const isSortDisabled = !isDraggable || (isPremium && !!item.timeSlot?.startTime);
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: item.id,
+    disabled: isSortDisabled,
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const handleTimeChange = (field: 'startTime' | 'endTime', value: string) => {
     onUpdate({
@@ -76,13 +101,34 @@ export default function UnifiedActivityCard({
 
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
       id={`activity-${item.id}`}
       className={`bg-white border-2 rounded-lg p-4 shadow-sm transition-all ${
-        isHighlighted ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+        isDragging
+          ? 'opacity-40 scale-95 border-blue-400'
+          : isHighlighted
+          ? 'border-blue-500 ring-2 ring-blue-200'
+          : 'border-gray-200 hover:border-gray-300'
       }`}
     >
-      {/* Main row: number, name, category, cost, actions */}
+      {/* Main row: drag handle, number, name, category, cost, actions */}
       <div className="flex items-center gap-3">
+        {/* Drag handle */}
+        {isDraggable && !isSortDisabled ? (
+          <div
+            {...listeners}
+            className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 flex-shrink-0 touch-none p-1 -ml-1"
+          >
+            <GripVertical size={18} />
+          </div>
+        ) : isDraggable ? (
+          <div className="flex-shrink-0 p-1 -ml-1 text-gray-200" title="Reorder disabled (time-based order)">
+            <GripVertical size={18} />
+          </div>
+        ) : null}
+
         {/* Number badge */}
         <div className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0">
           {number}
