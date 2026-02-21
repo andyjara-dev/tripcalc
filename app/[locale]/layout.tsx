@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -100,6 +101,20 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-WTZ5R8LTTP"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-WTZ5R8LTTP');
+          `}
+        </Script>
+      </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <ServiceWorkerRegistration />
         <SessionProvider session={session}>

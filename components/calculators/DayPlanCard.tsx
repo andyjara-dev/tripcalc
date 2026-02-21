@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { nanoid } from 'nanoid';
+import { formatDayDate } from '@/lib/utils/format-day-date';
 import type { CityData } from '@/data/cities';
 import type { DayPlan, TripStyle, CustomItemLocal, ItemCategory } from '@/types/trip-planner';
 import { calculateDayCost } from '@/types/trip-planner';
@@ -35,6 +36,7 @@ export default function DayPlanCard({
   onDuplicate,
 }: DayPlanCardProps) {
   const t = useTranslations('calculator');
+  const locale = useLocale();
   const [isEditingDate, setIsEditingDate] = useState(false);
 
   const toggleCategory = (category: keyof DayPlan['included']) => {
@@ -181,7 +183,7 @@ export default function DayPlanCard({
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             <h3 className="text-2xl font-bold text-gray-900">
-              {day.date || `Day ${day.dayNumber}`}
+              {day.date ? formatDayDate(day.date, locale) : `Day ${day.dayNumber}`}
             </h3>
             {!day.date && (
               <button
