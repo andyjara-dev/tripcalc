@@ -76,22 +76,21 @@ function buildDescription(tags: Record<string, string>, category: NearbyCategory
     case 'cafe':
     case 'bar': {
       // Tipo de cocina: "italian;pizza" → "Italian, Pizza"
-      const cuisine = tags.cuisine;
-      if (cuisine) {
-        const formatted = cuisine
+      if (tags.cuisine) {
+        const formatted = tags.cuisine
           .split(';')
           .map(c => capitalize(c.trim().replace(/_/g, ' ')))
           .join(', ');
         parts.push(formatted);
       }
       // Dieta
-      if (tags['diet:vegan'] === 'only') {
-        parts.push('🌱 Vegan');
-      } else if (tags['diet:vegetarian'] === 'only') {
-        parts.push('🌱 Vegetarian');
-      } else if (tags['diet:vegetarian'] === 'yes') {
-        parts.push('🌱 Veg options');
-      }
+      if (tags['diet:vegan'] === 'only') parts.push('🌱 Vegan');
+      else if (tags['diet:vegetarian'] === 'only') parts.push('🌱 Vegetarian');
+      else if (tags['diet:vegetarian'] === 'yes') parts.push('🌱 Veg options');
+      // Servicios adicionales
+      if (tags.takeaway === 'yes' || tags.takeaway === 'only') parts.push('📦 Takeaway');
+      if (tags.delivery === 'yes') parts.push('🛵 Delivery');
+      if (tags.outdoor_seating === 'yes') parts.push('🪑 Outdoor seating');
       break;
     }
 
@@ -100,43 +99,57 @@ function buildDescription(tags: Record<string, string>, category: NearbyCategory
       const stars = tags.stars || tags['tourism:stars'];
       if (stars) {
         const n = parseInt(stars, 10);
-        if (!isNaN(n) && n > 0 && n <= 5) {
-          parts.push('⭐'.repeat(n));
-        }
+        if (!isNaN(n) && n > 0 && n <= 5) parts.push('⭐'.repeat(n));
       }
+      // Habitaciones / WiFi
+      if (tags.rooms) parts.push(`${tags.rooms} rooms`);
+      if (tags.internet_access === 'wlan' || tags.wifi === 'yes') parts.push('📶 WiFi');
       break;
     }
 
     case 'museum':
-    case 'attraction':
-    case 'viewpoint': {
+    case 'attraction': {
       // Tarifa de entrada
       const fee = tags.fee;
-      if (fee === 'no' || fee === 'free') {
-        parts.push('🆓 Free');
-      } else if (fee === 'yes') {
-        parts.push('🎟️ Entrance fee');
-      }
-      // Descripción corta (preferir inglés, fallback genérico)
+      if (fee === 'no' || fee === 'free') parts.push('🆓 Free');
+      else if (fee === 'yes') parts.push('🎟️ Entrance fee');
+      // Tipo histórico o de obra
+      if (tags.artwork_type) parts.push(capitalize(tags.artwork_type.replace(/_/g, ' ')));
+      else if (tags.historic) parts.push(capitalize(tags.historic.replace(/_/g, ' ')));
+      // Descripción corta
       const desc = tags['description:en'] || tags['description:es'] || tags.description;
-      if (desc && desc.length <= 80) {
-        parts.push(desc);
-      }
+      if (desc && desc.length <= 80) parts.push(desc);
+      break;
+    }
+
+    case 'viewpoint': {
+      const fee = tags.fee;
+      if (fee === 'no' || fee === 'free') parts.push('🆓 Free');
+      else if (fee === 'yes') parts.push('🎟️ Entrance fee');
+      // Elevación si disponible
+      if (tags.ele) parts.push(`${tags.ele}m elevation`);
+      const desc = tags['description:en'] || tags['description:es'] || tags.description;
+      if (desc && desc.length <= 80) parts.push(desc);
       break;
     }
 
     case 'park': {
-      const desc = tags['description:en'] || tags['description:es'] || tags.description;
-      if (desc && desc.length <= 80) {
-        parts.push(desc);
+      // Deportes disponibles: "football;tennis" → "Football, Tennis"
+      if (tags.sport) {
+        const sports = tags.sport
+          .split(';')
+          .map(s => capitalize(s.trim().replace(/_/g, ' ')))
+          .join(', ');
+        parts.push(sports);
       }
+      const desc = tags['description:en'] || tags['description:es'] || tags.description;
+      if (desc && desc.length <= 80) parts.push(desc);
       break;
     }
 
     case 'pharmacy': {
-      if (tags.dispensing === 'yes') {
-        parts.push('💊 Dispensary');
-      }
+      if (tags.dispensing === 'yes') parts.push('💊 Dispensary');
+      if (tags.opening_hours === '24/7') parts.push('🕐 24h');
       break;
     }
 
@@ -146,11 +159,14 @@ function buildDescription(tags: Record<string, string>, category: NearbyCategory
       } else {
         parts.push('Self-service / Drop-off');
       }
-      if (tags['service:laundry:self_service'] === 'yes') {
-        parts.push('🪙 Coin-op');
-      }
+      if (tags['service:laundry:self_service'] === 'yes') parts.push('🪙 Coin-op');
       break;
     }
+  }
+
+  // Accesibilidad: aplica a todas las categorías
+  if (tags.wheelchair === 'yes' || tags.wheelchair === 'designated') {
+    parts.push('♿');
   }
 
   return parts.length > 0 ? parts.join(' · ') : undefined;
