@@ -5,16 +5,40 @@ import { useTranslations } from 'next-intl';
 import { nanoid } from 'nanoid';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import dynamic from 'next/dynamic';
 import type { CityData } from '@/data/cities';
 import type { DayPlan, ItemCategory } from '@/types/trip-planner';
 import { calculateDayCost } from '@/types/trip-planner';
-import type { ItineraryItem } from '@/lib/types/itinerary';
+import type { ItineraryItem, GeoLocation } from '@/lib/types/itinerary';
 import { sortItemsByTime } from '@/lib/types/itinerary';
 import type { SavedLocation } from '@/lib/types/saved-location';
 import type { CityBounds } from '@/lib/services/geocoding';
+import type { NearbyPlace, NearbyCategory } from '@/lib/types/nearby';
 import UnifiedActivityCard from './UnifiedActivityCard';
 import RoutingSegment from '../itinerary/RoutingSegment';
 import { BudgetBar } from './BudgetSummaryPanel';
+
+const NearbySearchModal = dynamic(() => import('../itinerary/NearbySearchModal'), { ssr: false });
+
+/** Mapeo de categoría nearby → categoría de item de itinerario */
+function nearbyToItemCategory(nearbyCategory: NearbyCategory): ItineraryItem['category'] {
+  switch (nearbyCategory) {
+    case 'museum':
+    case 'attraction':
+    case 'viewpoint':
+    case 'park':
+      return 'ACTIVITIES';
+    case 'restaurant':
+    case 'cafe':
+    case 'bar':
+      return 'FOOD';
+    case 'hotel':
+      return 'ACCOMMODATION';
+    case 'pharmacy':
+    default:
+      return 'OTHER';
+  }
+}
 
 interface UnifiedDayViewProps {
   day: DayPlan;
@@ -58,6 +82,7 @@ export default function UnifiedDayView({
   const tCalc = useTranslations('calculator');
   const [isEditingDate, setIsEditingDate] = useState(false);
   const [showAddMenu, setShowAddMenu] = useState(false);
+  const [nearbySearchLocation, setNearbySearchLocation] = useState<GeoLocation | null>(null);
 
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `day-${day.dayNumber}`,
@@ -124,6 +149,24 @@ export default function UnifiedDayView({
         customItems: day.customItems.filter((item) => item.id !== id),
       });
     }
+  };
+
+  // Agregar lugar cercano al itinerario
+  const addNearbyPlace = (place: NearbyPlace) => {
+    const newItem: ItineraryItem = {
+      id: nanoid(),
+      name: place.name,
+      category: nearbyToItemCategory(place.category),
+      amount: 0,
+      visits: 1,
+      isOneTime: false,
+      notes: place.openingHours ? `Hours: ${place.openingHours}` : '',
+      timeSlot: isPremium ? { startTime: undefined, endTime: undefined } : undefined,
+      location: { lat: place.lat, lon: place.lon, address: place.address || place.name },
+      bookingRequired: false,
+      bookingUrl: place.website || undefined,
+    };
+    onUpdate({ customItems: [...day.customItems, newItem] });
   };
 
   // Category sections config
@@ -319,6 +362,9 @@ export default function UnifiedDayView({
                     onDelete={() => deleteActivity(item.id)}
                     isHighlighted={item.id === highlightedItemId}
                     onRequestMapPick={onRequestMapPick ? () => onRequestMapPick(item.id) : undefined}
+                    onSearchNearby={isPremium && item.location
+                      ? () => setNearbySearchLocation(item.location!)
+                      : undefined}
                   />
                   {/* Routing segment between consecutive activities (premium only) */}
                   {isPremium && index < sortedItems.length - 1 && (
@@ -382,6 +428,19 @@ export default function UnifiedDayView({
           {currencySymbol}{dayCost.toFixed(2)}
         </span>
       </div>
+
+      {/* Modal de búsqueda de lugares cercanos */}
+      {nearbySearchLocation && (
+        <NearbySearchModal
+          isOpen={nearbySearchLocation !== null}
+          onClose={() => setNearbySearchLocation(null)}
+          centerLocation={nearbySearchLocation}
+          onAddToItinerary={(place) => {
+            addNearbyPlace(place);
+            // El modal NO se cierra automáticamente para poder agregar varios
+          }}
+        />
+      )}
     </div>
   );
 }

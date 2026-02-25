@@ -1188,7 +1188,33 @@
     "transport": "Transport",
     "accommodation": "Accommodation",
     "shopping": "Shopping",
-    "other": "Other"
+    "other": "Other",
+    "searchNearby": "Search Nearby",
+    "searchNearbyHint": "Find places near this location"
+  },
+  "nearby": {
+    "title": "Nearby Places",
+    "subtitle": "Near: {address}",
+    "categories": {
+      "museum": "Museums",
+      "restaurant": "Restaurants",
+      "cafe": "Cafés",
+      "bar": "Bars & Pubs",
+      "attraction": "Attractions",
+      "park": "Parks",
+      "viewpoint": "Viewpoints",
+      "pharmacy": "Pharmacies",
+      "hotel": "Hotels"
+    },
+    "radius": "Search radius",
+    "loading": "Searching...",
+    "noResults": "No places found. Try a larger radius.",
+    "addButton": "Add to itinerary",
+    "added": "Added!",
+    "away": "{distance} away",
+    "dataSource": "© OpenStreetMap contributors",
+    "error": "Search failed. Please try again.",
+    "selectCategory": "Select a category to search"
   },
   "unifiedView": {
     "budgetBreakdown": "Budget Breakdown",

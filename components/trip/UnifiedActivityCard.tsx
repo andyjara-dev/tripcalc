@@ -21,6 +21,7 @@ interface UnifiedActivityCardProps {
   onDelete: () => void;
   isHighlighted?: boolean;
   onRequestMapPick?: () => void;
+  onSearchNearby?: () => void;
 }
 
 const categoryIcons: Record<string, string> = {
@@ -44,6 +45,7 @@ export default function UnifiedActivityCard({
   onDelete,
   isHighlighted = false,
   onRequestMapPick,
+  onSearchNearby,
 }: UnifiedActivityCardProps) {
   const t = useTranslations('unifiedView');
   const tActivity = useTranslations('activity');
@@ -328,6 +330,17 @@ export default function UnifiedActivityCard({
                 onUpdate={handleManualUpdate}
                 onSavedLocationSelect={handleSavedLocationSelect}
               />
+              {/* Buscar cerca: solo si tiene ubicación */}
+              {item.location && onSearchNearby && (
+                <button
+                  type="button"
+                  onClick={onSearchNearby}
+                  className="mt-2 w-full px-3 py-2 text-sm font-medium text-purple-700 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 flex items-center justify-center gap-2 transition-colors"
+                >
+                  <span>🔍</span>
+                  <span>{tActivity('searchNearby')}</span>
+                </button>
+              )}
             </div>
           ) : (
             <div className="relative">

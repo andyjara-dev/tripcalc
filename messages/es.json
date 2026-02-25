@@ -1211,7 +1211,33 @@
     "transport": "Transporte",
     "accommodation": "Alojamiento",
     "shopping": "Compras",
-    "other": "Otro"
+    "other": "Otro",
+    "searchNearby": "Buscar cerca",
+    "searchNearbyHint": "Encontrar lugares cerca de esta ubicación"
+  },
+  "nearby": {
+    "title": "Lugares Cercanos",
+    "subtitle": "Cerca de: {address}",
+    "categories": {
+      "museum": "Museos",
+      "restaurant": "Restaurantes",
+      "cafe": "Cafés",
+      "bar": "Bares",
+      "attraction": "Atracciones",
+      "park": "Parques",
+      "viewpoint": "Miradores",
+      "pharmacy": "Farmacias",
+      "hotel": "Hoteles"
+    },
+    "radius": "Radio de búsqueda",
+    "loading": "Buscando...",
+    "noResults": "No se encontraron lugares. Prueba un radio mayor.",
+    "addButton": "Agregar al itinerario",
+    "added": "Agregado!",
+    "away": "a {distance}",
+    "dataSource": "© Colaboradores de OpenStreetMap",
+    "error": "Búsqueda fallida. Por favor intenta de nuevo.",
+    "selectCategory": "Selecciona una categoría para buscar"
   },
   "unifiedView": {
     "budgetBreakdown": "Desglose de Presupuesto",
