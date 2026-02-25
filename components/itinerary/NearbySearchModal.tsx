@@ -288,6 +288,9 @@ export default function NearbySearchModal({
                             <span className="text-base">{CATEGORY_ICONS[place.category]}</span>
                             <span className="font-semibold text-gray-900 truncate">{place.name}</span>
                           </div>
+                          {place.description && (
+                            <p className="text-xs text-purple-700 font-medium mt-0.5 truncate">{place.description}</p>
+                          )}
                           {place.address && (
                             <p className="text-xs text-gray-500 mt-0.5 truncate">{place.address}</p>
                           )}

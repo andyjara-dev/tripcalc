@@ -7,7 +7,8 @@ export type NearbyCategory =
   | 'park'
   | 'viewpoint'
   | 'pharmacy'
-  | 'hotel';
+  | 'hotel'
+  | 'laundry';
 
 export const NEARBY_CATEGORIES: NearbyCategory[] = [
   'museum',
@@ -19,6 +20,7 @@ export const NEARBY_CATEGORIES: NearbyCategory[] = [
   'viewpoint',
   'pharmacy',
   'hotel',
+  'laundry',
 ];
 
 export const CATEGORY_ICONS: Record<NearbyCategory, string> = {
@@ -31,6 +33,7 @@ export const CATEGORY_ICONS: Record<NearbyCategory, string> = {
   viewpoint: '👁️',
   pharmacy: '💊',
   hotel: '🏨',
+  laundry: '👕',
 };
 
 export interface NearbyPlace {
@@ -40,6 +43,7 @@ export interface NearbyPlace {
   lat: number;
   lon: number;
   address?: string;    // del tag addr:street + addr:housenumber
+  description?: string; // info útil: cocina, estrellas, entrada gratis, etc.
   website?: string;    // tag website
   openingHours?: string; // tag opening_hours
   distance?: number;   // metros desde el centro de búsqueda

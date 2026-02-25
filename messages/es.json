@@ -1227,7 +1227,8 @@
       "park": "Parques",
       "viewpoint": "Miradores",
       "pharmacy": "Farmacias",
-      "hotel": "Hoteles"
+      "hotel": "Hoteles",
+      "laundry": "Lavanderías"
     },
     "radius": "Radio de búsqueda",
     "loading": "Buscando...",

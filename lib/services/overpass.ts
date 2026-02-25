@@ -13,6 +13,7 @@ const CATEGORY_TAGS: Record<NearbyCategory, string[]> = {
   viewpoint: ['["tourism"="viewpoint"]'],
   pharmacy: ['["amenity"="pharmacy"]'],
   hotel: ['["tourism"="hotel"]'],
+  laundry: ['["amenity"="laundry"]', '["shop"="laundry"]', '["shop"="dry_cleaning"]'],
 };
 
 /**
@@ -54,6 +55,108 @@ out center 20;`;
 }
 
 /**
+ * Capitaliza la primera letra de cada palabra
+ */
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+}
+
+/**
+ * Construye una descripción útil a partir de los tags OSM según la categoría
+ * - Restaurantes/cafés/bares: tipo de cocina, opciones veganas/vegetarianas
+ * - Hoteles: estrellas
+ * - Museos/atracciones/miradores: entrada gratuita o de pago, descripción corta
+ * - Parques: descripción corta
+ */
+function buildDescription(tags: Record<string, string>, category: NearbyCategory): string | undefined {
+  const parts: string[] = [];
+
+  switch (category) {
+    case 'restaurant':
+    case 'cafe':
+    case 'bar': {
+      // Tipo de cocina: "italian;pizza" → "Italian, Pizza"
+      const cuisine = tags.cuisine;
+      if (cuisine) {
+        const formatted = cuisine
+          .split(';')
+          .map(c => capitalize(c.trim().replace(/_/g, ' ')))
+          .join(', ');
+        parts.push(formatted);
+      }
+      // Dieta
+      if (tags['diet:vegan'] === 'only') {
+        parts.push('🌱 Vegan');
+      } else if (tags['diet:vegetarian'] === 'only') {
+        parts.push('🌱 Vegetarian');
+      } else if (tags['diet:vegetarian'] === 'yes') {
+        parts.push('🌱 Veg options');
+      }
+      break;
+    }
+
+    case 'hotel': {
+      // Estrellas
+      const stars = tags.stars || tags['tourism:stars'];
+      if (stars) {
+        const n = parseInt(stars, 10);
+        if (!isNaN(n) && n > 0 && n <= 5) {
+          parts.push('⭐'.repeat(n));
+        }
+      }
+      break;
+    }
+
+    case 'museum':
+    case 'attraction':
+    case 'viewpoint': {
+      // Tarifa de entrada
+      const fee = tags.fee;
+      if (fee === 'no' || fee === 'free') {
+        parts.push('🆓 Free');
+      } else if (fee === 'yes') {
+        parts.push('🎟️ Entrance fee');
+      }
+      // Descripción corta (preferir inglés, fallback genérico)
+      const desc = tags['description:en'] || tags['description:es'] || tags.description;
+      if (desc && desc.length <= 80) {
+        parts.push(desc);
+      }
+      break;
+    }
+
+    case 'park': {
+      const desc = tags['description:en'] || tags['description:es'] || tags.description;
+      if (desc && desc.length <= 80) {
+        parts.push(desc);
+      }
+      break;
+    }
+
+    case 'pharmacy': {
+      if (tags.dispensing === 'yes') {
+        parts.push('💊 Dispensary');
+      }
+      break;
+    }
+
+    case 'laundry': {
+      if (tags.shop === 'dry_cleaning') {
+        parts.push('Dry cleaning');
+      } else {
+        parts.push('Self-service / Drop-off');
+      }
+      if (tags['service:laundry:self_service'] === 'yes') {
+        parts.push('🪙 Coin-op');
+      }
+      break;
+    }
+  }
+
+  return parts.length > 0 ? parts.join(' · ') : undefined;
+}
+
+/**
  * Parsea un elemento Overpass y lo convierte en NearbyPlace
  */
 function parseElement(element: any, category: NearbyCategory, centerLat: number, centerLon: number): NearbyPlace | null {
@@ -86,6 +189,7 @@ function parseElement(element: any, category: NearbyCategory, centerLat: number,
     lat,
     lon,
     address,
+    description: buildDescription(tags, category),
     website: tags.website || tags.url || undefined,
     openingHours: tags.opening_hours || undefined,
     distance: haversineDistance(centerLat, centerLon, lat, lon),
