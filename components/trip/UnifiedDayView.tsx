@@ -34,6 +34,8 @@ function nearbyToItemCategory(nearbyCategory: NearbyCategory): ItineraryItem['ca
       return 'FOOD';
     case 'hotel':
       return 'ACCOMMODATION';
+    case 'shopping':
+      return 'SHOPPING';
     case 'pharmacy':
     default:
       return 'OTHER';

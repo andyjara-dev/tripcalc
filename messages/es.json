@@ -1228,7 +1228,8 @@
       "viewpoint": "Miradores",
       "pharmacy": "Farmacias",
       "hotel": "Hoteles",
-      "laundry": "Lavanderías"
+      "laundry": "Lavanderías",
+      "shopping": "Compras"
     },
     "radius": "Radio de búsqueda",
     "loading": "Buscando...",

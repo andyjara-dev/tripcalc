@@ -14,6 +14,7 @@ const CATEGORY_TAGS: Record<NearbyCategory, string[]> = {
   pharmacy: ['["amenity"="pharmacy"]'],
   hotel: ['["tourism"="hotel"]'],
   laundry: ['["amenity"="laundry"]', '["shop"="laundry"]', '["shop"="dry_cleaning"]'],
+  shopping: ['["shop"="mall"]', '["shop"="department_store"]', '["shop"="outlet"]', '["shop"="supermarket"]'],
 };
 
 /**
@@ -160,6 +161,20 @@ function buildDescription(tags: Record<string, string>, category: NearbyCategory
         parts.push('Self-service / Drop-off');
       }
       if (tags['service:laundry:self_service'] === 'yes') parts.push('🪙 Coin-op');
+      break;
+    }
+
+    case 'shopping': {
+      // Tipo de establecimiento
+      if (tags.shop === 'mall') parts.push('Shopping mall');
+      else if (tags.shop === 'outlet') parts.push('Outlet');
+      else if (tags.shop === 'department_store') parts.push('Department store');
+      else if (tags.shop === 'supermarket') parts.push('Supermarket');
+      // Marca/operador si difiere del nombre
+      if (tags.brand && tags.brand !== tags.name) parts.push(tags.brand);
+      else if (tags.operator && tags.operator !== tags.name) parts.push(tags.operator);
+      // Pisos del edificio
+      if (tags['building:levels']) parts.push(`${tags['building:levels']} floors`);
       break;
     }
   }

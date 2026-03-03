@@ -1205,7 +1205,8 @@
       "viewpoint": "Viewpoints",
       "pharmacy": "Pharmacies",
       "hotel": "Hotels",
-      "laundry": "Laundromats"
+      "laundry": "Laundromats",
+      "shopping": "Shopping"
     },
     "radius": "Search radius",
     "loading": "Searching...",

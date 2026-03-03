@@ -8,7 +8,8 @@ export type NearbyCategory =
   | 'viewpoint'
   | 'pharmacy'
   | 'hotel'
-  | 'laundry';
+  | 'laundry'
+  | 'shopping';
 
 export const NEARBY_CATEGORIES: NearbyCategory[] = [
   'museum',
@@ -21,6 +22,7 @@ export const NEARBY_CATEGORIES: NearbyCategory[] = [
   'pharmacy',
   'hotel',
   'laundry',
+  'shopping',
 ];
 
 export const CATEGORY_ICONS: Record<NearbyCategory, string> = {
@@ -34,6 +36,7 @@ export const CATEGORY_ICONS: Record<NearbyCategory, string> = {
   pharmacy: '💊',
   hotel: '🏨',
   laundry: '👕',
+  shopping: '🛍️',
 };
 
 export interface NearbyPlace {
