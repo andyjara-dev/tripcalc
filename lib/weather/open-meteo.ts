@@ -105,13 +105,19 @@ export async function fetchWeather(
       ? 'https://archive-api.open-meteo.com/v1/archive'
       : 'https://api.open-meteo.com/v1/forecast';
 
+    // La API histórica no soporta precipitation_probability_max, usa precipitation_sum
+    const useArchive = isHistorical && !isForecast;
+    const precipField = useArchive
+      ? 'precipitation_sum'
+      : 'precipitation_probability_max';
+
     // Build query parameters
     const params = new URLSearchParams({
       latitude: latitude.toString(),
       longitude: longitude.toString(),
       start_date: startDate,
       end_date: adjustedEndDate,
-      daily: 'temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code',
+      daily: `temperature_2m_max,temperature_2m_min,${precipField},weather_code`,
       timezone: 'auto',
     });
 
@@ -149,15 +155,26 @@ export async function fetchWeather(
     const data = await response.json();
 
     // Parse response
+    // La API histórica devuelve precipitation_sum (mm), la de pronóstico devuelve
+    // precipitation_probability_max (%). Normalizamos ambos a un valor 0-100.
     const days: WeatherDay[] = data.daily.time.map((date: string, index: number) => {
       const weatherCode = data.daily.weather_code[index];
       const weatherInfo = getWeatherInfo(weatherCode);
+
+      let precipitationProb = 0;
+      if (useArchive) {
+        // precipitation_sum en mm: convertimos a una probabilidad aproximada (≥1mm → 50%, ≥10mm → 100%)
+        const sum = data.daily.precipitation_sum?.[index] ?? 0;
+        precipitationProb = Math.min(100, Math.round(sum * 10));
+      } else {
+        precipitationProb = data.daily.precipitation_probability_max?.[index] ?? 0;
+      }
 
       return {
         date,
         tempMax: Math.round(data.daily.temperature_2m_max[index]),
         tempMin: Math.round(data.daily.temperature_2m_min[index]),
-        precipitationProb: data.daily.precipitation_probability_max[index] || 0,
+        precipitationProb,
         weatherCode,
         weatherIcon: weatherInfo.icon,
         weatherDescription: weatherInfo.description,
