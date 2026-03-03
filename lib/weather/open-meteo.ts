@@ -84,15 +84,16 @@ export async function fetchWeather(
     const isHistorical = startDate < today;
     const isForecast = endDate > today;
 
-    // Validate forecast range (Open-Meteo allows max 16 days in future)
+    // Validate forecast range (Open-Meteo permite max 15 días hacia el futuro,
+    // cuentan el día actual como día 0, así que day+15 es el último válido)
     const maxForecastDate = new Date();
-    maxForecastDate.setDate(maxForecastDate.getDate() + 16);
+    maxForecastDate.setDate(maxForecastDate.getDate() + 14); // 14 para tener margen de zona horaria
     const maxForecastDateStr = maxForecastDate.toISOString().split('T')[0];
 
     // If dates are too far in the future, throw a descriptive error
     if (startDate > maxForecastDateStr) {
       throw new Error(
-        `Weather forecast is only available up to 16 days in the future (until ${maxForecastDateStr}). ` +
+        `Weather forecast is only available up to 14 days in the future (until ${maxForecastDateStr}). ` +
         `Your trip starts on ${startDate}.`
       );
     }
